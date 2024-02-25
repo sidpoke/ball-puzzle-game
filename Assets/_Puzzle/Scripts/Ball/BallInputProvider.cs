@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
 {
@@ -8,28 +9,21 @@ public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
 
     public float TouchRadius { get { return _touchRadius; } }
 
-    public event Action OnTouchResponse;
+    public event Action BallTouched;
 
-    private void Update()
+    private void Start()
     {
-        //mobile inputs
-        if (Input.touchCount > 0) 
+        if (GameService.Instance != null)
         {
-            Touch(Input.GetTouch(0).position);
-        }
-        //PC testing
-        if (Input.GetMouseButtonDown(0))
-        {
-            Touch(Input.mousePosition);
+            GameService.Instance.touchInput.TouchDown += OnTouch;
         }
     }
 
-    private void Touch(Vector2 position)
+    private void OnTouch(Vector2 position)
     {
-        var pos = Camera.main.ScreenToWorldPoint(position);
-        if (Mathf.Abs(Vector2.Distance(transform.position, pos)) < TouchRadius)
+        if (Mathf.Abs(Vector2.Distance(transform.position, position)) < TouchRadius)
         {
-            OnTouchResponse?.Invoke();
+            BallTouched?.Invoke();
         }
     }
 }

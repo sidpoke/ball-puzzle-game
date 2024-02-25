@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameService : Singleton<GameService>
 {
     public EventManager eventManager;
+    public TouchInputHandler touchInput;
     public SceneManager sceneManager;
     public SaveManager saveManager;
     public SoundManager soundManager;
@@ -21,6 +22,7 @@ public class GameService : Singleton<GameService>
         base.Awake(); // Call base class to init singleton pattern
 
         eventManager = GetComponentInChildren<EventManager>();
+        touchInput = GetComponentInChildren<TouchInputHandler>();
         sceneManager = GetComponentInChildren<SceneManager>();
         saveManager = GetComponentInChildren<SaveManager>();
         soundManager = GetComponentInChildren<SoundManager>();

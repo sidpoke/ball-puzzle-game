@@ -28,13 +28,46 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
             Debug.LogError($"Pipe \"{name}\" is already full!!");
             return;
         }
+
+        int ballIndex = _balls.Count;
+        ball.SetPipeIndex(ballIndex == 0 ? 0 : ballIndex);
+
         _balls.Add(ball);
+        BallAdded?.Invoke(ball);
+    }
+
+    public void InsertAt(int index, BallController ball)
+    {
+        if (_balls.Count >= MaxFillAmount)
+        {
+            Debug.LogError($"Pipe \"{name}\" is already full!!");
+            return;
+        }
+
+        if (_balls.Count < index)
+        {
+            Debug.LogError($"Pipe \"{name}\" is not large enough for insert!!");
+            return;
+        }
+
+        _balls.Insert(index, ball);
+        //shift other balls index down by one
+        _balls.ForEach(ball => {
+            if (ball.PipeIndex > index)
+            {
+                ball.SetPipeIndex(ball.PipeIndex - 1);
+                BallMoved?.Invoke(ball);
+            }
+        });
         BallAdded?.Invoke(ball);
     }
 
     public void Clear()
     {
-        _balls.Clear();
+        _balls.ForEach(ball =>
+        {
+            RemoveAt(0);
+        });
     }
 
     public void Release()
@@ -60,12 +93,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
     {
         for (int i = 0; i < steps; i++)
         {
-            _balls.RemoveAt(index + i);
+            RemoveAt(index + i);
         }
-    }
-
-    public void Switch(int index, IPipeStorageProvider otherPipe)
-    {
-        throw new System.NotImplementedException();
     }
 }

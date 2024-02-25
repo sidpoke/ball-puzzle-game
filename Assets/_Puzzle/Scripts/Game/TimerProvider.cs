@@ -36,13 +36,13 @@ public class TimerProvider : MonoBehaviour, ITimerProvider
     public void TimerStart()
     {
         _running = true;
-        Timeout?.Invoke();
+        Started?.Invoke();
     }
 
     public void TimerStop() 
     {
         _running = false;
-        Timeout?.Invoke();
+        Stopped?.Invoke();
     }
 
     public void TimerReset()

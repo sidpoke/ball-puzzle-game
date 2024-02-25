@@ -19,10 +19,10 @@ public class Ball_Regular : BallController
     protected override void Awake()
     {
         base.Awake();
-        touchInputProvider.OnTouchResponse += OnTouch;
+        touchInputProvider.BallTouched += OnBallTouched;
     }
 
-    void OnTouch()
+    void OnBallTouched()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
     }

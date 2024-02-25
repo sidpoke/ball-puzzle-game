@@ -54,14 +54,16 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds a single random ball to a Pipe
+    /// </summary>
+    /// <param name="pipe">The pipe to fill</param>
     public void AddBallToPipe(PipeController pipe)
     {
         if (!pipe.PipeStorage.IsFull)
         {
             int rand = Random.Range(0, ballPrefabs.Count);
             BallController ball = Instantiate(ballPrefabs[rand], transform.position, Quaternion.identity, ballPool).GetComponent<BallController>();
-            int ballIndex = pipe.PipeStorage.Balls.Count;
-            ball.SetPipeIndex(ballIndex == 0 ? 0 : ballIndex);
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
@@ -92,5 +94,27 @@ public class LevelManager : MonoBehaviour
         {
             Debug.LogError($"Pipe \"{pipe.name}\" is already Empty!!");
         }
+    }
+
+    public void SwapBalls(BallController ballA, BallController ballB)
+    {
+        //switch elements between two pipes
+        PipeController pipeA = ballA.Pipe;
+        PipeController pipeB = ballB.Pipe;
+
+        //store pipe index A
+        int oldIndexA = ballA.PipeIndex;
+
+        //Move Ball A to Pipe B with index B
+        ballA.SetPipe(pipeB);
+        ballA.SetPipeIndex(ballB.PipeIndex);
+        pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
+        pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
+
+        //Move Ball B to Pipe A with old index of A
+        ballA.SetPipe(pipeA);
+        ballB.SetPipeIndex(oldIndexA);
+        pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
+        pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
     }
 }

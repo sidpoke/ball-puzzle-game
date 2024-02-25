@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class GameMode_Arcade : GameManager
 {
+    private ITimerProvider _timer;
+    
     protected override void Awake()
     {
         base.Awake();
+        _timer = GetComponent<ITimerProvider>();
+        _timer.Timeout += OnTimerTimeout;
     }
 
-    // Arcade game logic i suppose
     protected override void Start()
     {
         base.Start();
         LevelManager.FillAllPipes();
+        _timer.TimerStart();
     }
 
     // Update is called once per frame
@@ -23,7 +27,6 @@ public class GameMode_Arcade : GameManager
         {
             LevelManager.AddBallToLoader();
         }
-
         if (Input.GetKeyDown(KeyCode.F))
         {
             LevelManager.ReleaseLoaderBall();
@@ -33,4 +36,9 @@ public class GameMode_Arcade : GameManager
             LevelManager.KillRandomBall();
         }
     }
+    private void OnTimerTimeout()
+    {
+        LevelManager.AddBallToLoader();
+    }
+
 }

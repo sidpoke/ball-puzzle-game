@@ -7,5 +7,5 @@ public interface IBallTouchInputProvider
 {
     public float TouchRadius { get; }
 
-    public event Action OnTouchResponse;
+    public event Action BallTouched;
 }

@@ -18,9 +18,9 @@ public interface IPipeStorageProvider
     public bool IsEmpty { get; }
 
     public void Add(BallController ball); //Add from the top
-    public void Release(); //Release the lowest balls
-    public void Clear(); //Release all balls
+    public void InsertAt(int index, BallController ball);
+    public void Release(); //Release the last item
     public void RemoveAt(int index); //Release ball at index
     public void RemoveRange(int index, int steps); //Remove range at index
-    public void Switch(int index, IPipeStorageProvider otherPipe); //Switch with a pipe
+    public void Clear(); //Release all balls
 }
