@@ -15,9 +15,12 @@ public class BallController : MonoBehaviour
     public PipeController Pipe { get { return _pipe; } }
     public int PipeIndex { get { return _pipeIndex;} }
 
-    public void SetPipeAndIndex(PipeController pipe, int index)
+    public void SetPipe(PipeController pipe)
     {
         _pipe = pipe;
+    }
+    public void SetPipeIndex(int index)
+    {
         _pipeIndex = index;
     }
 

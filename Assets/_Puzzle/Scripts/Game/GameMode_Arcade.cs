@@ -23,5 +23,14 @@ public class GameMode_Arcade : GameManager
         {
             LevelManager.AddBallToLoader();
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            LevelManager.ReleaseLoaderBall();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            LevelManager.KillRandomBall();
+        }
     }
 }

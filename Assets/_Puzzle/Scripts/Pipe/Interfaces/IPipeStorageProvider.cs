@@ -7,11 +7,15 @@ public interface IPipeStorageProvider
     /// BallAdded: BallController Instance, int InsertedAtIndex
     /// BallRemoved: BallController Instance, int RemovedAtIndex
     /// </summary>
-    public event Action<BallController, int> BallAdded;
-    public event Action<BallController, int> BallRemoved;
+    public event Action<BallController> BallAdded;
+    public event Action<BallController> BallMoved;
+    public event Action<BallController> BallRemoved;
 
     public List<BallController> Balls { get; }
     public int MaxFillAmount { get; }
+
+    public bool IsFull { get; }
+    public bool IsEmpty { get; }
 
     public void Add(BallController ball); //Add from the top
     public void Release(); //Release the lowest balls

@@ -19,6 +19,8 @@ public class SwitcherPipe : PipeController
     [SerializeField]
     private PipeColor pipeColor = PipeColor.Red;
 
+    public PipeColor PipeColor { get { return pipeColor; } }
+
     protected override void Awake()
     {
         base.Awake();

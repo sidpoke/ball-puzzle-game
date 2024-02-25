@@ -513,6 +513,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2615060049091030473}
+  - component: {fileID: 3974076246939299444}
+  - component: {fileID: 7303367801890461366}
+  - component: {fileID: 2781376959414465778}
   m_Layer: 0
   m_Name: Loader Pipe
   m_TagString: Untagged
@@ -528,7 +531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828399184297900196}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.045, y: 3.2359998, z: -0.0100309225}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -555,6 +558,58 @@ Transform:
   - {fileID: 6375215038690317704}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3974076246939299444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828399184297900196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0625d34060992c046b9ee8c21f8101e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7303367801890461366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828399184297900196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb4d68701b77734cad99652ddfd1cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxFillAmount: 14
+--- !u!114 &2781376959414465778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828399184297900196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b67ad1c8cbf4144fbe88d821b7b5b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  predeterminedWaypoints:
+  - {fileID: 6375215038690317704}
+  - {fileID: 7480013324739960386}
+  - {fileID: 408396864851513535}
+  - {fileID: 7145350099221609846}
+  - {fileID: 4447969615341901576}
+  - {fileID: 1703851982826393900}
+  - {fileID: 6000628587746490492}
+  - {fileID: 2317399900517555357}
+  - {fileID: 1751669758327347668}
+  - {fileID: 6721588649522291816}
+  - {fileID: 6401891715119445284}
+  - {fileID: 6072031513969099043}
+  - {fileID: 3869049554044784101}
+  - {fileID: 5078353131243572416}
 --- !u!1 &2188876326478912165
 GameObject:
   m_ObjectHideFlags: 0

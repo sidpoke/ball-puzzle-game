@@ -621,13 +621,13 @@ Transform:
   m_LocalScale: {x: 0.67, y: 4.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2187054889563627377}
-  - {fileID: 3429397451531333438}
-  - {fileID: 5564114230634466421}
-  - {fileID: 4960909669003989195}
-  - {fileID: 374891994484941537}
-  - {fileID: 4255963020352469807}
   - {fileID: 8006887728371801692}
+  - {fileID: 4255963020352469807}
+  - {fileID: 374891994484941537}
+  - {fileID: 4960909669003989195}
+  - {fileID: 5564114230634466421}
+  - {fileID: 3429397451531333438}
+  - {fileID: 2187054889563627377}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2758958259209685421
@@ -695,7 +695,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeColor: 0
-  BallPrefab: {fileID: 3551305071229554941, guid: c8888d5b9350bab489639dbad446486e, type: 3}
 --- !u!114 &2743681742103920335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,13 +708,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   predeterminedWaypoints:
-  - {fileID: 8006887728371801692}
-  - {fileID: 4255963020352469807}
-  - {fileID: 374891994484941537}
-  - {fileID: 4960909669003989195}
-  - {fileID: 5564114230634466421}
-  - {fileID: 3429397451531333438}
   - {fileID: 2187054889563627377}
+  - {fileID: 3429397451531333438}
+  - {fileID: 5564114230634466421}
+  - {fileID: 4960909669003989195}
+  - {fileID: 374891994484941537}
+  - {fileID: 4255963020352469807}
+  - {fileID: 8006887728371801692}
 --- !u!114 &1039956545428681156
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,16 @@ public class LevelManager : MonoBehaviour
         AddBallToPipe(loaderPipe);
     }
 
+    public void ReleaseLoaderBall()
+    {
+        ReleaseBallFromPipe(loaderPipe);
+    }
+
+    public void KillRandomBall()
+    {
+        RemoveBallFromPipe(loaderPipe, Random.Range(0, loaderPipe.PipeStorage.Balls.Count));
+    }
+
     /// <summary>
     /// Fills an entire pipe at the start with random balls. 
     /// 
@@ -46,14 +56,41 @@ public class LevelManager : MonoBehaviour
 
     public void AddBallToPipe(PipeController pipe)
     {
-        if (pipe.PipeStorage.Balls.Count >= pipe.PipeStorage.MaxFillAmount)
+        if (!pipe.PipeStorage.IsFull)
         {
-            Debug.LogError($"Pipe \"{name}\" is already full!!");
-            return;
+            int rand = Random.Range(0, ballPrefabs.Count);
+            BallController ball = Instantiate(ballPrefabs[rand], transform.position, Quaternion.identity, ballPool).GetComponent<BallController>();
+            int ballIndex = pipe.PipeStorage.Balls.Count;
+            ball.SetPipeIndex(ballIndex == 0 ? 0 : ballIndex);
+            ball.SetPipe(pipe);
+            pipe.PipeStorage.Add(ball);
         }
+        else
+        {
+            Debug.LogError($"Pipe \"{pipe.name}\" is already full!!");
+        }
+    }
+    public void ReleaseBallFromPipe(PipeController pipe)
+    {
+        if (!pipe.PipeStorage.IsEmpty)
+        {
+            pipe.PipeStorage.Release();
+        }
+        else
+        {
+            Debug.LogError($"Pipe \"{pipe.name}\" is already Empty!!");
+        }
+    }
 
-        int rand = Random.Range(0, ballPrefabs.Count);
-        GameObject go = Instantiate(ballPrefabs[rand], transform.position, Quaternion.identity, ballPool);
-        pipe.PipeStorage.Add(go.GetComponent<BallController>());
+    public void RemoveBallFromPipe(PipeController pipe, int index)
+    {
+        if (!pipe.PipeStorage.IsEmpty)
+        {
+            pipe.PipeStorage.RemoveAt(index);
+        }
+        else
+        {
+            Debug.LogError($"Pipe \"{pipe.name}\" is already Empty!!");
+        }
     }
 }

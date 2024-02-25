@@ -23,15 +23,26 @@ public class PipeController : MonoBehaviour
     {
         _waypointProvider = GetComponent<IPipeWaypointProvider>();
         _pipeStorage = GetComponent<IPipeStorageProvider>();
-        PipeStorage.BallAdded += MoveBall;
+        _pipeStorage.BallAdded += MoveNewBall;
+        _pipeStorage.BallMoved += MoveDownBall;
+        _pipeStorage.BallRemoved += RemoveBall;
     }
 
-    public void MoveBall(BallController ball, int newIndex)
+    public void MoveNewBall(BallController ball)
     {
-        ball.transform.position = WaypointProvider.Waypoints[WaypointProvider.Waypoints.Length - 1 - ball.PipeIndex];
-        Vector2[] newPositions = PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex, newIndex);
-        ball.SetPipeAndIndex(this, newIndex);
-        ball.movementController.Move(newPositions);
+        ball.transform.position = WaypointProvider.Waypoints[WaypointProvider.Waypoints.Length - 1];
+        ball.movementController.Move(
+            PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
+    }
 
+    public void MoveDownBall(BallController ball)
+    {
+        ball.movementController.Move(WaypointProvider.Waypoints[ball.PipeIndex]);
+    }
+
+    public void RemoveBall(BallController ball)
+    {
+        //just to test
+        Destroy(ball.gameObject);
     }
 }

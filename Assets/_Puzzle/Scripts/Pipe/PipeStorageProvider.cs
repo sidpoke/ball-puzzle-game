@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
@@ -13,8 +14,12 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
     public int MaxFillAmount { get { return _maxFillAmount; } }
     public List<BallController> Balls { get { return _balls; } }
 
-    public event Action<BallController, int> BallAdded;
-    public event Action<BallController, int> BallRemoved;
+    public event Action<BallController> BallAdded;
+    public event Action<BallController> BallMoved;
+    public event Action<BallController> BallRemoved;
+
+    public bool IsFull { get { return _balls.Count >= MaxFillAmount; } }
+    public bool IsEmpty { get { return _balls.Count <= 0; } }
 
     public void Add(BallController ball)
     {
@@ -24,7 +29,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
             return;
         }
         _balls.Add(ball);
-        BallAdded?.Invoke(ball, _balls.Count);
+        BallAdded?.Invoke(ball);
     }
 
     public void Clear()
@@ -34,18 +39,29 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
 
     public void Release()
     {
-        _balls.RemoveAt(_balls.Count - 1);
+        RemoveAt(0);
     }
 
     public void RemoveAt(int index)
     {
-        BallRemoved?.Invoke(Balls[index], index);
+        //Call event so this ball should be taken care of
+        BallRemoved?.Invoke(_balls[index]);
+        //shift other balls index down by one
+        _balls.ForEach(ball => { 
+            if (ball.PipeIndex > index) {
+                ball.SetPipeIndex(ball.PipeIndex - 1);
+                BallMoved?.Invoke(ball);
+            }});
+        //remove list entry
         _balls.RemoveAt(index);
     }
 
     public void RemoveRange(int index, int steps)
     {
-        _balls.RemoveAt(index);
+        for (int i = 0; i < steps; i++)
+        {
+            _balls.RemoveAt(index + i);
+        }
     }
 
     public void Switch(int index, IPipeStorageProvider otherPipe)
