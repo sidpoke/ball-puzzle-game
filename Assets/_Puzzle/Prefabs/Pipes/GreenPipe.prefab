@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5344831402712019232, guid: 803c32a9252bb484bb2574a3500e62f7, type: 3}
       propertyPath: pipeColor
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7849696944778010377, guid: 803c32a9252bb484bb2574a3500e62f7, type: 3}
       propertyPath: m_LocalPosition.x

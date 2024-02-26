@@ -40,5 +40,4 @@ public class GameMode_Arcade : GameManager
     {
         LevelManager.AddBallToLoader();
     }
-
 }

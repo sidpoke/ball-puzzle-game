@@ -15,34 +15,30 @@ public class PipeController : MonoBehaviour
 {
     protected IPipeWaypointProvider _waypointProvider;
     protected IPipeStorageProvider _pipeStorage;
+    protected IPipeEventHandler _eventHandler;
 
     public IPipeWaypointProvider WaypointProvider { get { return _waypointProvider; } }
-    public IPipeStorageProvider PipeStorage { get { return _pipeStorage; } } 
+    public IPipeStorageProvider PipeStorage { get { return _pipeStorage; } }
+
 
     protected virtual void Awake()
     {
+        _eventHandler = GetComponent<IPipeEventHandler>();
         _waypointProvider = GetComponent<IPipeWaypointProvider>();
         _pipeStorage = GetComponent<IPipeStorageProvider>();
-        _pipeStorage.BallAdded += MoveNewBall;
-        _pipeStorage.BallMoved += MoveDownBall;
-        _pipeStorage.BallRemoved += RemoveBall;
+        _pipeStorage.BallAdded += OnBallAdded;
+        _pipeStorage.BallMoved += OnBallMoved;
     }
 
-    public void MoveNewBall(BallController ball)
+    public void OnBallAdded(BallController ball)
     {
-        ball.transform.position = WaypointProvider.Waypoints[WaypointProvider.Waypoints.Length - 1];
+        ball.movementController.SpawnPosition(WaypointProvider.Waypoints[WaypointProvider.Waypoints.Length - 1]);
         ball.movementController.Move(
             PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
     }
 
-    public void MoveDownBall(BallController ball)
+    public void OnBallMoved(BallController ball)
     {
         ball.movementController.Move(WaypointProvider.Waypoints[ball.PipeIndex]);
-    }
-
-    public void RemoveBall(BallController ball)
-    {
-        //just to test
-        Destroy(ball.gameObject);
     }
 }

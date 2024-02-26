@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
@@ -8,6 +9,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
     //private members hold storage
     [SerializeField]
     private int _maxFillAmount = 7;
+    [SerializeField, ReadOnly]
     private List<BallController> _balls = new List<BallController>();
 
     //public getters
@@ -29,10 +31,8 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
             return;
         }
 
-        int ballIndex = _balls.Count;
-        ball.SetPipeIndex(ballIndex == 0 ? 0 : ballIndex);
-
         _balls.Add(ball);
+        ball.SetPipeIndex(_balls.Count - 1);
         BallAdded?.Invoke(ball);
     }
 
@@ -50,15 +50,17 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
             return;
         }
 
-        _balls.Insert(index, ball);
-        //shift other balls index down by one
         _balls.ForEach(ball => {
             if (ball.PipeIndex > index)
             {
                 ball.SetPipeIndex(ball.PipeIndex - 1);
                 BallMoved?.Invoke(ball);
             }
-        });
+        }); 
+        
+        _balls.Insert(index, ball);
+        //shift other balls index down by one
+
         BallAdded?.Invoke(ball);
     }
 
@@ -77,14 +79,16 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
 
     public void RemoveAt(int index)
     {
-        //Call event so this ball should be taken care of
-        BallRemoved?.Invoke(_balls[index]);
         //shift other balls index down by one
         _balls.ForEach(ball => { 
             if (ball.PipeIndex > index) {
                 ball.SetPipeIndex(ball.PipeIndex - 1);
                 BallMoved?.Invoke(ball);
-            }});
+            }});        
+        
+        //Call event so this ball should be taken care of
+        BallRemoved?.Invoke(_balls[index]);
+        
         //remove list entry
         _balls.RemoveAt(index);
     }

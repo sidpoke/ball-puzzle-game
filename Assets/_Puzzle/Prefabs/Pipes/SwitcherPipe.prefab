@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 5344831402712019232}
   - component: {fileID: 2743681742103920335}
   - component: {fileID: 1039956545428681156}
+  - component: {fileID: -8283659562214842020}
   m_Layer: 0
   m_Name: SwitcherPipe
   m_TagString: Untagged
@@ -728,3 +729,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxFillAmount: 7
+--- !u!114 &-8283659562214842020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8790895304557508600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28848451e210ab4fbbe540cc279b86d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

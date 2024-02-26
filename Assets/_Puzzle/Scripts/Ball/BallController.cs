@@ -6,6 +6,7 @@ public class BallController : MonoBehaviour
 {
     public IBallMovementController movementController;
     public IBallTouchInputProvider touchInputProvider;
+    public IBallEventHandler eventHandler;
 
     [SerializeField]
     private PipeController _pipe;
@@ -23,15 +24,16 @@ public class BallController : MonoBehaviour
     {
         _pipeIndex = index;
     }
+    public void DestroyBall()
+    {
+        //death logic
+        Destroy(gameObject);
+    }
 
     protected virtual void Awake()
     {
         movementController = GetComponent<IBallMovementController>();
         touchInputProvider = GetComponent<IBallTouchInputProvider>();
-    }
-
-    private void Start()
-    {
-        //movementController.Move(new Vector2(0,0));
+        eventHandler = GetComponent<IBallEventHandler>();
     }
 }

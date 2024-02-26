@@ -7,10 +7,10 @@ using UnityEngine;
 
 public enum PipeColor
 {
-    Red,
-    Blue,
-    Green,
-    Yellow
+    Red = 0,
+    Green = 1,
+    Blue = 2,
+    Yellow = 3
 }
 
 public class SwitcherPipe : PipeController
@@ -25,5 +25,12 @@ public class SwitcherPipe : PipeController
     {
         base.Awake();
         WaypointProvider.GenerateWaypoints(PipeStorage.MaxFillAmount);
+        _pipeStorage.BallRemoved += OnBallRemoved;
+    }
+
+    public void OnBallRemoved(BallController ball)
+    {
+        //This is your final call, mr. ball
+        ball.DestroyBall();
     }
 }

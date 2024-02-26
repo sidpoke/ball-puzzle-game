@@ -2,6 +2,9 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The Level Manager is responsible for delivering actions to the GameManager that affect the level.
+/// </summary>
 public class LevelManager : MonoBehaviour
 {
     private ITimerProvider _timerProvider;
@@ -15,9 +18,56 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> ballPrefabs;
 
+    private BallController lastTouchedBall;
+
     public void Awake()
     {
         _timerProvider = GetComponent<TimerProvider>();
+    }
+
+    public void Start()
+    {
+        GameService.Instance.eventManager.BallTouched += OnTouchResponseBallSwap;
+        pipes.ForEach(pipe => { pipe.PipeStorage.BallRemoved += OnSwitcherPipeReleased; });
+        loaderPipe.PipeStorage.BallRemoved += OnLoaderPipeReleased;
+    }
+
+    public void OnSwitcherPipeReleased(BallController ball)
+    {
+        //Ask LoaderPipe to release a ball when one was missing
+        loaderPipe.OnSwitcherPipeReleased();
+    }
+
+    public void OnLoaderPipeReleased(BallController ball)
+    {
+        //put new ball into a free pipe
+        foreach (SwitcherPipe pipe in pipes) 
+        {
+            if (!pipe.PipeStorage.IsFull)
+            {
+                ball.SetPipe(pipe);
+                pipe.PipeStorage.Add(ball);
+                return;
+            }
+        }
+    }
+
+    public void OnTouchResponseBallSwap(BallController ball)
+    {
+        if(lastTouchedBall == null) //first touch select
+        {
+            lastTouchedBall = ball;
+            return;
+        }
+        else if(lastTouchedBall != ball) //second touch switch
+        {
+            SwapBalls(lastTouchedBall, ball);
+            lastTouchedBall = null;
+        }
+        else if (lastTouchedBall == ball) //second touch deselect
+        {
+            lastTouchedBall = null;
+        }
     }
 
     public void FillAllPipes(/*float seed*/)
@@ -110,11 +160,13 @@ public class LevelManager : MonoBehaviour
         ballA.SetPipeIndex(ballB.PipeIndex);
         pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
         pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
+        ballA.movementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
 
         //Move Ball B to Pipe A with old index of A
-        ballA.SetPipe(pipeA);
+        ballB.SetPipe(pipeA);
         ballB.SetPipeIndex(oldIndexA);
         pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
         pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
+        ballB.movementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
     }
 }

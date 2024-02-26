@@ -18,6 +18,13 @@ public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
             GameService.Instance.touchInput.TouchDown += OnTouch;
         }
     }
+    private void OnDestroy()
+    {
+        if (GameService.Instance != null)
+        {
+            GameService.Instance.touchInput.TouchDown -= OnTouch;
+        }
+    }
 
     private void OnTouch(Vector2 position)
     {

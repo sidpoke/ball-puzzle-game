@@ -516,6 +516,7 @@ GameObject:
   - component: {fileID: 3974076246939299444}
   - component: {fileID: 7303367801890461366}
   - component: {fileID: 2781376959414465778}
+  - component: {fileID: 2395390268203136833}
   m_Layer: 0
   m_Name: Loader Pipe
   m_TagString: Untagged
@@ -610,6 +611,18 @@ MonoBehaviour:
   - {fileID: 6072031513969099043}
   - {fileID: 3869049554044784101}
   - {fileID: 5078353131243572416}
+--- !u!114 &2395390268203136833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828399184297900196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28848451e210ab4fbbe540cc279b86d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2188876326478912165
 GameObject:
   m_ObjectHideFlags: 0
