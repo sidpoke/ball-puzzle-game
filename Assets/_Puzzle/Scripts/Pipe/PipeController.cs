@@ -13,9 +13,9 @@ using UnityEngine;
 
 public class PipeController : MonoBehaviour
 {
+    protected IPipeEventHandler _eventHandler;
     protected IPipeWaypointProvider _waypointProvider;
     protected IPipeStorageProvider _pipeStorage;
-    protected IPipeEventHandler _eventHandler;
 
     public IPipeWaypointProvider WaypointProvider { get { return _waypointProvider; } }
     public IPipeStorageProvider PipeStorage { get { return _pipeStorage; } }
@@ -26,19 +26,28 @@ public class PipeController : MonoBehaviour
         _eventHandler = GetComponent<IPipeEventHandler>();
         _waypointProvider = GetComponent<IPipeWaypointProvider>();
         _pipeStorage = GetComponent<IPipeStorageProvider>();
+
         _pipeStorage.BallAdded += OnBallAdded;
         _pipeStorage.BallMoved += OnBallMoved;
+        _pipeStorage.BallRemoved += OnBallRemoved;
     }
 
-    public void OnBallAdded(BallController ball)
+    protected virtual void OnBallAdded(BallController ball)
     {
-        ball.movementController.SpawnPosition(WaypointProvider.Waypoints[WaypointProvider.Waypoints.Length - 1]);
+        ball.movementController.SpawnPosition(WaypointProvider.SpawnPoint);
         ball.movementController.Move(
             PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
+        //eventHandler.OnBallAdded(this, ball);
     }
 
-    public void OnBallMoved(BallController ball)
+    protected virtual void OnBallMoved(BallController ball)
     {
         ball.movementController.Move(WaypointProvider.Waypoints[ball.PipeIndex]);
+        //eventHandler.OnBallMoved(this, ball);
+    }
+
+    protected virtual void OnBallRemoved(BallController ball)
+    {
+        //eventHandler.OnBallRemoved(this, ball);
     }
 }

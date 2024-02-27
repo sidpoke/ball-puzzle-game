@@ -39,6 +39,10 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
             transform.position = position;
             isSpawned = true;
         }
+        else
+        {
+            Move(position); // move to spawn point
+        }
     }
     public void Stop()
     {

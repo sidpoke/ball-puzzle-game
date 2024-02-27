@@ -25,12 +25,11 @@ public class SwitcherPipe : PipeController
     {
         base.Awake();
         WaypointProvider.GenerateWaypoints(PipeStorage.MaxFillAmount);
-        _pipeStorage.BallRemoved += OnBallRemoved;
     }
 
-    public void OnBallRemoved(BallController ball)
+    protected override void OnBallRemoved(BallController ball)
     {
-        //This is your final call, mr. ball
-        ball.DestroyBall();
+        base.OnBallRemoved(ball);
+        ball.DestroyBall();  //This is your final call, mr. ball
     }
 }
