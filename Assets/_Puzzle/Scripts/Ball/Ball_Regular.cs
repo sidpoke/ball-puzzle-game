@@ -36,12 +36,14 @@ public class Ball_Regular : BallController
     private void OnBallTouched()
     {
         eventHandler.EventBallTouched(this);
-        //GetComponent<SpriteRenderer>().color = Color.white;
+
+        GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color == Color.gray ? Color.white : Color.gray;
     }
 
     private void OnBallMovementFinished()
     {
         CheckForColorMatch();
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void CheckForColorMatch()
