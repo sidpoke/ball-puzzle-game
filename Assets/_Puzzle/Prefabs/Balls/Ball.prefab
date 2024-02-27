@@ -117,6 +117,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positions: []
   moveSpeed: 8
+  rotateSpeed: 1000
+  isSpawned: 0
 --- !u!114 &-4468802678590022106
 MonoBehaviour:
   m_ObjectHideFlags: 0

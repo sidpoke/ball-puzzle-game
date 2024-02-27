@@ -8,9 +8,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Size.x
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Size.y
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: efb27c755f726d342ad21954a606cb3b, type: 3}
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3551305071229554941, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Name
-      value: Ball
+      value: Ball_Red
       objectReference: {fileID: 0}
     - target: {fileID: 6555285695508378813, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_LocalPosition.x

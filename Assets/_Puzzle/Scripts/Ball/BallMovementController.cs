@@ -9,6 +9,8 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
     private List<Vector2> positions = new List<Vector2>();
     [SerializeField]
     private float moveSpeed = 2.0f;
+    [SerializeField]
+    private float rotateSpeed = 4.0f;
 
     public event Action FinishedMoving;
 
@@ -48,6 +50,9 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
         if(positions.Count > 0)
         {
             _moving = true;
+
+            Vector2 moveDirX = positions[0] - (Vector2)transform.position;
+            transform.eulerAngles += new Vector3(0, 0, -moveDirX.normalized.x * rotateSpeed * Time.deltaTime);
             transform.position = Vector2.MoveTowards(transform.position, positions[0], moveSpeed * Time.deltaTime);
             if (transform.position == (Vector3)positions[0])
             {

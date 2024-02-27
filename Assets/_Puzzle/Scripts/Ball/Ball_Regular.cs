@@ -25,13 +25,21 @@ public class Ball_Regular : BallController
         movementController.FinishedMoving += OnBallMovementFinished;
     }
 
-    void OnBallTouched()
+    /// <summary>
+    /// Called from LevelManager when selected
+    /// </summary>
+    public void OnBallSelected()
+    {
+
+    }
+
+    private void OnBallTouched()
     {
         eventHandler.EventBallTouched(this);
         //GetComponent<SpriteRenderer>().color = Color.white;
     }
 
-    void OnBallMovementFinished()
+    private void OnBallMovementFinished()
     {
         CheckForColorMatch();
     }

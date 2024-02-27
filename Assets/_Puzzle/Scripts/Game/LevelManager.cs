@@ -20,6 +20,8 @@ public class LevelManager : MonoBehaviour
 
     private BallController lastTouchedBall;
 
+    public List<SwitcherPipe> Pipes { get { return pipes; } }
+
     public void Awake()
     {
         _timerProvider = GetComponent<TimerProvider>();
@@ -54,12 +56,16 @@ public class LevelManager : MonoBehaviour
 
     public void OnTouchResponseBallSwap(BallController ball)
     {
+        if(ball.Pipe == loaderPipe || ball.movementController.IsMoving) //ignore loader pipe
+        {
+            return;
+        }
         if(lastTouchedBall == null) //first touch select
         {
             lastTouchedBall = ball;
             return;
         }
-        else if(lastTouchedBall != ball) //second touch switch
+        else if(lastTouchedBall != ball && lastTouchedBall.Pipe != ball.Pipe && lastTouchedBall.PipeIndex == ball.PipeIndex) //second touch switch
         {
             SwapBalls(lastTouchedBall, ball);
             lastTouchedBall = null;
