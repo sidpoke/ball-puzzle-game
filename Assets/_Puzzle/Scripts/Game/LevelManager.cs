@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
+    private LevelTouchProvider levelTouchProvider;
+
     [SerializeField]
     private LoaderPipe loaderPipe;
     [SerializeField]
@@ -15,20 +17,22 @@ public class LevelManager : MonoBehaviour
     private Transform ballPool;
     [SerializeField]
     private List<GameObject> ballPrefabs;
-    [SerializeField]
-    private BallController lastTouchedBall;
 
     //public getters
     public LoaderPipe LoaderPipe { get { return loaderPipe; } }
     public List<SwitcherPipe> Pipes { get { return pipes; } }
     public SwitcherPipe LeastFilledPipe { get { return pipes.OrderBy(pipe => pipe.PipeStorage.Balls.Count).First(); } }
 
+    private void Awake()
+    {
+        levelTouchProvider = GetComponent<LevelTouchProvider>();
+    }
 
     private void Start()
     {
         //subscribe to events
-        GameService.Instance.eventManager.BallTouched += OnTouchResponseBallSwap;
         GameService.Instance.eventManager.PipeBallRemoved += OnPipeReleased;
+        levelTouchProvider.SwapBalls += OnBallSwap;
     }
 
     /// <summary>
@@ -57,29 +61,32 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// On touch response -> Ball swap (also check for restrictions & setting highlights)
+    /// Switches a pair of balls between two pipes.
     /// </summary>
-    /// <param name="ball"></param>
-    private void OnTouchResponseBallSwap(BallController ball)
+    /// <param name="ballA">First Ball</param>
+    /// <param name="ballB">Second Ball</param>
+    public void OnBallSwap(BallController ballA, BallController ballB)
     {
-        if(ball.Pipe == loaderPipe || ball.movementController.IsMoving) //ignore loader pipe
-        {
-            return;
-        }
-        if(lastTouchedBall == null) //first touch select
-        {
-            lastTouchedBall = ball;
-            return;
-        }
-        else if(lastTouchedBall != ball && lastTouchedBall.Pipe != ball.Pipe && lastTouchedBall.PipeIndex == ball.PipeIndex) //second touch switch
-        {
-            SwapBalls(lastTouchedBall, ball);
-            lastTouchedBall = null;
-        }
-        else if (lastTouchedBall == ball) //second touch deselect
-        {
-            lastTouchedBall = null;
-        }
+        //switch elements between two pipes
+        PipeController pipeA = ballA.Pipe;
+        PipeController pipeB = ballB.Pipe;
+
+        //store pipe index A
+        int oldIndexA = ballA.PipeIndex;
+
+        //Move Ball A to Pipe B with index B
+        ballA.SetPipe(pipeB);
+        ballA.SetPipeIndex(ballB.PipeIndex, true);
+        pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
+        pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
+        ballA.movementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
+
+        //Move Ball B to Pipe A with old index of A
+        ballB.SetPipe(pipeA);
+        ballB.SetPipeIndex(oldIndexA, true);
+        pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
+        pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
+        ballB.movementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
     }
 
     /// <summary>
@@ -121,34 +128,5 @@ public class LevelManager : MonoBehaviour
         {
             Debug.LogError($"Pipe \"{pipe.name}\" is already full!!");
         }
-    }
-
-    /// <summary>
-    /// Switches a pair of balls between two pipes.
-    /// </summary>
-    /// <param name="ballA">First Ball</param>
-    /// <param name="ballB">Second Ball</param>
-    public void SwapBalls(BallController ballA, BallController ballB)
-    {
-        //switch elements between two pipes
-        PipeController pipeA = ballA.Pipe;
-        PipeController pipeB = ballB.Pipe;
-
-        //store pipe index A
-        int oldIndexA = ballA.PipeIndex;
-
-        //Move Ball A to Pipe B with index B
-        ballA.SetPipe(pipeB);
-        ballA.SetPipeIndex(ballB.PipeIndex, true);
-        pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
-        pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
-        ballA.movementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
-
-        //Move Ball B to Pipe A with old index of A
-        ballB.SetPipe(pipeA);
-        ballB.SetPipeIndex(oldIndexA, true);
-        pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
-        pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
-        ballB.movementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
     }
 }

@@ -11,6 +11,8 @@ public class EventManager : MonoBehaviour
     /// This only works because the actions within the game are known. The scripts themselves are mostly decoupled.
     /// </summary>
 
+    //Level events
+    public event Action<BallController> LevelBallSelected;
 
     //Pipe events
     public event Action<PipeController, BallController> PipeBallAdded;
@@ -21,6 +23,10 @@ public class EventManager : MonoBehaviour
     public event Action<BallController> BallTouched;
     public event Action<int> BallScoreAdded;
 
+    public void Event_LevelBallSelected(BallController ball)
+    {
+        LevelBallSelected?.Invoke(ball);
+    }
 
     public void Event_BallTouched(BallController ball)
     {

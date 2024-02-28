@@ -11,7 +11,6 @@ public class GameService : Singleton<GameService>
     public SceneManager sceneManager;
     public SaveManager saveManager;
     public SoundManager soundManager;
-    public PauseMenu pauseMenu;
     //private PhotonService photonService;
 
     public GameManager gameManager; //(this will simply set its own instance once loaded)
@@ -26,6 +25,5 @@ public class GameService : Singleton<GameService>
         sceneManager = GetComponentInChildren<SceneManager>();
         saveManager = GetComponentInChildren<SaveManager>();
         soundManager = GetComponentInChildren<SoundManager>();
-        pauseMenu = GetComponentInChildren<PauseMenu>();
     }
 }
