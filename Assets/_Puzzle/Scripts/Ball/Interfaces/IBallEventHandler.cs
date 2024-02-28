@@ -3,5 +3,6 @@
 public interface IBallEventHandler
 {
     //Events that a ball triggers
-    public void EventBallTouched(BallController ball);
+    public void BallTouched(BallController ball);
+    public void BallScoreAdded(int score);
 }

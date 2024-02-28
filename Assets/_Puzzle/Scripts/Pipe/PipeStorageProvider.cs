@@ -6,7 +6,12 @@ using UnityEngine;
 
 public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
 {
-    //private members hold storage
+    //Events to broadcast upwards to the PipeController.
+    //Could technically be solved with Controller injection too, or GetComponent<>.
+    public event Action<BallController> BallAdded;
+    public event Action<BallController> BallRemoved;
+
+    //private members
     [SerializeField]
     private int _maxFillAmount = 7;
     [SerializeField, ReadOnly]
@@ -15,11 +20,6 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
     //public getters
     public int MaxFillAmount { get { return _maxFillAmount; } }
     public List<BallController> Balls { get { return _balls; } }
-
-    public event Action<BallController> BallAdded;
-    public event Action<BallController> BallMoved;
-    public event Action<BallController> BallRemoved;
-
     public bool IsFull { get { return _balls.Count >= MaxFillAmount; } }
     public bool IsEmpty { get { return _balls.Count <= 0; } }
 
@@ -32,7 +32,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
         }
 
         _balls.Add(ball);
-        ball.SetPipeIndex(_balls.Count - 1);
+        ball.SetPipeIndex(_balls.Count - 1, false);
         BallAdded?.Invoke(ball);
     }
 
@@ -53,8 +53,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
         _balls.ForEach(ball => {
             if (ball.PipeIndex > index)
             {
-                ball.SetPipeIndex(ball.PipeIndex - 1);
-                BallMoved?.Invoke(ball);
+                ball.SetPipeIndex(ball.PipeIndex - 1, true);
             }
         }); 
         
@@ -82,8 +81,7 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
         //shift other balls index down by one
         _balls.ForEach(ball => { 
             if (ball.PipeIndex > index) {
-                ball.SetPipeIndex(ball.PipeIndex - 1);
-                BallMoved?.Invoke(ball);
+                ball.SetPipeIndex(ball.PipeIndex - 1, true);
             }});        
         
         //Call event so this ball should be taken care of

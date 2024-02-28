@@ -1,26 +1,19 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// This shoots out events whenever something changes and does not send back any info
+/// </summary>
+
 public class PipeEventHandler : MonoBehaviour, IPipeEventHandler
 {
-    // This shoots out whenever something changes and does not send back any info
-
-    public void PipeChanged(PipeController pipe)
+    public void PipeBallAdded(PipeController pipe, BallController ball)
     {
-        GameService.Instance.eventManager.EventPipeChanged(pipe);
+        GameService.Instance.eventManager.Event_PipeBallAdded(pipe, ball);
     }
 
-    public void BallAdded(PipeController pipe, BallController ball)
+    //Careful, ball might already be destroyed.
+    public void PipeBallRemoved(PipeController pipe, BallController ball)
     {
-        //do it
-    }
-
-    public void BallMoved(PipeController pip, BallController ball)
-    {
-        //do it
-    }
-
-    public void BallRemoved(PipeController pipe, BallController ball)
-    {
-        //do it
+        GameService.Instance.eventManager.Event_PipeBallRemoved(pipe, ball);
     }
 }

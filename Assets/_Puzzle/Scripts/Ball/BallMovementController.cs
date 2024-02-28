@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BallMovementController : MonoBehaviour, IBallMovementController
 {
+    public event Action FinishedMoving;
+
     [SerializeField]
     private List<Vector2> positions = new List<Vector2>();
     [SerializeField]
@@ -12,51 +14,65 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
     [SerializeField]
     private float rotateSpeed = 4.0f;
 
-    public event Action FinishedMoving;
-
     private bool _moving = false;
-
     public bool IsMoving { get { return _moving; } }
-    public bool isSpawned = false;
 
-    public void Move(Vector2 position)
+    private bool isSpawned = false;
+
+    public void Move(Vector2 position) //Adds a single position to the movement queue
     {
         positions.Add(position);
-        //Debug.Log($"Added Positions {position.ToString()} to object {name}");
     }
 
-    public void Move(Vector2[] path)
+    public void Move(Vector2[] path) //Overload: Adds an array of positions to the movement queue 
     {
         positions.AddRange(path);
-        //Debug.Log($"Added Positions {string.Join(", ", path)} to object {name}");
     }
-
 
     public void SpawnPosition(Vector2 position)
     {
-        if (!isSpawned)
+        if (!isSpawned) // teleport object to the spawn location
         {
             transform.position = position;
             isSpawned = true;
         }
         else
         {
-            Move(position); // move to spawn point
+            Move(position); // Add spawn point to the movement queue
         }
     }
+
     public void Stop()
     {
         positions.Clear();
     }
 
-    void Update()
+    private void Update()
     {
-        if(positions.Count > 0)
-        {
-            _moving = true;
+        MovementQueue();
+        RotationEffect();
+    }
 
+    /// <summary>
+    /// Adds rotation based on X velocity if the object is moving
+    /// </summary>
+    public void RotationEffect()
+    {
+        if (positions.Count > 0)
+        {
             Vector2 moveDirX = positions[0] - (Vector2)transform.position;
             transform.eulerAngles += new Vector3(0, 0, -moveDirX.normalized.x * rotateSpeed * Time.deltaTime);
+        }
+    }
+
+    /// <summary>
+    /// Follows the first path in the queue then removes it when it's reached
+    /// </summary>
+    private void MovementQueue()
+    {
+        if (positions.Count > 0)
+        {
+            _moving = true;
             transform.position = Vector2.MoveTowards(transform.position, positions[0], moveSpeed * Time.deltaTime);
             if (transform.position == (Vector3)positions[0])
             {
@@ -69,5 +85,4 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
             _moving = false;
         }
     }
-
 }

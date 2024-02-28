@@ -5,31 +5,45 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     /// <summary>
-    /// This class serves for "globally called" events as a decoupling mechanism.
-    /// Should any object want to know of what the events do, they can simply subscribe.
-    /// 
-    /// This is also known as the EventBus Pattern.
-    /// And yes it's kind of inspired by how Godot handles things, i was curious if this works in Unity too.
+    /// This class serves for "globally called" events.
+    /// Should any object want to know what other objects do, they can simply subscribe to the event.
+    /// I want to separate actions and responses to make them dependent on its GameService logic.
+    /// This only works because the actions within the game are known. The scripts themselves are mostly decoupled.
     /// </summary>
 
+
+    //Pipe events
+    public event Action<PipeController, BallController> PipeBallAdded;
+    public event Action<PipeController, BallController> PipeBallMoved;
+    public event Action<PipeController, BallController> PipeBallRemoved;
+
+    //Ball events
     public event Action<BallController> BallTouched;
-    //public event Action BallAdded;
-    //public event Action<int> ScoreAdded;
-    public event Action<int> ScoreUpdated;
-    public event Action<PipeController> PipeChanged;
+    public event Action<int> BallScoreAdded;
 
-    public void EventScoreUpdate(int score)
-    {
-        ScoreUpdated?.Invoke(score);
-    }
 
-    public void EventBallTouched(BallController ball)
+    public void Event_BallTouched(BallController ball)
     {
         BallTouched?.Invoke(ball);
     }
 
-    public void EventPipeChanged(PipeController pipe)
+    public void Event_BallScoreAdded(int score)
     {
-        PipeChanged?.Invoke(pipe);
+        BallScoreAdded?.Invoke(score);
+    }
+
+    public void Event_PipeBallAdded(PipeController pipe, BallController ball)
+    {
+        PipeBallAdded?.Invoke(pipe, ball);
+    }
+
+    public void Event_PipeBallMoved(PipeController pipe, BallController ball)
+    {
+        PipeBallMoved?.Invoke(pipe, ball);
+    }
+
+    public void Event_PipeBallRemoved(PipeController pipe , BallController ball)
+    {
+        PipeBallRemoved?.Invoke(pipe, ball);
     }
 }

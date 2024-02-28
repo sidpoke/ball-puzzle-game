@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class LoaderPipe : PipeController
 {
-    [SerializeField]
     private int queue;
 
     protected override void Awake()
     {
         base.Awake();
-        WaypointProvider.GenerateWaypoints(PipeStorage.MaxFillAmount);
     }
 
-    public void Update()
+    private void Update()
+    {
+        QueueHandler();
+    }
+
+    private void QueueHandler()
     {
         if (queue > 0 && !PipeStorage.IsEmpty)
         {
@@ -22,7 +25,7 @@ public class LoaderPipe : PipeController
         }
     }
 
-    public void OnSwitcherPipeReleased()
+    public void AddQueue()
     {
         queue++;
     }

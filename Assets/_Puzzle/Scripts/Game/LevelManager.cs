@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
-    private ITimerProvider _timerProvider;
-
     [SerializeField]
     private LoaderPipe loaderPipe;
     [SerializeField]
@@ -17,44 +15,52 @@ public class LevelManager : MonoBehaviour
     private Transform ballPool;
     [SerializeField]
     private List<GameObject> ballPrefabs;
-
+    [SerializeField]
     private BallController lastTouchedBall;
 
+    //public getters
+    public LoaderPipe LoaderPipe { get { return loaderPipe; } }
     public List<SwitcherPipe> Pipes { get { return pipes; } }
+    public SwitcherPipe LeastFilledPipe { get { return pipes.OrderBy(pipe => pipe.PipeStorage.Balls.Count).First(); } }
 
-    public void Awake()
-    {
-        _timerProvider = GetComponent<TimerProvider>();
-    }
 
-    public void Start()
+    private void Start()
     {
+        //subscribe to events
         GameService.Instance.eventManager.BallTouched += OnTouchResponseBallSwap;
-        pipes.ForEach(pipe => { pipe.PipeStorage.BallRemoved += OnSwitcherPipeReleased; });
-        loaderPipe.PipeStorage.BallRemoved += OnLoaderPipeReleased;
+        GameService.Instance.eventManager.PipeBallRemoved += OnPipeReleased;
     }
 
-    public void OnSwitcherPipeReleased(BallController ball)
+    /// <summary>
+    /// When LoaderPipe releases the ball, transferred to least filled SwitcherPipe
+    /// When SwitcherPipe releases a ball, ask LoaderPipe to release a new ball
+    /// </summary>
+    /// <param name="pipe"></param>
+    /// <param name="ball"></param>
+    public void OnPipeReleased(PipeController originPipe, BallController ball)
     {
-        //Ask LoaderPipe to release a ball when one was missing
-        loaderPipe.OnSwitcherPipeReleased();
-    }
-
-    public void OnLoaderPipeReleased(BallController ball)
-    {
-        //put new ball into a free pipe
-        foreach (SwitcherPipe pipe in pipes) 
+        if (originPipe is SwitcherPipe) //ignore if this pipe released the ball
         {
-            if (!pipe.PipeStorage.IsFull)
+            loaderPipe.AddQueue();
+        }
+
+        if (originPipe is LoaderPipe)
+        {
+            SwitcherPipe leastFilledPipe = LeastFilledPipe;
+
+            if (!leastFilledPipe.PipeStorage.IsFull)
             {
-                ball.SetPipe(pipe);
-                pipe.PipeStorage.Add(ball);
-                return;
+                leastFilledPipe.PipeStorage.Add(ball);
+                ball.SetPipe(leastFilledPipe);
             }
         }
     }
 
-    public void OnTouchResponseBallSwap(BallController ball)
+    /// <summary>
+    /// On touch response -> Ball swap (also check for restrictions & setting highlights)
+    /// </summary>
+    /// <param name="ball"></param>
+    private void OnTouchResponseBallSwap(BallController ball)
     {
         if(ball.Pipe == loaderPipe || ball.movementController.IsMoving) //ignore loader pipe
         {
@@ -76,24 +82,12 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void FillAllPipes(/*float seed*/)
+    /// <summary>
+    /// Fills all Switcher Pipes with random balls. 
+    /// </summary>
+    public void FillAllPipes()
     {
         pipes.ForEach(pipe => FillPipe(pipe));
-    }
-
-    public void AddBallToLoader()
-    {
-        AddBallToPipe(loaderPipe);
-    }
-
-    public void ReleaseLoaderBall()
-    {
-        ReleaseBallFromPipe(loaderPipe);
-    }
-
-    public void KillRandomBall()
-    {
-        RemoveBallFromPipe(loaderPipe, Random.Range(0, loaderPipe.PipeStorage.Balls.Count));
     }
 
     /// <summary>
@@ -123,35 +117,17 @@ public class LevelManager : MonoBehaviour
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
-        else
+        else // check should be inside the storage controller
         {
             Debug.LogError($"Pipe \"{pipe.name}\" is already full!!");
         }
     }
-    public void ReleaseBallFromPipe(PipeController pipe)
-    {
-        if (!pipe.PipeStorage.IsEmpty)
-        {
-            pipe.PipeStorage.Release();
-        }
-        else
-        {
-            Debug.LogError($"Pipe \"{pipe.name}\" is already Empty!!");
-        }
-    }
 
-    public void RemoveBallFromPipe(PipeController pipe, int index)
-    {
-        if (!pipe.PipeStorage.IsEmpty)
-        {
-            pipe.PipeStorage.RemoveAt(index);
-        }
-        else
-        {
-            Debug.LogError($"Pipe \"{pipe.name}\" is already Empty!!");
-        }
-    }
-
+    /// <summary>
+    /// Switches a pair of balls between two pipes.
+    /// </summary>
+    /// <param name="ballA">First Ball</param>
+    /// <param name="ballB">Second Ball</param>
     public void SwapBalls(BallController ballA, BallController ballB)
     {
         //switch elements between two pipes
@@ -163,14 +139,14 @@ public class LevelManager : MonoBehaviour
 
         //Move Ball A to Pipe B with index B
         ballA.SetPipe(pipeB);
-        ballA.SetPipeIndex(ballB.PipeIndex);
+        ballA.SetPipeIndex(ballB.PipeIndex, true);
         pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
         pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
         ballA.movementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
 
         //Move Ball B to Pipe A with old index of A
         ballB.SetPipe(pipeA);
-        ballB.SetPipeIndex(oldIndexA);
+        ballB.SetPipeIndex(oldIndexA, true);
         pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
         pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
         ballB.movementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);

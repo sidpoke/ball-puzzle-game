@@ -2,8 +2,13 @@
 
 public class BallEventHandler : MonoBehaviour, IBallEventHandler
 {
-    public void EventBallTouched(BallController ball)
+    public void BallTouched(BallController ball)
     {
-        GameService.Instance.eventManager.EventBallTouched(ball);
+        GameService.Instance.eventManager.Event_BallTouched(ball);
+    }
+
+    public void BallScoreAdded(int score)
+    {
+        GameService.Instance.eventManager.Event_BallScoreAdded(score);
     }
 }

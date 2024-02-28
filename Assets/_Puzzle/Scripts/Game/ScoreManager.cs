@@ -6,13 +6,21 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreManager : MonoBehaviour, IScoreManager
 {
-    private int _score;
+    public event Action<int> ScoreChanged;
 
+
+    private int _score;
     public int Score { get { return _score; } }
 
+    private void Awake()
+    {
+        GameService.Instance.eventManager.BallScoreAdded += AddScore;
+    }
+
+    //extend with combos?
     public void AddScore(int points)
     {
         _score += points;
-       //GameService.Instance.eventManager.EventScoreUpdate(_score);
+        ScoreChanged?.Invoke(Score);
     }
 }

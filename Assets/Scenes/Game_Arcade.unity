@@ -754,6 +754,7 @@ MonoBehaviour:
   - {fileID: 1851158550081622890, guid: f35f9caa81ea8124abb87d1c3f2a9626, type: 3}
   - {fileID: 28116153277427701, guid: 485f6a818c07d0449adaf9897afefebc, type: 3}
   - {fileID: 1063567440421452099, guid: 59745afeb3f81dd4c8b63da63b5b0551, type: 3}
+  lastTouchedBall: {fileID: 0}
 --- !u!1 &1552867112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,8 +1132,8 @@ Transform:
   m_GameObject: {fileID: 2121030970}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 1.2344, z: 0}
-  m_LocalScale: {x: 4.853063, y: 0.9187563, z: 0.9428}
+  m_LocalPosition: {x: -0.0058, y: 1.2344, z: 0}
+  m_LocalScale: {x: 4.9045053, y: 0.9187563, z: 0.9428}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1111165563}
@@ -1145,6 +1146,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1111165563}
     m_Modifications:
+    - target: {fileID: 481650462359853752, guid: 9ea031b97aa130346b7fbe9a043f0182, type: 3}
+      propertyPath: m_ChunkCullingBounds.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 481650462359853752, guid: 9ea031b97aa130346b7fbe9a043f0182, type: 3}
+      propertyPath: m_ChunkCullingBounds.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1828399184297900196, guid: 9ea031b97aa130346b7fbe9a043f0182, type: 3}
       propertyPath: m_Name
       value: Loader Pipe

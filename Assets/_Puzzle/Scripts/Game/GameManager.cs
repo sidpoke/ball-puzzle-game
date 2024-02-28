@@ -6,16 +6,14 @@ public class GameManager : MonoBehaviour
 
     public LevelManager LevelManager { get { return _levelManager; } }
 
-    //private UIManager uiManager;
-    //private ScoreManager scoreManager;
-    //private ISeedProvider seedProvider;
-
     protected virtual void Awake()
     {
         _levelManager = GetComponentInChildren<LevelManager>();
     }
+
     protected virtual void Start()
     {
+        //Sets service instance here
         GameService.Instance.gameManager = this;
     }
 }

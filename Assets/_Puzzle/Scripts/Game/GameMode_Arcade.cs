@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameMode_Arcade : GameManager
 {
     private ITimerProvider timer;
     private IScoreManager scoreManager;
+    //private Arcade UIManager  :)))
 
     [SerializeField]
     private TMP_Text scoreText;
@@ -17,6 +15,8 @@ public class GameMode_Arcade : GameManager
         base.Awake();
         timer = GetComponent<ITimerProvider>();
         scoreManager = GetComponent<IScoreManager>();
+
+        scoreManager.ScoreChanged += OnScoreChanged;
         timer.Timeout += OnTimerTimeout;
     }
 
@@ -25,7 +25,6 @@ public class GameMode_Arcade : GameManager
         base.Start();
         LevelManager.FillAllPipes();
         timer.TimerStart();
-        LevelManager.Pipes.ForEach(pipe => pipe.PipeStorage.BallRemoved += OnPipeRelease);
     }
 
     // Update is called once per frame
@@ -34,27 +33,26 @@ public class GameMode_Arcade : GameManager
         //Cheats
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            LevelManager.AddBallToLoader();
+            LevelManager.AddBallToPipe(LevelManager.LoaderPipe);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            LevelManager.ReleaseLoaderBall();
+            LevelManager.LoaderPipe.PipeStorage.Release();
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            LevelManager.KillRandomBall();
+            int random = Random.Range(0, LevelManager.LoaderPipe.PipeStorage.Balls.Count);
+            LevelManager.LoaderPipe.PipeStorage.RemoveAt(random);
         }
     }
 
-    public void OnPipeRelease(BallController ball)
+    public void OnScoreChanged(int score)
     {
-        //add score
-        scoreManager.AddScore(100); //stupid stupid stupid magic numbers CHANGE IT
-        scoreText.SetText($"Score: {scoreManager.Score.ToString()}");
+        scoreText.SetText($"Score: {score.ToString()}");
     }
 
     private void OnTimerTimeout()
     {
-        LevelManager.AddBallToLoader();
+        LevelManager.AddBallToPipe(LevelManager.LoaderPipe);
     }
 }

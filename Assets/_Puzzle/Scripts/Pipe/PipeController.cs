@@ -27,8 +27,9 @@ public class PipeController : MonoBehaviour
         _waypointProvider = GetComponent<IPipeWaypointProvider>();
         _pipeStorage = GetComponent<IPipeStorageProvider>();
 
+        WaypointProvider.GenerateWaypoints(PipeStorage.MaxFillAmount);
+
         _pipeStorage.BallAdded += OnBallAdded;
-        _pipeStorage.BallMoved += OnBallMoved;
         _pipeStorage.BallRemoved += OnBallRemoved;
     }
 
@@ -37,17 +38,11 @@ public class PipeController : MonoBehaviour
         ball.movementController.SpawnPosition(WaypointProvider.SpawnPoint);
         ball.movementController.Move(
             PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
-        //eventHandler.OnBallAdded(this, ball);
-    }
-
-    protected virtual void OnBallMoved(BallController ball)
-    {
-        ball.movementController.Move(WaypointProvider.Waypoints[ball.PipeIndex]);
-        //eventHandler.OnBallMoved(this, ball);
+        _eventHandler.PipeBallAdded(this, ball);
     }
 
     protected virtual void OnBallRemoved(BallController ball)
     {
-        //eventHandler.OnBallRemoved(this, ball);
+        _eventHandler.PipeBallRemoved(this, ball);
     }
 }

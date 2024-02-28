@@ -3,5 +3,6 @@
 public interface IPipeEventHandler
 {
     //Events that a pipe triggers
-    public void PipeChanged(PipeController pipe);
+    public void PipeBallAdded(PipeController pipe, BallController ball);
+    public void PipeBallRemoved(PipeController pipe, BallController ball);
 }
