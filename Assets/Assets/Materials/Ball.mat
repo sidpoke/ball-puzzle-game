@@ -55,6 +55,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _HighlightActive: 0
+    - _HighlightMultiplier: 0
     - _HighlightSpeed: 2
     m_Colors: []
   m_BuildTextureStacks: []
