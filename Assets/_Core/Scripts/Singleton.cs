@@ -13,7 +13,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else {
-            Debug.LogError($"Singleton {name} already exists. Destroying instance with id {GetInstanceID()}.");
+            Debug.Log($"Singleton {name} already exists. Destroying instance with id {GetInstanceID()}.");
             Destroy(gameObject);
         }
     }

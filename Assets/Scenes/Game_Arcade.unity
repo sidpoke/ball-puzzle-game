@@ -1859,19 +1859,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767dfcec4e6368046a97b92cb08e85e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballObjects:
+  - Prefab: {fileID: 1851158550081622890, guid: f35f9caa81ea8124abb87d1c3f2a9626, type: 3}
+    Chance: 0
+    _weight: 0
+  - Prefab: {fileID: 28116153277427701, guid: 485f6a818c07d0449adaf9897afefebc, type: 3}
+    Chance: 0
+    _weight: 0
+  - Prefab: {fileID: 7053419194134443531, guid: b6fa17479a699ff479515925ea3e7c9b, type: 3}
+    Chance: 0
+    _weight: 0
+  - Prefab: {fileID: 1063567440421452099, guid: 59745afeb3f81dd4c8b63da63b5b0551, type: 3}
+    Chance: 0
+    _weight: 0
+  - Prefab: {fileID: 1851158550081622890, guid: 56e4b50de633595499ef39bd9e98f34f, type: 3}
+    Chance: 0
+    _weight: 0
   loaderPipe: {fileID: 506750487}
   pipes:
   - {fileID: 5015590701104143039}
   - {fileID: 7720413621800665465}
   - {fileID: 4910477349765134956}
   - {fileID: 3921633355133964483}
-  ballPool: {fileID: 532432094}
-  ballPrefabs:
-  - {fileID: 7053419194134443531, guid: b6fa17479a699ff479515925ea3e7c9b, type: 3}
-  - {fileID: 1851158550081622890, guid: f35f9caa81ea8124abb87d1c3f2a9626, type: 3}
-  - {fileID: 28116153277427701, guid: 485f6a818c07d0449adaf9897afefebc, type: 3}
-  - {fileID: 1063567440421452099, guid: 59745afeb3f81dd4c8b63da63b5b0551, type: 3}
-  - {fileID: 1851158550081622890, guid: 56e4b50de633595499ef39bd9e98f34f, type: 3}
+  _ballPool: {fileID: 532432094}
 --- !u!114 &1111165565
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class GameService : Singleton<GameService>
 {
     public EventManager eventManager;
     public TouchInputHandler touchInput;
-    public SceneManager sceneManager;
+    public SceneController scenes;
     public SaveManager saveManager;
     public SoundManager soundManager;
     //private PhotonService photonService;
@@ -22,7 +22,7 @@ public class GameService : Singleton<GameService>
 
         eventManager = GetComponentInChildren<EventManager>();
         touchInput = GetComponentInChildren<TouchInputHandler>();
-        sceneManager = GetComponentInChildren<SceneManager>();
+        scenes = GetComponentInChildren<SceneController>();
         saveManager = GetComponentInChildren<SaveManager>();
         soundManager = GetComponentInChildren<SoundManager>();
     }

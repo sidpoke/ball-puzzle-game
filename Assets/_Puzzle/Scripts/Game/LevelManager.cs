@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+[System.Serializable]
+public struct BallObject
+{
+    public GameObject Prefab;
+    [Range(0f, 100f)] public float Chance;
+    [HideInInspector] public double _weight;
+}
+
 /// <summary>
 /// The Level Manager is responsible for delivering actions to the GameManager that affect the level.
 /// </summary>
@@ -12,16 +21,16 @@ public class LevelManager : MonoBehaviour
 
     private LevelTouchProvider levelTouchProvider;
 
-    [SerializeField]
-    private LoaderPipe loaderPipe;
-    [SerializeField]
-    private List<SwitcherPipe> pipes = new List<SwitcherPipe>();
-    [SerializeField]
-    private Transform ballPool;
-    [SerializeField]
-    private List<GameObject> ballPrefabs;
+    [Header("Ball Setup")]
+    [SerializeField] private List<BallObject> ballObjects;
+
+    [Header("Level References")]
+    [SerializeField] private LoaderPipe loaderPipe;
+    [SerializeField] private List<SwitcherPipe> pipes = new List<SwitcherPipe>();
+    [SerializeField] private Transform _ballPool;
 
     //public getters
+    public BallController[] Balls { get { return _ballPool.GetComponentsInChildren<BallController>(); } } //Don't call this too much
     public LoaderPipe LoaderPipe { get { return loaderPipe; } }
     public List<SwitcherPipe> Pipes { get { return pipes; } }
     public SwitcherPipe LeastFilledPipe { get { return pipes.OrderBy(pipe => pipe.PipeStorage.Balls.Count).First(); } }
@@ -122,8 +131,8 @@ public class LevelManager : MonoBehaviour
     {
         if (!pipe.PipeStorage.IsFull)
         {
-            int rand = UnityEngine.Random.Range(0, ballPrefabs.Count);
-            BallController ball = Instantiate(ballPrefabs[rand], transform.position, Quaternion.identity, ballPool).GetComponent<BallController>();
+            int rand = UnityEngine.Random.Range(0, ballObjects.Count);
+            BallController ball = Instantiate(ballObjects[rand].Prefab, transform.position, Quaternion.identity, _ballPool.transform).GetComponent<BallController>();
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
