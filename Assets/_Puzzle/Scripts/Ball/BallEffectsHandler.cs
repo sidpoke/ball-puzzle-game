@@ -29,5 +29,4 @@ public class BallEffectsHandler : MonoBehaviour, IBallEffectsHandler
             spriteRenderer.material.SetFloat("_HighlightMultiplier", 0f);
         }
     }
-
 }

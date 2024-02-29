@@ -9,11 +9,13 @@ public class GameManager : MonoBehaviour
     protected virtual void Awake()
     {
         _levelManager = GetComponentInChildren<LevelManager>();
+        LevelManager.LoaderPipeFull += OnLoaderPipeFull;
     }
 
     protected virtual void Start()
     {
-        //Sets service instance here
         GameService.Instance.gameManager = this;
     }
+
+    protected virtual void OnLoaderPipeFull() {}
 }

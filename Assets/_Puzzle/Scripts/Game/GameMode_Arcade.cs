@@ -1,15 +1,35 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
+[System.Serializable]
+public struct ArcadeDifficulty
+{
+    public string DifficultyName;
+    public float ScoreTrigger;
+    public float DifficultyBallTimer;
+}
 
 public class GameMode_Arcade : GameManager
 {
     private ITimerProvider timer;
     private IScoreManager scoreManager;
-    //private Arcade UIManager  :)))
+    //private Arcade_UIManager  :)))
 
+    [Header("UI Setup")]
     [SerializeField]
     private TMP_Text scoreText;
-    
+    [SerializeField]    
+    private TMP_Text difficultyText;
+
+    [Header("Arcade Settings")]
+    [SerializeField]
+    private List<ArcadeDifficulty> difficulties = new List<ArcadeDifficulty>();
+    [SerializeField]
+    private int startDifficulty = 0;
+    [SerializeField]
+    private int currentDifficulty = 0;
+
     protected override void Awake()
     {
         base.Awake();
@@ -25,9 +45,9 @@ public class GameMode_Arcade : GameManager
         base.Start();
         LevelManager.FillAllPipes();
         timer.TimerStart();
+        SetDifficulty(startDifficulty);
     }
 
-    // Update is called once per frame
     private void Update()
     {
         //Cheats
@@ -46,8 +66,29 @@ public class GameMode_Arcade : GameManager
         }
     }
 
-    public void OnScoreChanged(int score)
+    private void SetDifficulty(int difficulty)
     {
+        currentDifficulty = difficulty;
+
+        difficultyText.SetText(difficulties[currentDifficulty].DifficultyName);
+        timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
+    }
+
+    protected override void OnLoaderPipeFull() //game over
+    {
+        base.OnLoaderPipeFull();
+    }
+
+    private void OnScoreChanged(int score)
+    {
+        if (difficulties != null && difficulties.Count > (currentDifficulty + 1))
+        {
+            if(score >= difficulties[currentDifficulty + 1].ScoreTrigger)
+            {
+                SetDifficulty(currentDifficulty + 1);
+            }
+        }
+
         scoreText.SetText($"Score: {score.ToString()}");
     }
 

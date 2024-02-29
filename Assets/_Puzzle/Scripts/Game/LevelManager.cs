@@ -1,12 +1,15 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// The Level Manager is responsible for delivering actions to the GameManager that affect the level.
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
+    public event Action LoaderPipeFull;
+
     private LevelTouchProvider levelTouchProvider;
 
     [SerializeField]
@@ -119,14 +122,16 @@ public class LevelManager : MonoBehaviour
     {
         if (!pipe.PipeStorage.IsFull)
         {
-            int rand = Random.Range(0, ballPrefabs.Count);
+            int rand = UnityEngine.Random.Range(0, ballPrefabs.Count);
             BallController ball = Instantiate(ballPrefabs[rand], transform.position, Quaternion.identity, ballPool).GetComponent<BallController>();
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
-        else // check should be inside the storage controller
-        {
-            Debug.LogError($"Pipe \"{pipe.name}\" is already full!!");
+        else if(pipe == loaderPipe) //loader pipe full? let game manager know
+        { 
+            {
+                LoaderPipeFull?.Invoke();
+            }
         }
     }
 }
