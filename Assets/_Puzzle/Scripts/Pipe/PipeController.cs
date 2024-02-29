@@ -35,8 +35,8 @@ public class PipeController : MonoBehaviour
 
     protected virtual void OnBallAdded(BallController ball)
     {
-        ball.movementController.SpawnPosition(WaypointProvider.SpawnPoint);
-        ball.movementController.Move(
+        ball.MovementController.SpawnPosition(WaypointProvider.SpawnPoint);
+        ball.MovementController.Move(
             PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
         _eventHandler.PipeBallAdded(this, ball);
     }

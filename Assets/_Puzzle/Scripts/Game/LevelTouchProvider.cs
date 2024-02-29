@@ -22,7 +22,7 @@ public class LevelTouchProvider : MonoBehaviour
     /// <param name="ball"></param>
     private void OnTouchResponseBallSwap(BallController ball)
     {
-        if (ball.Pipe is LoaderPipe || ball.movementController.IsMoving) //ignore loader pipe or moving ball
+        if (ball.Pipe is LoaderPipe || ball.MovementController.IsMoving) //ignore loader pipe or moving ball
         {
             return;
         }

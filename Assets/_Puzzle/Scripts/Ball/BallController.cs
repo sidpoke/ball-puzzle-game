@@ -1,33 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public IBallEventHandler eventHandler;
-    public IBallMovementController movementController;
-    public IBallTouchInputProvider touchInputProvider;
+    protected IBallEventHandler eventHandler;
+    protected IBallMovementController _movementController;
+    protected IBallTouchInputProvider touchInputProvider;
+    protected BallEffectsHandler ballEffects;
+
 
     [Header("Ball Setup")]
     [SerializeField]
     private int clearPoints = 100;
 
-    [Header("Debug"),SerializeField]
+    [Header("Debug"), SerializeField]
     private PipeController _pipe;
     [SerializeField]
     private int _pipeIndex = 0;
 
     public PipeController Pipe { get { return _pipe; } }
-    public int PipeIndex { get { return _pipeIndex;} }
+    public int PipeIndex { get { return _pipeIndex; } }
+    public IBallMovementController MovementController { get { return _movementController; }}
 
     protected virtual void Awake()
     {
         eventHandler = GetComponent<IBallEventHandler>();
-        movementController = GetComponent<IBallMovementController>();
+        _movementController = GetComponent<IBallMovementController>();
         touchInputProvider = GetComponent<IBallTouchInputProvider>();
+        ballEffects = GetComponent<BallEffectsHandler>();
 
+        GameService.Instance.eventManager.LevelBallSelected += OnBallSelected;
         touchInputProvider.BallTouched += OnBallTouched;
-        movementController.FinishedMoving += OnBallMovementFinished;
+        _movementController.FinishedMoving += OnBallMovementFinished;
+    }
+
+    public void OnDestroy()
+    {
+        //unsubscribe to avoid missing reference
+        GameService.Instance.eventManager.LevelBallSelected -= OnBallSelected;
     }
 
     public void SetPipe(PipeController pipe)
@@ -40,7 +52,7 @@ public class BallController : MonoBehaviour
         _pipeIndex = index;
         if (move && _pipe)
         {
-            movementController.Move(_pipe.WaypointProvider.Waypoints[_pipeIndex]);
+            _movementController.Move(_pipe.WaypointProvider.Waypoints[_pipeIndex]);
         }
     }
 
@@ -61,7 +73,12 @@ public class BallController : MonoBehaviour
         eventHandler.BallTouched(this);
     }
 
-    protected virtual void OnBallSelected() { } //Called from LevelManager
+    protected virtual void OnBallSelected(BallController ball) 
+    { 
+        if(_pipe is LoaderPipe) { return; }
+
+        ballEffects.SetHighlight((ball != null && ball == this), (ball != null && ball.PipeIndex == _pipeIndex));
+    }
 
     protected virtual void OnBallMovementFinished() { }
 }

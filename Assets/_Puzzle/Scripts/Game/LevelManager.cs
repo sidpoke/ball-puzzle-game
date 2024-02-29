@@ -79,14 +79,14 @@ public class LevelManager : MonoBehaviour
         ballA.SetPipeIndex(ballB.PipeIndex, true);
         pipeB.PipeStorage.Balls.RemoveAt(ballB.PipeIndex);
         pipeB.PipeStorage.Balls.Insert(ballB.PipeIndex, ballA);
-        ballA.movementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
+        ballA.MovementController.Move(pipeB.WaypointProvider.Waypoints[ballB.PipeIndex]);
 
         //Move Ball B to Pipe A with old index of A
         ballB.SetPipe(pipeA);
         ballB.SetPipeIndex(oldIndexA, true);
         pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
         pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
-        ballB.movementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
+        ballB.MovementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
     }
 
     /// <summary>

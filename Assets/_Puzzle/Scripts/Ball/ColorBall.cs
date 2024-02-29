@@ -37,7 +37,6 @@ public class ColorBall : BallController
     protected override void OnBallTouched()
     {
         base.OnBallTouched();
-        GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color == Color.gray ? Color.white : Color.gray;
     }
 
     protected override void OnBallMovementFinished()

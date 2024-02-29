@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1070344239369111444}
   - component: {fileID: -4468802678590022106}
   - component: {fileID: 7781385985279501962}
+  - component: {fileID: -3565606115148740117}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -56,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 47dcc821217a7b04388ec708fb3f24a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab61fae5a854fd34a92827d128a65611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearPoints: 100
   _pipe: {fileID: 0}
   _pipeIndex: 0
   _color: 0
@@ -118,7 +120,6 @@ MonoBehaviour:
   positions: []
   moveSpeed: 8
   rotateSpeed: 1000
-  isSpawned: 0
 --- !u!114 &-4468802678590022106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,5 +143,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec0b845dc0652e540b6b925d0a7cff4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3565606115148740117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3551305071229554941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e441ced61bb16fc4e8b4bce62c6ca431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

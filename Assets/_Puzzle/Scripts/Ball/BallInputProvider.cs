@@ -4,12 +4,12 @@ using UnityEngine.UIElements;
 
 public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
 {
+    public event Action BallTouched;
+
     [SerializeField]
     protected float _touchRadius;
 
     public float TouchRadius { get { return _touchRadius; } }
-
-    public event Action BallTouched;
 
     private void Start()
     {
@@ -18,6 +18,7 @@ public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
             GameService.Instance.touchInput.TouchDown += OnTouch;
         }
     }
+
     private void OnDestroy()
     {
         if (GameService.Instance != null)
