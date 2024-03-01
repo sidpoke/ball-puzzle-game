@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clearPoints: 100
+  ballDespawnTime: 2
   _pipe: {fileID: 0}
   _pipeIndex: 0
   _color: 0
@@ -117,9 +118,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e64ab1d08633240bbb187bc6d62531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positions: []
   moveSpeed: 8
+  canRotate: 1
   rotateSpeed: 1000
+  gravity: 9.81
+  positions: []
+  _moving: 0
+  isSpawned: 0
+  isFreeFalling: 0
+  freeFallTime: 0
 --- !u!114 &-4468802678590022106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +164,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e441ced61bb16fc4e8b4bce62c6ca431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightMultiplier: 1
+  highlightNegativeMultiplier: 2

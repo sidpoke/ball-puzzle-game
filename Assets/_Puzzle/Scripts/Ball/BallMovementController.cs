@@ -10,6 +10,7 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
 
     [Header("Ball Movement Setup")]
     [SerializeField] private float moveSpeed = 2.0f;
+    [SerializeField] private bool canRotate;
     [SerializeField] private float rotateSpeed = 4.0f;
     [SerializeField] private float gravity = 9.81f;
 
@@ -20,7 +21,7 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
     [SerializeField] private bool isFreeFalling = false;
     [SerializeField] private float freeFallTime = 0f;
 
-    public bool IsMoving { get { return _moving; } }
+    public bool IsMoving { get { return _moving || isFreeFalling; } }
 
     public void Move(Vector2 position) //Adds a single position to the movement queue
     {
@@ -79,7 +80,7 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
     /// </summary>
     public void RotationEffect()
     {
-        if (positions.Count > 0)
+        if (canRotate && positions.Count > 0)
         {
             Vector2 moveDirX = positions[0] - (Vector2)transform.position;
             transform.eulerAngles += new Vector3(0, 0, -moveDirX.normalized.x * rotateSpeed * Time.deltaTime);

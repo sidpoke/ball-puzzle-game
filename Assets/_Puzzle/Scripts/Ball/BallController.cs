@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BallColor
+{
+    Red = 0,
+    Green = 1,
+    Blue = 2,
+    Yellow = 3,
+    Any = 4,
+    None = 5
+}
+
 public class BallController : MonoBehaviour
 {
     protected IBallEventHandler eventHandler;
@@ -11,6 +21,7 @@ public class BallController : MonoBehaviour
     protected BallEffectsHandler ballEffects;
 
     [Header("Ball Setup")]
+    [SerializeField] private BallColor _color;
     [SerializeField] private int clearPoints = 100;
     [SerializeField] private int ballDespawnTime = 2;
 
@@ -18,6 +29,8 @@ public class BallController : MonoBehaviour
     [SerializeField] private PipeController _pipe;
     [SerializeField] private int _pipeIndex = 0;
 
+
+    public BallColor BallColor { get { return _color; } }
     public PipeController Pipe { get { return _pipe; } }
     public int PipeIndex { get { return _pipeIndex; } }
     public IBallMovementController MovementController { get { return _movementController; }}
@@ -66,6 +79,17 @@ public class BallController : MonoBehaviour
         Destroy(gameObject, ballDespawnTime);
     }
 
+    private void CheckForColorMatch()
+    {
+        if (Pipe is SwitcherPipe pipe && PipeIndex == 0)
+        {
+            if ((int)BallColor == (int)pipe.PipeColor || BallColor == BallColor.Any)
+            {
+                pipe.PipeStorage.Release();
+            }
+        }
+    }
+
     //Override methods for child
     protected virtual void OnBallDestroyed()
     {
@@ -85,5 +109,8 @@ public class BallController : MonoBehaviour
         ballEffects.SetHighlight((ball != null && ball == this), (ball != null && ball.PipeIndex == _pipeIndex));
     }
 
-    protected virtual void OnBallMovementFinished() { }
+    protected virtual void OnBallMovementFinished() 
+    { 
+        CheckForColorMatch(); 
+    }
 }

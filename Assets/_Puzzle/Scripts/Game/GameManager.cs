@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     protected virtual void Start()
     {
-        GameService.Instance.gameManager = this;
+       
     }
 
     protected virtual void OnLoaderPipeFull() {}

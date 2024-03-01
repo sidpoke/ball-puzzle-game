@@ -968,6 +968,8 @@ MonoBehaviour:
   pausePanel: {fileID: 1800595493}
   gameOverPanel: {fileID: 1622034504}
   pauseButton: {fileID: 1716761232}
+  finalScoreText: {fileID: 1740653169}
+  highScoreText: {fileID: 1408770675}
 --- !u!1 &600638046
 GameObject:
   m_ObjectHideFlags: 0

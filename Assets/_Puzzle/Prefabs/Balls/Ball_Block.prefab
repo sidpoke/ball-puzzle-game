@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1070344239369111444, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: canRotate
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Size.x
       value: 5.12
@@ -19,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: bf59510d74ce64a4fafca69a216991f0, type: 3}
+      objectReference: {fileID: 21300000, guid: 716509764d9bd7845a226766f325488c, type: 3}
     - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -78,11 +82,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: _color
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: clearPoints
-      value: 250
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: ballDespawnTime
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

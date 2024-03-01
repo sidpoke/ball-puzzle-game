@@ -12,8 +12,6 @@ public class GameService : Singleton<GameService>
     public SaveManager saveManager;
     public SoundManager soundManager;
     //private PhotonService photonService;
-
-    public GameManager gameManager; //(this will simply set its own instance once loaded)
     //public MenuManager menuManager; //(this will simply set its own instance once loaded)
 
     protected override void Awake()
