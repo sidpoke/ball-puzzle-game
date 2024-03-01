@@ -12,13 +12,12 @@ public class BallController : MonoBehaviour
 
 
     [Header("Ball Setup")]
-    [SerializeField]
-    private int clearPoints = 100;
+    [SerializeField] private int clearPoints = 100;
+    [SerializeField] private int ballDespawnTime = 2;
 
-    [Header("Debug"), SerializeField]
-    private PipeController _pipe;
-    [SerializeField]
-    private int _pipeIndex = 0;
+    [Header("Debug")]
+    [SerializeField] private PipeController _pipe;
+    [SerializeField] private int _pipeIndex = 0;
 
     public PipeController Pipe { get { return _pipe; } }
     public int PipeIndex { get { return _pipeIndex; } }
@@ -65,13 +64,14 @@ public class BallController : MonoBehaviour
     public void DestroyBall()
     {
         OnBallDestroyed();
-        Destroy(gameObject);
+        Destroy(gameObject, ballDespawnTime);
     }
 
     //Override methods for child
     protected virtual void OnBallDestroyed()
     {
         eventHandler.BallScoreAdded(clearPoints);
+        _movementController.FreeFall();
     }
 
     protected virtual void OnBallTouched()
