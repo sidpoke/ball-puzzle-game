@@ -30,16 +30,22 @@ public class BallController : MonoBehaviour
         _movementController = GetComponent<IBallMovementController>();
         touchInputProvider = GetComponent<IBallTouchInputProvider>();
         ballEffects = GetComponent<BallEffectsHandler>();
+    }
 
+    protected virtual void OnEnable()
+    {
+        //subscribe to events
         GameService.Instance.eventManager.LevelBallSelected += OnBallSelected;
         touchInputProvider.BallTouched += OnBallTouched;
         _movementController.FinishedMoving += OnBallMovementFinished;
     }
 
-    public void OnDestroy()
+    protected virtual void OnDisable()
     {
-        //unsubscribe to avoid missing reference
+        //unsubscribe events
         GameService.Instance.eventManager.LevelBallSelected -= OnBallSelected;
+        touchInputProvider.BallTouched -= OnBallTouched;
+        _movementController.FinishedMoving -= OnBallMovementFinished;
     }
 
     public void SetPipe(PipeController pipe)

@@ -2,21 +2,29 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.ComponentModel;
+using Unity.Collections;
 
-
+/// <summary>
+/// A Ball Prefab combined with a weight
+/// </summary>
 [System.Serializable]
 public struct BallObject
 {
     public GameObject Prefab;
-    [Range(0f, 100f)] public float Chance;
-    [HideInInspector] public double _weight;
+    [Range(0, 100)] public int Weight;
 }
 
 /// <summary>
-/// The Level Manager is responsible for delivering actions to the GameManager that affect the level.
+/// The LevelManager is responsible for handling changes within the game scene (Pipes and Balls).
+/// It spawns Balls, fills pipes and swaps balls on call.
+/// Purpose: The GameManager can call the levelmanager to change the game state.
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
+    /// <summary>
+    /// Event is fired in case the loader pipe is full. This could be a game over call for example.
+    /// </summary>
     public event Action LoaderPipeFull;
 
     private LevelTouchProvider levelTouchProvider;
@@ -29,22 +37,39 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<SwitcherPipe> pipes = new List<SwitcherPipe>();
     [SerializeField] private Transform _ballPool;
 
+    [Header("Debug")]
+    [SerializeField] private int[] ballWeights;
+
     //public getters
     public BallController[] Balls { get { return _ballPool.GetComponentsInChildren<BallController>(); } } //Don't call this too much
     public LoaderPipe LoaderPipe { get { return loaderPipe; } }
     public List<SwitcherPipe> Pipes { get { return pipes; } }
     public SwitcherPipe LeastFilledPipe { get { return pipes.OrderBy(pipe => pipe.PipeStorage.Balls.Count).First(); } }
 
+
     private void Awake()
     {
         levelTouchProvider = GetComponent<LevelTouchProvider>();
+        ballWeights = ballObjects.Select(ball => ball.Weight).ToArray(); // extract ball weights, needed for random calculation
     }
 
-    private void Start()
+    private void OnEnable()
     {
         //subscribe to events
         GameService.Instance.eventManager.PipeBallRemoved += OnPipeReleased;
         levelTouchProvider.SwapBalls += OnBallSwap;
+    }
+
+    private void OnDisable()
+    {
+        //subscribe to events
+        GameService.Instance.eventManager.PipeBallRemoved -= OnPipeReleased;
+        levelTouchProvider.SwapBalls -= OnBallSwap;
+    }
+
+    public void SetCanTouch(bool active)
+    {
+        levelTouchProvider.SetCanTouch(active);
     }
 
     /// <summary>
@@ -70,6 +95,15 @@ public class LevelManager : MonoBehaviour
                 ball.SetPipe(leastFilledPipe);
             }
         }
+    }
+
+    /// <summary>
+    /// Clears all pipes and destroys all balls in the scene.
+    /// </summary>
+    public void ClearAllPipes()
+    {
+        pipes.ForEach(pipe => pipe.PipeStorage.Clear());
+        loaderPipe.PipeStorage.Clear();
     }
 
     /// <summary>
@@ -131,8 +165,7 @@ public class LevelManager : MonoBehaviour
     {
         if (!pipe.PipeStorage.IsFull)
         {
-            int rand = UnityEngine.Random.Range(0, ballObjects.Count);
-            BallController ball = Instantiate(ballObjects[rand].Prefab, transform.position, Quaternion.identity, _ballPool.transform).GetComponent<BallController>();
+            BallController ball = Instantiate(CalculateRandomWeightedBall(ballWeights), transform.position, Quaternion.identity, _ballPool.transform).GetComponent<BallController>();
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
@@ -142,5 +175,26 @@ public class LevelManager : MonoBehaviour
                 LoaderPipeFull?.Invoke();
             }
         }
+    }
+
+    /// <summary>
+    /// Calculates a random weighted ball from the list.
+    /// </summary>
+    /// <returns>The random prefab to instantiate.</returns>
+    //Reference: https://limboh27.medium.com/implementing-weighted-rng-in-unity-ed7186e3ff3b
+    private GameObject CalculateRandomWeightedBall(int[] weights)
+    {
+        int randomWeight = UnityEngine.Random.Range(0, ballWeights.Sum());
+
+        for (int i = 0; i < weights.Length; i++)
+        {
+            randomWeight -= weights[i];
+            if(randomWeight < 0)
+            {
+                return ballObjects[i].Prefab;
+            }
+        }
+
+        return ballObjects[0].Prefab;
     }
 }

@@ -12,15 +12,27 @@ public class ScoreManager : MonoBehaviour, IScoreManager
     private int _score;
     public int Score { get { return _score; } }
 
-    private void Awake()
+    private void OnEnable()
     {
+        //subscribe to events
         GameService.Instance.eventManager.BallScoreAdded += AddScore;
+    }
+    private void OnDisable()
+    {
+        //unsubscribe events
+        GameService.Instance.eventManager.BallScoreAdded -= AddScore;
     }
 
     //extend with combos?
     public void AddScore(int points)
     {
         _score += points;
+        ScoreChanged?.Invoke(Score);
+    }
+    
+    public void ResetScore()
+    {
+        _score = 0;
         ScoreChanged?.Invoke(Score);
     }
 }

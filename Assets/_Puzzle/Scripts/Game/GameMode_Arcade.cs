@@ -14,38 +14,45 @@ public class GameMode_Arcade : GameManager
 {
     private ITimerProvider timer;
     private IScoreManager scoreManager;
-    //private Arcade_UIManager  :)))
-
-    [Header("UI Setup")]
-    [SerializeField]
-    private TMP_Text scoreText;
-    [SerializeField]    
-    private TMP_Text difficultyText;
+    private ArcadeUI ui;
 
     [Header("Arcade Settings")]
-    [SerializeField]
-    private List<ArcadeDifficulty> difficulties = new List<ArcadeDifficulty>();
-    [SerializeField]
-    private int startDifficulty = 0;
-    [SerializeField]
-    private int currentDifficulty = 0;
+    [SerializeField] private List<ArcadeDifficulty> difficulties = new List<ArcadeDifficulty>();
+    [SerializeField] private int startDifficulty = 0;
+    [SerializeField] private int currentDifficulty = 0;
 
     protected override void Awake()
     {
         base.Awake();
         timer = GetComponent<ITimerProvider>();
         scoreManager = GetComponent<IScoreManager>();
+        ui = GetComponent<ArcadeUI>();
+    }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        //subscribe to events
         scoreManager.ScoreChanged += OnScoreChanged;
         timer.Timeout += OnTimerTimeout;
+        ui.PauseGame += OnPauseGame;
+        ui.SwitchScene += OnSwitchScene;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        //unsubscribe events
+        scoreManager.ScoreChanged -= OnScoreChanged;
+        timer.Timeout -= OnTimerTimeout;
+        ui.PauseGame -= OnPauseGame;
+        ui.SwitchScene -= OnSwitchScene;
     }
 
     protected override void Start()
     {
         base.Start();
-        LevelManager.FillAllPipes();
-        timer.TimerStart();
-        SetDifficulty(startDifficulty);
+        StartGame();
     }
 
     private void Update()
@@ -66,19 +73,60 @@ public class GameMode_Arcade : GameManager
         }
     }
 
+    private void StartGame()
+    {
+        LevelManager.SetCanTouch(true);
+        LevelManager.FillAllPipes();
+        timer.TimerStart();
+        SetDifficulty(startDifficulty);
+    }
+
+    private void GameOver()
+    {
+        timer.TimerStop();
+        LevelManager.SetCanTouch(false);
+        //TODO: scoremanager save score
+        ui.OpenGameOverMenu();
+    }
+
     private void SetDifficulty(int difficulty)
     {
         currentDifficulty = difficulty;
 
-        difficultyText.SetText(difficulties[currentDifficulty].DifficultyName);
+        ui.SetDifficultyText(difficulties[currentDifficulty].DifficultyName);
         timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
     }
 
-    protected override void OnLoaderPipeFull() //game over
+    private void OnSwitchScene(string scene) //reset too
     {
-        base.OnLoaderPipeFull();
+        Time.timeScale = 1;
+        LevelManager.SetCanTouch(true);
+        GameService.Instance?.scenes.LoadScene(scene);
     }
 
+    private void OnPauseGame(bool pause) //called from UI
+    {
+        if (pause)
+        {
+            timer.TimerStop();
+            LevelManager.SetCanTouch(false);
+            Time.timeScale = 0;
+            ui.OpenPauseMenu();
+        }
+        else
+        {
+            ui.ClosePauseMenu();
+            timer.TimerStart();
+            LevelManager.SetCanTouch(true);
+            Time.timeScale = 1;
+        }
+    }
+
+    protected override void OnLoaderPipeFull()
+    {
+        base.OnLoaderPipeFull();
+        GameOver();
+    }
     private void OnScoreChanged(int score)
     {
         if (difficulties != null && difficulties.Count > (currentDifficulty + 1))
@@ -89,7 +137,7 @@ public class GameMode_Arcade : GameManager
             }
         }
 
-        scoreText.SetText($"Score: {score.ToString()}");
+        ui.SetScoreText(score);
     }
 
     private void OnTimerTimeout()

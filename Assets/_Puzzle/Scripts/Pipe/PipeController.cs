@@ -28,9 +28,20 @@ public class PipeController : MonoBehaviour
         _pipeStorage = GetComponent<IPipeStorageProvider>();
 
         WaypointProvider.GenerateWaypoints(PipeStorage.MaxFillAmount);
+    }
 
+    protected virtual void OnEnable()
+    {
+        //Subscribe to events
         _pipeStorage.BallAdded += OnBallAdded;
         _pipeStorage.BallRemoved += OnBallRemoved;
+    }
+
+    protected virtual void OnDisable()
+    {
+        //unsubscribe events
+        _pipeStorage.BallAdded -= OnBallAdded;
+        _pipeStorage.BallRemoved -= OnBallRemoved;
     }
 
     protected virtual void OnBallAdded(BallController ball)

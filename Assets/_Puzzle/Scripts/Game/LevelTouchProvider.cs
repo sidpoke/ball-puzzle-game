@@ -7,13 +7,26 @@ public class LevelTouchProvider : MonoBehaviour
 {
     public event Action<BallController, BallController> SwapBalls;
 
-    [SerializeField]
-    private BallController lastTouchedBall = null;
+    [SerializeField] private BallController lastTouchedBall = null;
+    [SerializeField] private bool canTouch;
 
-    void Start()
+
+    private void OnEnable()
     {
         //subcribe to events
         GameService.Instance.eventManager.BallTouched += OnTouchResponseBallSwap;
+    }
+
+    private void OnDisable()
+    {
+        //unsubcribe events
+        GameService.Instance.eventManager.BallTouched -= OnTouchResponseBallSwap;
+    }
+
+
+    public void SetCanTouch(bool active)
+    {
+        canTouch = active;
     }
 
     /// <summary>
@@ -22,7 +35,7 @@ public class LevelTouchProvider : MonoBehaviour
     /// <param name="ball"></param>
     private void OnTouchResponseBallSwap(BallController ball)
     {
-        if (ball.Pipe is LoaderPipe || ball.MovementController.IsMoving) //ignore loader pipe or moving ball
+        if (!canTouch || ball.Pipe is LoaderPipe || ball.MovementController.IsMoving) //ignore loader pipe or moving ball
         {
             return;
         }

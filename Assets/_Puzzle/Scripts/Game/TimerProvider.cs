@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,11 +9,10 @@ public class TimerProvider : MonoBehaviour, ITimerProvider
     public event Action Started;
     public event Action Stopped;
 
-    [SerializeField]
-    private float _timerTime;
-
-    private bool _running;
-    private float _timer;
+    [Header("Debug")]
+    [SerializeField] private float _timerTime;
+    [SerializeField] private bool _running;
+    [SerializeField] private float _timer;
 
     public float CurrentTime { get { return _timer; } }
     public float TimerTime { get { return _timerTime; } }

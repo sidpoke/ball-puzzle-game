@@ -65,10 +65,8 @@ public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
 
     public void Clear()
     {
-        _balls.ForEach(ball =>
-        {
-            RemoveAt(0);
-        });
+        _balls.ForEach(ball => Destroy(ball.gameObject));
+        _balls.Clear();
     }
 
     public void Release()

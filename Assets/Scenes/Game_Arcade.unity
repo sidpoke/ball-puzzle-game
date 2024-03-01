@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 17596479}
   - component: {fileID: 17596478}
   m_Layer: 5
-  m_Name: Game Over
+  m_Name: Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -53.103607}
+  m_AnchoredPosition: {x: 468.69452, y: -52.754593}
   m_SizeDelta: {x: 0, y: 172.01599}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &17596478
@@ -866,6 +866,7 @@ GameObject:
   - component: {fileID: 561021477}
   - component: {fileID: 561021479}
   - component: {fileID: 561021480}
+  - component: {fileID: 561021481}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -885,8 +886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e0ca9e0f212464fa1908d8ec08fc61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 674872585}
-  difficultyText: {fileID: 600638047}
   difficulties:
   - DifficultyName: Very Easy
     ScoreTrigger: 0
@@ -938,6 +937,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerTime: 2
+  _running: 0
+  _timer: 0
 --- !u!114 &561021480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,6 +951,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf02c6676d10844eb3104698d65ee9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &561021481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561021476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae4ea1867641c524c8e89b3c450320d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 674872585}
+  difficultyText: {fileID: 600638047}
+  pausePanel: {fileID: 1800595493}
+  gameOverPanel: {fileID: 1622034504}
+  pauseButton: {fileID: 1716761232}
 --- !u!1 &600638046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1199,7 @@ GameObject:
   - component: {fileID: 638493377}
   - component: {fileID: 638493376}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Leave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,7 +1222,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -894.05676}
+  m_AnchoredPosition: {x: 468.69452, y: -891.82306}
   m_SizeDelta: {x: 835.94, y: 156.739}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &638493376
@@ -1250,7 +1268,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 638493377}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallSwitchToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &638493377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,7 +1355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -711.93317}
+  m_AnchoredPosition: {x: 468.69452, y: -710.2579}
   m_SizeDelta: {x: 828.68, y: 155.377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645872865
@@ -1371,7 +1401,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 645872866}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallSwitchToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Arcade
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &645872866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1722,7 +1764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -329.01532}
+  m_AnchoredPosition: {x: 468.69452, y: -327.96826}
   m_SizeDelta: {x: 828.68, y: 155.377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &961345410
@@ -1768,7 +1810,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 961345411}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallPauseGame
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &961345411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1861,20 +1915,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballObjects:
   - Prefab: {fileID: 1851158550081622890, guid: f35f9caa81ea8124abb87d1c3f2a9626, type: 3}
-    Chance: 0
-    _weight: 0
+    Weight: 100
   - Prefab: {fileID: 28116153277427701, guid: 485f6a818c07d0449adaf9897afefebc, type: 3}
-    Chance: 0
-    _weight: 0
+    Weight: 100
   - Prefab: {fileID: 7053419194134443531, guid: b6fa17479a699ff479515925ea3e7c9b, type: 3}
-    Chance: 0
-    _weight: 0
+    Weight: 100
   - Prefab: {fileID: 1063567440421452099, guid: 59745afeb3f81dd4c8b63da63b5b0551, type: 3}
-    Chance: 0
-    _weight: 0
+    Weight: 100
   - Prefab: {fileID: 1851158550081622890, guid: 56e4b50de633595499ef39bd9e98f34f, type: 3}
-    Chance: 0
-    _weight: 0
+    Weight: 20
   loaderPipe: {fileID: 506750487}
   pipes:
   - {fileID: 5015590701104143039}
@@ -1882,6 +1931,7 @@ MonoBehaviour:
   - {fileID: 4910477349765134956}
   - {fileID: 3921633355133964483}
   _ballPool: {fileID: 532432094}
+  ballWeights: 
 --- !u!114 &1111165565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,6 +1945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lastTouchedBall: {fileID: 0}
+  canTouch: 0
 --- !u!1 &1118493296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,7 +2250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -510.59955}
+  m_AnchoredPosition: {x: 468.69452, y: -508.85446}
   m_SizeDelta: {x: 828.68, y: 155.377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1384348713
@@ -2245,7 +2296,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1384348714}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallSwitchToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Arcade
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1384348714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2318,7 +2381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -436.16312}
+  m_AnchoredPosition: {x: 468.69452, y: -435.04626}
   m_SizeDelta: {x: 0, y: 172.016}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1408770675
@@ -2575,7 +2638,7 @@ GameObject:
   - component: {fileID: 1622034506}
   - component: {fileID: 1622034508}
   m_Layer: 5
-  m_Name: Modal_GameOver
+  m_Name: Panel_GameOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2870,7 +2933,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1716761233}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallPauseGame
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1716761233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,7 +3018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -238.08156}
+  m_AnchoredPosition: {x: 468.69452, y: -237.52313}
   m_SizeDelta: {x: 0, y: 172.016}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1740653169
@@ -3058,7 +3133,7 @@ GameObject:
   - component: {fileID: 1800595496}
   - component: {fileID: 1800595495}
   m_Layer: 5
-  m_Name: Modal_Pause
+  m_Name: Panel_Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3150,7 +3225,7 @@ GameObject:
   - component: {fileID: 1839357946}
   - component: {fileID: 1839357945}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Leave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3173,7 +3248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -692.86475}
+  m_AnchoredPosition: {x: 468.69452, y: -690.42163}
   m_SizeDelta: {x: 835.94, y: 156.739}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1839357945
@@ -3219,7 +3294,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1839357946}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561021481}
+        m_TargetAssemblyTypeName: ArcadeUI, Assembly-CSharp
+        m_MethodName: CallSwitchToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1839357946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3489,8 +3576,8 @@ RectTransform:
   - {fileID: 392632290}
   - {fileID: 131046961}
   - {fileID: 679691239}
-  - {fileID: 1622034505}
   - {fileID: 1800595494}
+  - {fileID: 1622034505}
   m_Father: {fileID: 561021478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
