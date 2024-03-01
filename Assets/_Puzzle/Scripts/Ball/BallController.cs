@@ -10,7 +10,6 @@ public class BallController : MonoBehaviour
     protected IBallTouchInputProvider touchInputProvider;
     protected BallEffectsHandler ballEffects;
 
-
     [Header("Ball Setup")]
     [SerializeField] private int clearPoints = 100;
     [SerializeField] private int ballDespawnTime = 2;

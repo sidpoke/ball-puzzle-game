@@ -20,6 +20,9 @@ public class ArcadeUI : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Button pauseButton;
 
+    [SerializeField] private TMP_Text finalScoreText;
+    [SerializeField] private TMP_Text highScoreText;
+
     public void SetScoreText(int score)
     {
         scoreText.SetText($"Score: {score.ToString()}");
@@ -30,10 +33,13 @@ public class ArcadeUI : MonoBehaviour
         difficultyText.SetText(difficulty);
     }
 
-    public void OpenGameOverMenu() // Game end menu
+    public void OpenGameOverMenu(int score, int highscore) // Game end menu
     {
         gameOverPanel.SetActive(true);
         pauseButton.gameObject.SetActive(false);
+
+        finalScoreText.SetText($"Your Score:\r\n<b>{score}</b>");
+        highScoreText.SetText($"Your Highscore:\r\n<b>{highscore}</b>");
     }
 
     public void CloseGameOverMenu() // Game end menu

@@ -83,10 +83,18 @@ public class GameMode_Arcade : GameManager
 
     private void GameOver()
     {
+        //stop game
+        Time.timeScale = 0;
         timer.TimerStop();
         LevelManager.SetCanTouch(false);
-        //TODO: scoremanager save score
-        ui.OpenGameOverMenu();
+        
+        //highscores
+        int highScore = GameService.Instance.saveManager.LoadInt("HighScore");
+        GameService.Instance.saveManager.SaveInt("LastScore", scoreManager.Score);
+        if (scoreManager.Score > highScore) { GameService.Instance.saveManager.SaveInt("HighScore", scoreManager.Score); }
+
+        //open panel
+        ui.OpenGameOverMenu(scoreManager.Score, scoreManager.Score > highScore ? scoreManager.Score : highScore);
     }
 
     private void SetDifficulty(int difficulty)
