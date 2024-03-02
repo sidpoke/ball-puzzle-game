@@ -18,7 +18,9 @@ public class BallController : MonoBehaviour
     protected IBallEventHandler eventHandler;
     protected IBallMovementController _movementController;
     protected IBallTouchInputProvider touchInputProvider;
-    protected BallEffectsHandler ballEffects;
+    protected IBallAnimationController animationController;
+    protected IBallAudioController audioController;
+    protected IBallEffectsController effectsController;
 
     [Header("Ball Setup")]
     [SerializeField] private BallColor _color;
@@ -40,7 +42,9 @@ public class BallController : MonoBehaviour
         eventHandler = GetComponent<IBallEventHandler>();
         _movementController = GetComponent<IBallMovementController>();
         touchInputProvider = GetComponent<IBallTouchInputProvider>();
-        ballEffects = GetComponent<BallEffectsHandler>();
+        animationController = GetComponent<IBallAnimationController>();
+        audioController = GetComponent<IBallAudioController>();
+        effectsController = GetComponent<IBallEffectsController>();
     }
 
     protected virtual void OnEnable()
@@ -106,7 +110,7 @@ public class BallController : MonoBehaviour
     { 
         if(_pipe is LoaderPipe) { return; }
 
-        ballEffects.SetHighlight((ball != null && ball == this), (ball != null && ball.PipeIndex == _pipeIndex));
+        effectsController.SetHighlight((ball != null && ball == this), (ball != null && ball.PipeIndex == _pipeIndex));
     }
 
     protected virtual void OnBallMovementFinished() 

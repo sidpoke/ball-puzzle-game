@@ -10,9 +10,8 @@ public class GameService : Singleton<GameService>
     public TouchInputHandler touchInput;
     public SceneController scenes;
     public SaveManager saveManager;
-    public SoundManager soundManager;
+    public AudioManager audioManager;
     //private PhotonService photonService;
-    //public MenuManager menuManager; //(this will simply set its own instance once loaded)
 
     protected override void Awake()
     {
@@ -22,6 +21,6 @@ public class GameService : Singleton<GameService>
         touchInput = GetComponentInChildren<TouchInputHandler>();
         scenes = GetComponentInChildren<SceneController>();
         saveManager = GetComponentInChildren<SaveManager>();
-        soundManager = GetComponentInChildren<SoundManager>();
+        audioManager = GetComponentInChildren<AudioManager>();
     }
 }

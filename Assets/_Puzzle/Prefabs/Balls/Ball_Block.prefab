@@ -38,7 +38,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3551305071229554941, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Name
-      value: Ball_Multicolor
+      value: Ball_Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941154511670545668, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 716509764d9bd7845a226766f325488c, type: 3}
+    - target: {fileID: 3941154511670545668, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941154511670545668, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941154511670545668, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6555285695508378813, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_LocalPosition.x

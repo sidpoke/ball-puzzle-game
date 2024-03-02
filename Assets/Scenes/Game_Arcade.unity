@@ -1924,8 +1924,12 @@ MonoBehaviour:
     Weight: 100
   - Prefab: {fileID: 1063567440421452099, guid: 59745afeb3f81dd4c8b63da63b5b0551, type: 3}
     Weight: 100
-  - Prefab: {fileID: 1851158550081622890, guid: 56e4b50de633595499ef39bd9e98f34f, type: 3}
+  - Prefab: {fileID: 1851158550081622890, guid: 69b7d09a1dbe05f4b9d803669a930bc9, type: 3}
     Weight: 20
+  - Prefab: {fileID: 1851158550081622890, guid: 56e4b50de633595499ef39bd9e98f34f, type: 3}
+    Weight: 1
+  - Prefab: {fileID: 3551305071229554941, guid: 87ebb10e13cd0494e925748372e26da6, type: 3}
+    Weight: 10
   loaderPipe: {fileID: 506750487}
   pipes:
   - {fileID: 5015590701104143039}

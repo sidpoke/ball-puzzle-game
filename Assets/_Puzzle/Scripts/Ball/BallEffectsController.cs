@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class BallEffectsHandler : MonoBehaviour, IBallEffectsHandler
+public class BallEffectsController : MonoBehaviour, IBallEffectsController
 {
     private SpriteRenderer spriteRenderer;
 
@@ -14,7 +14,7 @@ public class BallEffectsHandler : MonoBehaviour, IBallEffectsHandler
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void SetHighlight(bool isBall, bool isInRow)
