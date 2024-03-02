@@ -7,10 +7,8 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
     private SpriteRenderer spriteRenderer;
 
     [Header("Shader Behavior")]
-    [SerializeField]
-    private float highlightMultiplier = 1f;
-    [SerializeField]
-    private float highlightNegativeMultiplier = 2f;
+    [SerializeField] private float highlightMultiplier = 1f;
+    [SerializeField] private float highlightNegativeMultiplier = 2f;
 
     private void Awake()
     {

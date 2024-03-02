@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Used to decide whether or not a ball can go through a specific pipe
+/// </summary>
 public enum BallColor
 {
     Red = 0,
@@ -13,6 +17,17 @@ public enum BallColor
     None = 5
 }
 
+/// <summary>
+/// Used to send information towards the level manager whenever a special ball event needs to be triggered
+/// </summary>
+public enum BallSpecialEvent
+{
+    None,
+    Slow,
+    Freeze,
+    Bomb,
+    Laser
+}
 public class BallController : MonoBehaviour
 {
     protected IBallEventHandler eventHandler;
@@ -23,19 +38,21 @@ public class BallController : MonoBehaviour
     protected IBallEffectsController effectsController;
 
     [Header("Ball Setup")]
-    [SerializeField] private BallColor _color;
-    [SerializeField] private int clearPoints = 100;
-    [SerializeField] private int ballDespawnTime = 2;
+    [SerializeField] protected BallColor _color;
+    [SerializeField] protected BallSpecialEvent specialEvent; //NOT triggered by base class
+    [SerializeField] protected int clearPoints = 100;
+    [SerializeField] protected int ballDespawnTime = 2;
 
     [Header("Debug")]
-    [SerializeField] private PipeController _pipe;
-    [SerializeField] private int _pipeIndex = 0;
-
+    [SerializeField] protected PipeController _pipe;
+    [SerializeField] protected int _pipeIndex = 0;
+    [SerializeField] protected bool _explode = false;
 
     public BallColor BallColor { get { return _color; } }
     public PipeController Pipe { get { return _pipe; } }
     public int PipeIndex { get { return _pipeIndex; } }
     public IBallMovementController MovementController { get { return _movementController; }}
+    public bool Explode { get { return _explode; } }
 
     protected virtual void Awake()
     {
@@ -66,6 +83,7 @@ public class BallController : MonoBehaviour
     public void SetPipe(PipeController pipe)
     {
         _pipe = pipe;
+        OnBallPipeChanged();
     }
 
     public void SetPipeIndex(int index, bool move)
@@ -76,29 +94,49 @@ public class BallController : MonoBehaviour
             _movementController.Move(_pipe.WaypointProvider.Waypoints[_pipeIndex]);
         }
     }
+    public void SetExplode(bool state)
+    {
+        _explode = state;
+    }
 
-    public void DestroyBall()
+    public void TriggerSpecialEvent()
+    {
+        GameService.Instance.eventManager.Event_BallSpecialEvent(this, specialEvent);
+    }
+
+    public void DestroyBall() //gives time to spare before destruction
     {
         OnBallDestroyed();
         Destroy(gameObject, ballDespawnTime);
     }
 
-    private void CheckForColorMatch()
+    public void ExplodeBall() //immediately destroys ball
+    {
+        OnBallExploded();
+        Destroy(gameObject);
+    }
+
+    protected bool ColorMatchingPipe()
     {
         if (Pipe is SwitcherPipe pipe && PipeIndex == 0)
         {
-            if ((int)BallColor == (int)pipe.PipeColor || BallColor == BallColor.Any)
-            {
-                pipe.PipeStorage.Release();
-            }
+            return ((int)BallColor == (int)pipe.PipeColor || BallColor == BallColor.Any);
         }
+        return false;
     }
 
-    //Override methods for child
+    //Override methods for child class
+    protected virtual void OnBallPipeChanged(){}
+
     protected virtual void OnBallDestroyed()
     {
         eventHandler.BallScoreAdded(clearPoints);
         _movementController.FreeFall();
+    }
+
+    protected virtual void OnBallExploded()
+    {
+        eventHandler.BallScoreAdded(clearPoints);
     }
 
     protected virtual void OnBallTouched()
@@ -114,7 +152,10 @@ public class BallController : MonoBehaviour
     }
 
     protected virtual void OnBallMovementFinished() 
-    { 
-        CheckForColorMatch(); 
+    {
+        if(ColorMatchingPipe())
+        {
+            Pipe.PipeStorage.Release();
+        }
     }
 }

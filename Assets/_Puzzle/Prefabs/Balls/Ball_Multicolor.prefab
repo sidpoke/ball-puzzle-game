@@ -32,6 +32,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3290100624722520913, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290100624722520913, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290100624722520913, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 3551305071229554941, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Name
       value: Ball_Multicolor

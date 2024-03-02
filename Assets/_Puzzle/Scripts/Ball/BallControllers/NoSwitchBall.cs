@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class NoSwitchBall : BallController 
 {
-    //NoSwitch does not send inputs, instead it should play an animation
+    //NoSwitch does not send input events, instead it overrides the touch method and plays an animation
     protected override void OnBallTouched()
     {
-        animationController.PlayAnimation("BallWiggle");
-        //play sound too!
+        if(Pipe is not LoaderPipe && !MovementController.IsMoving)
+        {
+            animationController.PlayAnimation("BallWiggle");
+            //play sound too!
+        }
     }
 }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ColorBall : BallController 
 {
-    //keeping this in case color balls needs a different behavior in the future
+    //keeping this class in case regular color balls needs a special behavior in the future
 }

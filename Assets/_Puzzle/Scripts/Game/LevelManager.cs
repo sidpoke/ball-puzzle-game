@@ -46,7 +46,6 @@ public class LevelManager : MonoBehaviour
     public List<SwitcherPipe> Pipes { get { return pipes; } }
     public SwitcherPipe LeastFilledPipe { get { return pipes.OrderBy(pipe => pipe.PipeStorage.Balls.Count).First(); } }
 
-
     private void Awake()
     {
         levelTouchProvider = GetComponent<LevelTouchProvider>();
@@ -62,7 +61,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnDisable()
     {
-        //subscribe to events
+        //unsubscribe events
         GameService.Instance.eventManager.PipeBallRemoved -= OnPipeReleased;
         levelTouchProvider.SwapBalls -= OnBallSwap;
     }
@@ -73,7 +72,53 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// When LoaderPipe releases the ball, transferred to least filled SwitcherPipe
+    /// Destroys balls in a 9-block, used for bombs.
+    /// </summary>
+    public void DestroyBallsNineBlock(BallController triggerBall)
+    {
+        if(triggerBall.Pipe is SwitcherPipe switcherPipe)
+        {
+            int pipeX = pipes.IndexOf(switcherPipe); //get x position of ball
+            int pipeY = triggerBall.PipeIndex; //get y position of ball
+
+            for (int x = pipeX - 1;x <= pipeX + 1; x++) //start one index below, stop one index after
+            {
+                if(x >= 0 && x < pipes.Count) //ignore indices that don't exist, e.g. -1 and greater than pipes.Count
+                {
+                    for (int y = pipeY + 1; y >= pipeY - 1; y--) //same thing for y but top to bottom (avoid index shifting issues)
+                    {
+                        if(y >= 0 && y < pipes[x].PipeStorage.Balls.Count)
+                        {
+                            pipes[x].PipeStorage.Balls[y].SetExplode(true);
+                            pipes[x].PipeStorage.RemoveAt(y);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Destroys balls in a line, used for lasers.
+    /// </summary>
+    public void DestroyBallsLine(BallController triggerBall)
+    {
+        if (triggerBall.Pipe is SwitcherPipe switcherPipe)
+        {
+            pipes.ForEach(pipe =>
+            {
+                if(pipe.PipeStorage.Balls.Count > triggerBall.PipeIndex) //if not out of range
+                {
+                    pipe.PipeStorage.Balls[triggerBall.PipeIndex].SetExplode(true);
+                    pipe.PipeStorage.RemoveAt(triggerBall.PipeIndex);
+                }
+            });
+        }
+    }
+
+
+    /// <summary>
+    /// When LoaderPipe releases the ball, transfer to least filled SwitcherPipe
     /// When SwitcherPipe releases a ball, ask LoaderPipe to release a new ball
     /// </summary>
     /// <param name="pipe"></param>
@@ -169,11 +214,9 @@ public class LevelManager : MonoBehaviour
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }
-        else if(pipe == loaderPipe) //loader pipe full? let game manager know
+        else if(pipe == loaderPipe)
         { 
-            {
-                LoaderPipeFull?.Invoke();
-            }
+            LoaderPipeFull?.Invoke(); //loader pipe full? let game manager know
         }
     }
 

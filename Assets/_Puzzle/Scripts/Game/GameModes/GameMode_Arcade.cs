@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TMPro;
+using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,6 +20,15 @@ public class GameMode_Arcade : GameManager
     [SerializeField] private List<ArcadeDifficulty> difficulties = new List<ArcadeDifficulty>();
     [SerializeField] private int startDifficulty = 0;
     [SerializeField] private int currentDifficulty = 0;
+    [SerializeField] private float slowTime = 6.0f;
+    [SerializeField] private float slowRatio = 2.0f;
+    [SerializeField] private float freezeTime = 3.0f;
+
+    [Header("Debug")]
+    [SerializeField] private bool gameOver = false;
+
+    private IEnumerator freezeTimer;
+    private IEnumerator slowTimer;
 
     protected override void Awake()
     {
@@ -37,6 +46,7 @@ public class GameMode_Arcade : GameManager
         timer.Timeout += OnTimerTimeout;
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
+        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
     }
 
     protected override void OnDisable()
@@ -47,6 +57,7 @@ public class GameMode_Arcade : GameManager
         timer.Timeout -= OnTimerTimeout;
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
+        GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
     }
 
     protected override void Start()
@@ -83,6 +94,8 @@ public class GameMode_Arcade : GameManager
 
     private void GameOver()
     {
+        gameOver = true;
+
         //stop game
         Time.timeScale = 0;
         timer.TimerStop();
@@ -135,6 +148,7 @@ public class GameMode_Arcade : GameManager
         base.OnLoaderPipeFull();
         GameOver();
     }
+
     private void OnScoreChanged(int score)
     {
         if (difficulties != null && difficulties.Count > (currentDifficulty + 1))
@@ -151,5 +165,52 @@ public class GameMode_Arcade : GameManager
     private void OnTimerTimeout()
     {
         LevelManager.AddBallToPipe(LevelManager.LoaderPipe);
+    }
+
+    /// <summary>
+    /// Used to trigger special events like bombs, freeze, etc.
+    /// </summary>
+    /// <param name="ball">The ball that invoked the request (might be null!!)</param>
+    public void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
+    {
+        switch (specialEvent)
+        {
+            case BallSpecialEvent.Slow:
+                //slow timer resets when another slow ball releasese
+                if (slowTimer != null){ StopCoroutine(slowTimer); }
+                slowTimer = StartSlowTimer(slowTime, slowRatio);
+                StartCoroutine(slowTimer);
+                break;
+            case BallSpecialEvent.Freeze:
+                //freeze timer resets when another freeze ball releasese
+                if (freezeTimer != null) { StopCoroutine(freezeTimer); }
+                freezeTimer = StartFreezeTimer(freezeTime);
+                StartCoroutine(freezeTimer);
+                break;
+            case BallSpecialEvent.Bomb:
+                LevelManager.DestroyBallsNineBlock(ball);
+                break;
+            case BallSpecialEvent.Laser:
+                LevelManager.DestroyBallsLine(ball);
+                break;
+        }
+    }
+
+    private IEnumerator StartSlowTimer(float time, float amount)
+    {
+        if (amount == 0) { yield break; }
+        timer.SetTimerTime(timer.TimerTime * amount);
+        yield return new WaitForSeconds(time);
+        timer.SetTimerTime(timer.TimerTime * (1 / amount));
+    }
+
+    private IEnumerator StartFreezeTimer(float time)
+    {
+        if (gameOver) { yield break; } // don't trigger when game just ended
+        timer.TimerStop();
+        timer.TimerReset();
+        yield return new WaitForSeconds(time);
+        if (gameOver) { yield break; } // don't trigger when game ended after freeze
+        timer.TimerStart();
     }
 }

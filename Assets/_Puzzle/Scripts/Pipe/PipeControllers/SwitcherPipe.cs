@@ -30,6 +30,13 @@ public class SwitcherPipe : PipeController
     protected override void OnBallRemoved(BallController ball)
     {
         base.OnBallRemoved(ball);
-        ball.DestroyBall();  //This is your final call, mr. ball
+        if(ball.Explode)
+        {
+            ball.ExplodeBall();  //kaboom!
+        }
+        else
+        {
+            ball.DestroyBall();  //This is your final call, mr. ball
+        }
     }
 }

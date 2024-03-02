@@ -22,6 +22,7 @@ public class EventManager : MonoBehaviour
     //Ball events
     public event Action<BallController> BallTouched;
     public event Action<int> BallScoreAdded;
+    public event Action<BallController, BallSpecialEvent> BallSpecialTriggered;
 
     public void Event_LevelBallSelected(BallController ball)
     {
@@ -36,6 +37,11 @@ public class EventManager : MonoBehaviour
     public void Event_BallScoreAdded(int score)
     {
         BallScoreAdded?.Invoke(score);
+    }
+
+    public void Event_BallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
+    {
+        BallSpecialTriggered?.Invoke(ball, specialEvent);
     }
 
     public void Event_PipeBallAdded(PipeController pipe, BallController ball)

@@ -40,6 +40,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.7529412
       objectReference: {fileID: 0}
+    - target: {fileID: 1294289616785059136, guid: 803c32a9252bb484bb2574a3500e62f7, type: 3}
+      propertyPath: pipeColor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1710319855825121248, guid: 803c32a9252bb484bb2574a3500e62f7, type: 3}
       propertyPath: m_Color.a
       value: 0.16470589
