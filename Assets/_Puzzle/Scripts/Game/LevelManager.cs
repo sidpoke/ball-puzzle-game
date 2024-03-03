@@ -83,11 +83,11 @@ public class LevelManager : MonoBehaviour
 
             for (int x = pipeX - 1;x <= pipeX + 1; x++) //start one index below, stop one index after
             {
-                if(x >= 0 && x < pipes.Count) //ignore indices that don't exist, e.g. -1 and greater than pipes.Count
+                if(x >= 0 && x < pipes.Count) //check if x is inside of bounds x
                 {
                     for (int y = pipeY + 1; y >= pipeY - 1; y--) //same thing for y but top to bottom (avoid index shifting issues)
                     {
-                        if(y >= 0 && y < pipes[x].PipeStorage.Balls.Count)
+                        if(y >= 0 && y < pipes[x].PipeStorage.Balls.Count && !pipes[x].PipeStorage.Balls[y].MovementController.IsMoving) //check if in bounds y & not moving
                         {
                             pipes[x].PipeStorage.Balls[y].SetExplode(true);
                             pipes[x].PipeStorage.RemoveAt(y);
@@ -107,7 +107,7 @@ public class LevelManager : MonoBehaviour
         {
             pipes.ForEach(pipe =>
             {
-                if(pipe.PipeStorage.Balls.Count > triggerBall.PipeIndex) //if not out of range
+                if(pipe.PipeStorage.Balls.Count > triggerBall.PipeIndex && !pipe.PipeStorage.Balls[triggerBall.PipeIndex].MovementController.IsMoving) //if inside of bounds & not moving
                 {
                     pipe.PipeStorage.Balls[triggerBall.PipeIndex].SetExplode(true);
                     pipe.PipeStorage.RemoveAt(triggerBall.PipeIndex);

@@ -48,6 +48,7 @@ public class BallController : MonoBehaviour
     [SerializeField] protected PipeController _pipe;
     [SerializeField] protected int _pipeIndex = 0;
     [SerializeField] protected bool _explode = false;
+    [SerializeField] protected bool canPlayDropSound = false;
 
     public BallColor BallColor { get { return _color; } }
     public PipeController Pipe { get { return _pipe; } }
@@ -83,6 +84,7 @@ public class BallController : MonoBehaviour
 
     public void SetPipe(PipeController pipe)
     {
+        if(_pipe != null || pipe is LoaderPipe) { canPlayDropSound = true; }
         _pipe = pipe;
         OnBallPipeChanged();
     }
@@ -93,6 +95,10 @@ public class BallController : MonoBehaviour
         if (move && _pipe)
         {
             _movementController.Move(_pipe.WaypointProvider.Waypoints[_pipeIndex]);
+        }
+        if(index == 0)
+        {
+            canPlayDropSound = true;
         }
     }
     public void SetExplode(bool state)
@@ -163,9 +169,10 @@ public class BallController : MonoBehaviour
             Pipe.PipeStorage.Release();
             audioController.PlayAudio("BallRelease");
         }
-        else
+        else if(canPlayDropSound)
         {
             audioController.PlayAudio("BallDrop");
+            canPlayDropSound = false;
         }
     }
 }

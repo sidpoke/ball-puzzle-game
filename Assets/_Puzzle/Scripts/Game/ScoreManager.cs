@@ -23,6 +23,8 @@ public class ScoreManager : MonoBehaviour, IScoreManager
     [SerializeField] private List<Combo> combos;
     [SerializeField] private float comboTime;
     [SerializeField] private Transform comboVFXSpawn;
+    [SerializeField] private GameObject freezeTextPrefab;
+    [SerializeField] private GameObject slowTextPrefab;
 
     [Header("Debug")]
     [SerializeField] private int _score;
@@ -37,15 +39,27 @@ public class ScoreManager : MonoBehaviour, IScoreManager
     {
         //subscribe to events
         GameService.Instance.eventManager.BallScoreAdded += AddScore;
+        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecial;
     }
     private void OnDisable()
     {
         //unsubscribe events
         GameService.Instance.eventManager.BallScoreAdded -= AddScore;
+        GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecial;
     }
 
-    //extend with combos?
-
+    public void OnBallSpecial(BallController ball, BallSpecialEvent ballEvent)
+    {
+        switch (ballEvent)
+        {
+            case BallSpecialEvent.Slow:
+                lastComboVfx = Instantiate(slowTextPrefab, comboVFXSpawn.position, Quaternion.identity) as GameObject;
+                break;
+            case BallSpecialEvent.Freeze:
+                lastComboVfx = Instantiate(freezeTextPrefab, comboVFXSpawn.position, Quaternion.identity) as GameObject;
+                break;
+        }
+    }
 
     public void AddScore(int points)
     {

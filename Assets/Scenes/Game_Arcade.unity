@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 468.69452, y: -52.754593}
+  m_AnchoredPosition: {x: 468.69452, y: -52.75464}
   m_SizeDelta: {x: 0, y: 172.01599}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &17596478
@@ -427,7 +427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -58.600952}
+  m_AnchoredPosition: {x: 0, y: -58.60083}
   m_SizeDelta: {x: 0, y: 117.201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &131046962
@@ -953,6 +953,8 @@ MonoBehaviour:
     comboVfxPrefab: {fileID: 625566439495433325, guid: a03e884e2816f4949a2adab67420051f, type: 3}
   comboTime: 0.2
   comboVFXSpawn: {fileID: 1171966656}
+  freezeTextPrefab: {fileID: 625566439495433325, guid: 18c337db86365994db2740181c2d8b6b, type: 3}
+  slowTextPrefab: {fileID: 625566439495433325, guid: 9bbe12b31662e89468eaf721a25b0c6b, type: 3}
   _score: 0
   comboCount: 0
   lastComboVfx: {fileID: 0}
@@ -1628,7 +1630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 66.577}
+  m_AnchoredPosition: {x: 0, y: 66.576904}
   m_SizeDelta: {x: 0, y: 133.153}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &679691240
