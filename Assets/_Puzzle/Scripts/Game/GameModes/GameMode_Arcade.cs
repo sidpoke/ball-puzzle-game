@@ -177,7 +177,10 @@ public class GameMode_Arcade : GameManager
         {
             case BallSpecialEvent.Slow:
                 //slow timer resets when another slow ball releasese
-                if (slowTimer != null){ StopCoroutine(slowTimer); }
+                if (slowTimer != null){ 
+                    StopCoroutine(slowTimer);
+                    timer.SetTimerTime(timer.TimerTime * (1 / slowRatio));
+                }
                 slowTimer = StartSlowTimer(slowTime, slowRatio);
                 StartCoroutine(slowTimer);
                 break;
@@ -198,19 +201,21 @@ public class GameMode_Arcade : GameManager
 
     private IEnumerator StartSlowTimer(float time, float amount)
     {
-        if (amount == 0) { yield break; }
+        if (amount == 0) { slowTimer = null; yield break; }
         timer.SetTimerTime(timer.TimerTime * amount);
         yield return new WaitForSeconds(time);
         timer.SetTimerTime(timer.TimerTime * (1 / amount));
+        slowTimer = null;
     }
 
     private IEnumerator StartFreezeTimer(float time)
     {
-        if (gameOver) { yield break; } // don't trigger when game just ended
+        if (gameOver) { freezeTimer = null; yield break; } // don't trigger when game just ended
         timer.TimerStop();
         timer.TimerReset();
         yield return new WaitForSeconds(time);
-        if (gameOver) { yield break; } // don't trigger when game ended after freeze
+        if (gameOver) { freezeTimer = null; yield break; } // don't trigger when game ended after freeze
         timer.TimerStart();
+        freezeTimer = null;
     }
 }

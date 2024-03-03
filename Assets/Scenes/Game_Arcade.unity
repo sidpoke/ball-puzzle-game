@@ -1924,13 +1924,13 @@ MonoBehaviour:
   - Prefab: {fileID: 3551305071229554941, guid: 87ebb10e13cd0494e925748372e26da6, type: 3}
     Weight: 10
   - Prefab: {fileID: 3551305071229554941, guid: 62184c0f0191f2542a91419328603d2a, type: 3}
-    Weight: 10
+    Weight: 5
   - Prefab: {fileID: 3551305071229554941, guid: f1532eb0d3654c54195def503fcf0a55, type: 3}
-    Weight: 10
+    Weight: 5
   - Prefab: {fileID: 3551305071229554941, guid: 59161b131b466e7438abc176d1781df8, type: 3}
-    Weight: 10
+    Weight: 5
   - Prefab: {fileID: 3551305071229554941, guid: 45893177b82a6634a8af11721e938959, type: 3}
-    Weight: 10
+    Weight: 8
   loaderPipe: {fileID: 2715041153909274261}
   pipes:
   - {fileID: 5015590701104143039}

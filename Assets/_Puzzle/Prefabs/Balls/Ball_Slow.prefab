@@ -55,9 +55,11 @@ MonoBehaviour:
   _color: 4
   specialEvent: 1
   clearPoints: 250
+  clearVFXColor: {r: 0.8666667, g: 0.8156863, b: 0.18431373, a: 1}
   ballDespawnTime: 2
   _pipe: {fileID: 0}
   _pipeIndex: 0
+  _explode: 0
 --- !u!114 &1070344239369111444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightMultiplier: 1
   highlightNegativeMultiplier: 2
+  vfxScorePrefab: {fileID: 625566439495433325, guid: 4fe435db00ab0c34998ecd01ea217f77, type: 3}
 --- !u!114 &6293495825737012845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477ea6e339b7e0845b6a3dae3145e3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballAudioClips: []
 --- !u!114 &2749042230151993818
 MonoBehaviour:
   m_ObjectHideFlags: 0

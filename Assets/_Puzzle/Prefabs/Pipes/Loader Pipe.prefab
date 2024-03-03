@@ -199,6 +199,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8618073596180567494}
+  - {fileID: 246135787331325702}
   - {fileID: 7507951295670761369}
   - {fileID: 1437256560949969938}
   - {fileID: 5078353131243572416}
@@ -608,7 +609,8 @@ MonoBehaviour:
   - {fileID: 3869049554044784101}
   - {fileID: 5078353131243572416}
   - {fileID: 1437256560949969938}
-  spawnPoint: {fileID: 8618073596180567494}
+  _spawnPoint: {fileID: 8618073596180567494}
+  _scoreVFXSpawnPoint: {fileID: 246135787331325702}
 --- !u!114 &2395390268203136833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1293,6 +1295,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6347769867694065793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246135787331325702}
+  m_Layer: 0
+  m_Name: VFXSpawnpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &246135787331325702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6347769867694065793}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 2.5, z: 0}
+  m_LocalScale: {x: 1.6666666, y: 1.6666666, z: 1.6666666}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6756868096310805085}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7113957450133166294
 GameObject:
   m_ObjectHideFlags: 0

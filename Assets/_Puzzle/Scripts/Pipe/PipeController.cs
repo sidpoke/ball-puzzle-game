@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro.EditorUtilities;
 using Unity.Collections;
 using UnityEngine;
 
@@ -13,17 +14,16 @@ using UnityEngine;
 
 public class PipeController : MonoBehaviour
 {
-    protected IPipeEventHandler _eventHandler;
+    protected IPipeEventHandler eventHandler;
     protected IPipeWaypointProvider _waypointProvider;
     protected IPipeStorageProvider _pipeStorage;
 
     public IPipeWaypointProvider WaypointProvider { get { return _waypointProvider; } }
     public IPipeStorageProvider PipeStorage { get { return _pipeStorage; } }
 
-
     protected virtual void Awake()
     {
-        _eventHandler = GetComponent<IPipeEventHandler>();
+        eventHandler = GetComponent<IPipeEventHandler>();
         _waypointProvider = GetComponent<IPipeWaypointProvider>();
         _pipeStorage = GetComponent<IPipeStorageProvider>();
 
@@ -49,11 +49,11 @@ public class PipeController : MonoBehaviour
         ball.MovementController.SpawnPosition(WaypointProvider.SpawnPoint);
         ball.MovementController.Move(
             PipeControllerHelpers.WaypointsToBallMovement(WaypointProvider.Waypoints, ball.PipeIndex));
-        _eventHandler.PipeBallAdded(this, ball);
+        eventHandler.PipeBallAdded(this, ball);
     }
 
     protected virtual void OnBallRemoved(BallController ball)
     {
-        _eventHandler.PipeBallRemoved(this, ball);
+        eventHandler.PipeBallRemoved(this, ball);
     }
 }

@@ -42,5 +42,6 @@ public class BombBall : BallController
     public void OnTimerTimeout()
     {
         TriggerSpecialEvent();
+        audioController.PlayAudio("BallExplode");
     }
 }

@@ -1,6 +1,5 @@
-using System;
+
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class BallEffectsController : MonoBehaviour, IBallEffectsController
 {
@@ -9,6 +8,10 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
     [Header("Shader Behavior")]
     [SerializeField] private float highlightMultiplier = 1f;
     [SerializeField] private float highlightNegativeMultiplier = 2f;
+    [Header("VFX Score")]
+    [SerializeField] private GameObject vfxScorePrefab;
+
+    private GameObject lastVfxScoreText;
 
     private void Awake()
     {
@@ -26,5 +29,12 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
         {
             spriteRenderer.material.SetFloat("_HighlightMultiplier", 0f);
         }
+    }
+
+    public void SpawnScoreText(Vector2 position, int score, Color color)
+    {
+        if(lastVfxScoreText != null) { Destroy(lastVfxScoreText); }
+        lastVfxScoreText = Instantiate(vfxScorePrefab, position, Quaternion.identity) as GameObject;
+        lastVfxScoreText.GetComponent<ScoreTextVFX>().SetScoreText(score, color);
     }
 }

@@ -10,7 +10,7 @@ public class NoSwitchBall : BallController
         if(Pipe is not LoaderPipe && !MovementController.IsMoving)
         {
             animationController.PlayAnimation("BallWiggle");
-            //play sound too!
+            audioController.PlayAudio("BallNoSwitch");
         }
     }
 }

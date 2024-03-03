@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6810083537560780969}
   - component: {fileID: 5381594605117166780}
   m_Layer: 0
-  m_Name: SoundManager
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,6 +120,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 247115926e50ab747b1bbbf833ef6b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClips:
+  - Name: BallDrop
+    Clip: {fileID: 8300000, guid: e75dc6aa655af404793b3bcc8754a0cb, type: 3}
+  - Name: BallClick
+    Clip: {fileID: 8300000, guid: 33c961d5305985246958f4e8bfd3c28d, type: 3}
+  - Name: BallSwitch
+    Clip: {fileID: 8300000, guid: fd7fa029a567a7d4bacab062dcc3536b, type: 3}
+  - Name: BallNoSwitch
+    Clip: {fileID: 8300000, guid: c60fd7d7062b88e488cfe42601dd5919, type: 3}
+  - Name: BallRelease
+    Clip: {fileID: 8300000, guid: a8164131141941e4597260da8248c516, type: 3}
+  - Name: BallExplode
+    Clip: {fileID: 8300000, guid: 35b64c3908523074a91a4dd2f3d65e8a, type: 3}
 --- !u!82 &5381594605117166780
 AudioSource:
   m_ObjectHideFlags: 0
@@ -132,7 +145,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -314,8 +327,7 @@ MonoBehaviour:
   touchInput: {fileID: 0}
   scenes: {fileID: 0}
   saveManager: {fileID: 0}
-  soundManager: {fileID: 0}
-  gameManager: {fileID: 0}
+  audioManager: {fileID: 0}
 --- !u!1 &4692978991013942364
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,16 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// Stores an audio clip with a name identifier, serializable
+/// </summary>
+
+[System.Serializable]
+public struct GameAudio
+{
+    public string Name;
+    public AudioClip Clip;
+}
 
 public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
 
+    [Header("Audio Setup")]
+    [SerializeField] private List<GameAudio> audioClips;
+
     private void Awake()
     {
-        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlaySound(AudioClip clip)
+    public void PlaySound(string name)
     {
-        audioSource.PlayOneShot(clip);
+        if(audioSource)
+        {
+            audioSource.PlayOneShot(audioClips.Find(clip => clip.Name == name).Clip);
+        }
     }
 }

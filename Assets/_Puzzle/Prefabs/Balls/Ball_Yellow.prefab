@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3565606115148740117, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: vfxScorePrefab
+      value: 
+      objectReference: {fileID: 625566439495433325, guid: 4fe435db00ab0c34998ecd01ea217f77, type: 3}
     - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Size.x
       value: 5.12
@@ -96,7 +100,20 @@ PrefabInstance:
       propertyPath: _color
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: clearVFXColor.b
+      value: 0.9254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: clearVFXColor.g
+      value: 0.93333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 7997829640365544326, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: clearVFXColor.r
+      value: 0.8156863
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4348285049135755887, guid: c8888d5b9350bab489639dbad446486e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

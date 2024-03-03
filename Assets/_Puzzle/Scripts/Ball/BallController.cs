@@ -34,13 +34,14 @@ public class BallController : MonoBehaviour
     protected IBallMovementController _movementController;
     protected IBallTouchInputProvider touchInputProvider;
     protected IBallAnimationController animationController;
-    protected IBallAudioController audioController;
+    protected IBallAudioHandler audioController;
     protected IBallEffectsController effectsController;
 
     [Header("Ball Setup")]
     [SerializeField] protected BallColor _color;
     [SerializeField] protected BallSpecialEvent specialEvent; //NOT triggered by base class
     [SerializeField] protected int clearPoints = 100;
+    [SerializeField] protected Color clearVFXColor = Color.white;
     [SerializeField] protected int ballDespawnTime = 2;
 
     [Header("Debug")]
@@ -60,7 +61,7 @@ public class BallController : MonoBehaviour
         _movementController = GetComponent<IBallMovementController>();
         touchInputProvider = GetComponent<IBallTouchInputProvider>();
         animationController = GetComponent<IBallAnimationController>();
-        audioController = GetComponent<IBallAudioController>();
+        audioController = GetComponent<IBallAudioHandler>();
         effectsController = GetComponent<IBallEffectsController>();
     }
 
@@ -132,16 +133,19 @@ public class BallController : MonoBehaviour
     {
         eventHandler.BallScoreAdded(clearPoints);
         _movementController.FreeFall();
+        effectsController.SpawnScoreText(Pipe.WaypointProvider.ScoreVFXSpawnPoint, clearPoints, clearVFXColor);
     }
 
     protected virtual void OnBallExploded()
     {
         eventHandler.BallScoreAdded(clearPoints);
+        effectsController.SpawnScoreText((Vector2)transform.position, clearPoints, clearVFXColor);
     }
 
     protected virtual void OnBallTouched()
     {
         eventHandler.BallTouched(this);
+        audioController.PlayAudio("BallClick");
     }
 
     protected virtual void OnBallSelected(BallController ball) 
@@ -156,6 +160,11 @@ public class BallController : MonoBehaviour
         if(ColorMatchingPipe())
         {
             Pipe.PipeStorage.Release();
+            audioController.PlayAudio("BallRelease");
+        }
+        else
+        {
+            audioController.PlayAudio("BallDrop");
         }
     }
 }
