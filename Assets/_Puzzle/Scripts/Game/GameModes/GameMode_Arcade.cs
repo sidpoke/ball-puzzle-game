@@ -35,6 +35,7 @@ public class GameMode_Arcade : GameManager
     protected override void Awake()
     {
         base.Awake();
+        LevelManager.SetShowScores(true);
         timer = GetComponent<ITimerProvider>();
         scoreManager = GetComponent<IScoreManager>();
         ui = GetComponent<ArcadeUI>();
@@ -73,7 +74,7 @@ public class GameMode_Arcade : GameManager
         //Cheats
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            LevelManager.AddBallToPipe(LevelManager.LoaderPipe);
+            LevelManager.AddBallToPipe(LevelManager.LoaderPipe, true);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -166,7 +167,7 @@ public class GameMode_Arcade : GameManager
 
     private void OnTimerTimeout()
     {
-        LevelManager.AddBallToPipe(LevelManager.LoaderPipe);
+        LevelManager.AddBallToPipe(LevelManager.LoaderPipe, true);
     }
 
     /// <summary>

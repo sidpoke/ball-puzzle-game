@@ -6,11 +6,6 @@ public class LoaderPipe : PipeController
 {
     private int queue;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     private void Update()
     {
         QueueHandler();

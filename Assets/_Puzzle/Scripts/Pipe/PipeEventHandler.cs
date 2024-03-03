@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This shoots out events whenever something changes and does not send back any info
+/// This shoots out events whenever something changes within a pipe and it does not send back any info
 /// </summary>
 
 public class PipeEventHandler : MonoBehaviour, IPipeEventHandler

@@ -11,7 +11,6 @@ using UnityEngine;
 /// IPipeStorageProvider takes care of all the storage functions
 /// IPipeWaypointProvider gives the pipe waypoints
 /// </summary>
-
 public class PipeController : MonoBehaviour
 {
     protected IPipeEventHandler eventHandler;

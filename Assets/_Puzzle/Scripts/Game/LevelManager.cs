@@ -39,6 +39,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private int[] ballWeights;
+    [SerializeField] private bool showScores = true;
 
     //public getters
     public BallController[] Balls { get { return _ballPool.GetComponentsInChildren<BallController>(); } } //Don't call this too much
@@ -69,6 +70,11 @@ public class LevelManager : MonoBehaviour
     public void SetCanTouch(bool active)
     {
         levelTouchProvider.SetCanTouch(active);
+    }
+
+    public void SetShowScores(bool state)
+    {
+        showScores = state;
     }
 
     /// <summary>
@@ -198,7 +204,7 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < pipe.PipeStorage.MaxFillAmount; i++)
         {
-            AddBallToPipe(pipe);
+            AddBallToPipe(pipe, showScores);
         }
     }
 
@@ -206,11 +212,12 @@ public class LevelManager : MonoBehaviour
     /// Adds a single random ball to a Pipe
     /// </summary>
     /// <param name="pipe">The pipe to fill</param>
-    public void AddBallToPipe(PipeController pipe)
+    public void AddBallToPipe(PipeController pipe, bool showScore)
     {
         if (!pipe.PipeStorage.IsFull)
         {
             BallController ball = Instantiate(CalculateRandomWeightedBall(ballWeights), transform.position, Quaternion.identity, _ballPool.transform).GetComponent<BallController>();
+            ball.SetShowScore(showScore);
             ball.SetPipe(pipe);
             pipe.PipeStorage.Add(ball);
         }

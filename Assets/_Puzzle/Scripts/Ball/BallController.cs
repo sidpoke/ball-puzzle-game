@@ -49,6 +49,7 @@ public class BallController : MonoBehaviour
     [SerializeField] protected int _pipeIndex = 0;
     [SerializeField] protected bool _explode = false;
     [SerializeField] protected bool canPlayDropSound = false;
+    [SerializeField] protected bool showScore = true;
 
     public BallColor BallColor { get { return _color; } }
     public PipeController Pipe { get { return _pipe; } }
@@ -106,6 +107,11 @@ public class BallController : MonoBehaviour
         _explode = state;
     }
 
+    public void SetShowScore(bool state)
+    {
+        showScore = state;
+    }
+
     public void TriggerSpecialEvent()
     {
         GameService.Instance.eventManager.Event_BallSpecialEvent(this, specialEvent);
@@ -139,20 +145,29 @@ public class BallController : MonoBehaviour
     {
         eventHandler.BallScoreAdded(clearPoints);
         _movementController.FreeFall();
-        effectsController.SpawnScoreText(Pipe.WaypointProvider.ScoreVFXSpawnPoint, clearPoints, clearVFXColor);
+        if(showScore)
+        {
+            effectsController.SpawnScoreText(Pipe.WaypointProvider.ScoreVFXSpawnPoint, clearPoints, clearVFXColor);
+        }
     }
 
     protected virtual void OnBallExploded()
     {
         eventHandler.BallScoreAdded(clearPoints);
-        effectsController.SpawnScoreText((Vector2)transform.position, clearPoints, clearVFXColor);
+        if (showScore)
+        {
+            effectsController.SpawnScoreText((Vector2)transform.position, clearPoints, clearVFXColor);
+        }
         effectsController.SpawnExplosion((Vector2)transform.position);
     }
 
     protected virtual void OnBallTouched()
     {
-        eventHandler.BallTouched(this);
-        audioController.PlayAudio("BallClick");
+        if(Pipe is SwitcherPipe)
+        {
+            eventHandler.BallTouched(this);
+            audioController.PlayAudio("BallClick");
+        }
     }
 
     protected virtual void OnBallSelected(BallController ball) 

@@ -4,7 +4,6 @@ using UnityEngine;
 /// <summary>
 /// Color Pipes only eject when color matches
 /// </summary>
-
 public enum PipeColor
 {
     Red = 0,
@@ -30,6 +29,7 @@ public class SwitcherPipe : PipeController
     protected override void OnBallRemoved(BallController ball)
     {
         base.OnBallRemoved(ball);
+
         if(ball.Explode)
         {
             ball.ExplodeBall();  //kaboom!
