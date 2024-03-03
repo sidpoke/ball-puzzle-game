@@ -33,7 +33,7 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
 
     public void SpawnScoreText(Vector2 position, int score, Color color)
     {
-        if(lastVfxScoreText != null) { Destroy(lastVfxScoreText); }
+        if(lastVfxScoreText != null) { Destroy(lastVfxScoreText.gameObject); }
         lastVfxScoreText = Instantiate(vfxScorePrefab, position, Quaternion.identity) as GameObject;
         lastVfxScoreText.GetComponent<ScoreTextVFX>().SetScoreText(score, color);
     }

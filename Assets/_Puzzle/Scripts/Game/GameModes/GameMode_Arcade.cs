@@ -19,13 +19,15 @@ public class GameMode_Arcade : GameManager
     [Header("Arcade Settings")]
     [SerializeField] private List<ArcadeDifficulty> difficulties = new List<ArcadeDifficulty>();
     [SerializeField] private int startDifficulty = 0;
-    [SerializeField] private int currentDifficulty = 0;
+
+    [Header("Special Ball Effects")]
     [SerializeField] private float slowTime = 6.0f;
     [SerializeField] private float slowRatio = 2.0f;
     [SerializeField] private float freezeTime = 3.0f;
 
     [Header("Debug")]
     [SerializeField] private bool gameOver = false;
+    [SerializeField] private int currentDifficulty = 0;
 
     private IEnumerator freezeTimer;
     private IEnumerator slowTimer;
