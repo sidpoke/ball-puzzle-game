@@ -62,6 +62,8 @@ MonoBehaviour:
   _pipeIndex: 0
   _explode: 0
   laserTriggerTime: 5
+  finalLaserTickSpeed: 10
+  laserTickPhase: 0
 --- !u!114 &1070344239369111444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +140,7 @@ MonoBehaviour:
   highlightMultiplier: 1
   highlightNegativeMultiplier: 2
   vfxScorePrefab: {fileID: 625566439495433325, guid: 4fe435db00ab0c34998ecd01ea217f77, type: 3}
+  explosionPrefab: {fileID: 782015328484832967, guid: 5350175fc2492c74d85153b242cbb041, type: 3}
 --- !u!114 &6293495825737012845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +239,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 47dcc821217a7b04388ec708fb3f24a4, type: 2}
+  - {fileID: 2100000, guid: 067cf6de1fb3f424ca492b9d47acb951, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

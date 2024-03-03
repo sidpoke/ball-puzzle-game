@@ -117,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startAnimation: ComboAnimAwesome
+  comboAudioName: ComboAwesome
   destroyTime: 1
 --- !u!95 &5042025288642216952
 Animator:

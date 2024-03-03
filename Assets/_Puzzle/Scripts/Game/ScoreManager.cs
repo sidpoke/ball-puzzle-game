@@ -64,7 +64,8 @@ public class ScoreManager : MonoBehaviour, IScoreManager
     {
         if (comboTimer != null)
         {
-            StopCoroutine(comboTimer);
+            StopCoroutine(comboTimer); 
+            comboTimer = null;
         }
 
         comboTimer = ScoreComboTimer(comboTime);
@@ -75,11 +76,12 @@ public class ScoreManager : MonoBehaviour, IScoreManager
     private void ComboEnd()
     {
         if (lastComboVfx != null) { Destroy(lastComboVfx.gameObject); }
-        if(comboCount > 0)
+        if(comboCount + 1 > combos[0].count)
         {
-            GameObject comboPrefab = combos.Where(combo => combo.count <= comboCount).Last().comboVfxPrefab;
+            GameObject comboPrefab = combos.Where(combo => combo.count <= comboCount + 1).Last().comboVfxPrefab;
             lastComboVfx = Instantiate(comboPrefab, comboVFXSpawn.position, Quaternion.identity) as GameObject;
         }
+
         comboCount = 0;
     }
 

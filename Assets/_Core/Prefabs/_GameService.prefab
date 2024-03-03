@@ -133,6 +133,12 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: a8164131141941e4597260da8248c516, type: 3}
   - Name: BallExplode
     Clip: {fileID: 8300000, guid: 35b64c3908523074a91a4dd2f3d65e8a, type: 3}
+  - Name: ComboGreat
+    Clip: {fileID: 8300000, guid: c31bc7a3175d2d144a178e12b5af7057, type: 3}
+  - Name: ComboAwesome
+    Clip: {fileID: 8300000, guid: b7779c7b55e4dd642b0d20525136f0fb, type: 3}
+  - Name: ComboIncredible
+    Clip: {fileID: 8300000, guid: 78b3c7dc7349e02408f5bcafd8824ce4, type: 3}
 --- !u!82 &5381594605117166780
 AudioSource:
   m_ObjectHideFlags: 0
@@ -144,14 +150,14 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 25
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class BallEffectsController : MonoBehaviour, IBallEffectsController
@@ -10,8 +9,8 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
     [SerializeField] private float highlightNegativeMultiplier = 2f;
     [Header("VFX Score")]
     [SerializeField] private GameObject vfxScorePrefab;
-
-    private GameObject lastVfxScoreText;
+    [Header("Explosion")]
+    [SerializeField] private GameObject explosionPrefab;
 
     private void Awake()
     {
@@ -33,8 +32,12 @@ public class BallEffectsController : MonoBehaviour, IBallEffectsController
 
     public void SpawnScoreText(Vector2 position, int score, Color color)
     {
-        if(lastVfxScoreText != null) { Destroy(lastVfxScoreText.gameObject); }
-        lastVfxScoreText = Instantiate(vfxScorePrefab, position, Quaternion.identity) as GameObject;
-        lastVfxScoreText.GetComponent<ScoreTextVFX>().SetScoreText(score, color);
+        GameObject VfxScoreText = Instantiate(vfxScorePrefab, position, Quaternion.identity) as GameObject;
+        VfxScoreText.GetComponent<ScoreTextVFX>().SetScoreText(score, color);
+    }
+
+    public void SpawnExplosion(Vector2 position)
+    {
+        GameObject explosion = Instantiate(explosionPrefab, position, Quaternion.identity) as GameObject;
     }
 }

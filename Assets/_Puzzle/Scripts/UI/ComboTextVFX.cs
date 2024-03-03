@@ -1,16 +1,19 @@
-using TMPro;
 using UnityEngine;
 
-public class ComboText : MonoBehaviour
+public class ComboTextVFX : MonoBehaviour
 {
     [Header("Combo Text Setup")]
     [SerializeField] private string startAnimation;
+    [SerializeField] private string comboAudioName;
     [SerializeField] private float destroyTime = 2.0f;
 
     public void Start()
     {
         GetComponent<Animator>().Play(startAnimation, 0, 0);
-        //Play sound too!!
+        if (!string.IsNullOrEmpty(comboAudioName))
+        {
+            GameService.Instance.audioManager.PlaySound(comboAudioName);
+        }
         Destroy(gameObject, destroyTime);
     }
 }

@@ -140,6 +140,7 @@ public class BallController : MonoBehaviour
     {
         eventHandler.BallScoreAdded(clearPoints);
         effectsController.SpawnScoreText((Vector2)transform.position, clearPoints, clearVFXColor);
+        effectsController.SpawnExplosion((Vector2)transform.position);
     }
 
     protected virtual void OnBallTouched()

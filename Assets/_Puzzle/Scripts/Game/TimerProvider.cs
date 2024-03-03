@@ -18,6 +18,10 @@ public class TimerProvider : MonoBehaviour, ITimerProvider
     public float TimerTime { get { return _timerTime; } }
     public bool IsRunning { get { return _running; } }
 
+    public void Awake()
+    {
+        TimerReset();
+    }
 
     public void Update()
     {

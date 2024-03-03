@@ -181,7 +181,7 @@ public class GameMode_Arcade : GameManager
                 //slow timer resets when another slow ball releasese
                 if (slowTimer != null){ 
                     StopCoroutine(slowTimer);
-                    timer.SetTimerTime(timer.TimerTime * (1 / slowRatio));
+                    timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
                 }
                 slowTimer = StartSlowTimer(slowTime, slowRatio);
                 StartCoroutine(slowTimer);
@@ -204,9 +204,9 @@ public class GameMode_Arcade : GameManager
     private IEnumerator StartSlowTimer(float time, float amount)
     {
         if (amount == 0) { slowTimer = null; yield break; }
-        timer.SetTimerTime(timer.TimerTime * amount);
+        timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer * amount);
         yield return new WaitForSeconds(time);
-        timer.SetTimerTime(timer.TimerTime * (1 / amount));
+        timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
         slowTimer = null;
     }
 

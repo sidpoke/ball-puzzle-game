@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: vfxScorePrefab
       value: 
       objectReference: {fileID: 625566439495433325, guid: 4fe435db00ab0c34998ecd01ea217f77, type: 3}
+    - target: {fileID: -3565606115148740117, guid: c8888d5b9350bab489639dbad446486e, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
     - target: {fileID: 2769540369577146306, guid: c8888d5b9350bab489639dbad446486e, type: 3}
       propertyPath: m_Size.x
       value: 5.12
