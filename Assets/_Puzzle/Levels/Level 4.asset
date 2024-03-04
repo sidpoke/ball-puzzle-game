@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a54a091f1892d4b80f2c44d2cc556e, type: 3}
   m_Name: Level 4
   m_EditorClassIdentifier: 
-  LevelName: Bridge
+  LevelName: Checkers
   ScoreToBeat: 10000
   AmountOfSwitches: 30
   BallsRedPipe: 03000000030000000600000000000000060000000000000006000000
