@@ -26,6 +26,7 @@ public class Button_SelectAdventure : MonoBehaviour
     /// </summary>
     public void LoadAdventure(string adventureSceneName)
     {
+        GameService.Instance.audioManager.PlaySound("UIButton");
         GameService.Instance.adventure.SetLevel(_level);
         GameService.Instance.scenes.LoadScene(adventureSceneName);
     }

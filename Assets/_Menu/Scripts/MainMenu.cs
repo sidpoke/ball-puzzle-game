@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// Menu Page Identifier and Page Object
 /// </summary>
@@ -30,11 +29,13 @@ public class MainMenu : MonoBehaviour
 
     public void SetMenu(string name) //Called by buttons
     {
+        GameService.Instance.audioManager.PlaySound("UIButton");
         menuObjects.ForEach(menu => { menu.MenuPageObject.SetActive(menu.MenuPageName == name); });
     }
 
     public void LoadScene(string name) //Called by buttons
     {
+        GameService.Instance.audioManager.PlaySound("UIButton");
         GameService.Instance.scenes.LoadScene(name);
     }
 }

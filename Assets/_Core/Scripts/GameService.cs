@@ -10,7 +10,6 @@ public class GameService : Singleton<GameService>
     public AdventureManager adventure;
     public SaveManager saveManager;
     public AudioManager audioManager;
-    //private PhotonService photonService;
 
     protected override void Awake()
     {

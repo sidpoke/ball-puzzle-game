@@ -28,11 +28,13 @@ public class ZenUI : MonoBehaviour
 
     public void CallPauseGame(bool state) // Called by UI, pause/unpause game
     {
+        GameService.Instance.audioManager.PlaySound("UIButton");
         PauseGame?.Invoke(state);
     }
 
     public void CallSwitchToScene(string sceneName) // Called by UI, Return to menu / Reset
     {
+        GameService.Instance.audioManager.PlaySound("UIButton");
         SwitchScene?.Invoke(sceneName);
     }
 }
