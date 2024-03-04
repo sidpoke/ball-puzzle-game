@@ -480,3 +480,5 @@ MonoBehaviour:
     Scene: Game_Arcade
   - Name: Zen
     Scene: Game_Zen
+  - Name: Adventure
+    Scene: Game_Adventure

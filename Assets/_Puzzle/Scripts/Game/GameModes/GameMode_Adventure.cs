@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-
 
 public class GameMode_Adventure : GameManager
 {
@@ -9,7 +7,9 @@ public class GameMode_Adventure : GameManager
     private AdventureUI ui;
 
     [Header("Debug")]
+    [SerializeField] private float endGameWaitTime = 2.0f;
     [SerializeField] private LevelObject currentLevel;
+    [SerializeField] private int ballSwitchCount = 0;
     [SerializeField] private bool gameOver = false;
 
     protected override void Awake()
@@ -28,6 +28,7 @@ public class GameMode_Adventure : GameManager
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
         GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
+        LevelManager.LevelBallSwitched += OnBallSwitched;
     }
 
     protected override void OnDisable()
@@ -38,12 +39,14 @@ public class GameMode_Adventure : GameManager
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
         GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
+        LevelManager.LevelBallSwitched -= OnBallSwitched;
     }
 
     protected override void Start()
     {
         base.Start();
         currentLevel = GameService.Instance.adventure.CurrentLevel;
+        ui.SetBallSwapTriesText(currentLevel.AmountOfSwitches - ballSwitchCount);
         StartGame();
     }
 
@@ -59,6 +62,7 @@ public class GameMode_Adventure : GameManager
     {
         LevelManager.SetCanTouch(true);
         LevelManager.FillAllPipes(currentLevel);
+        OnScoreChanged(scoreManager.Score);
     }
 
     private void GameOver()
@@ -105,6 +109,30 @@ public class GameMode_Adventure : GameManager
     private void OnScoreChanged(int score)
     {
         ui.SetScoreText(score, currentLevel.ScoreToBeat);
+
+        if(scoreManager.Score >= currentLevel.ScoreToBeat)
+        {
+            GameOver();
+        }
+    }
+
+    public void OnBallSwitched(BallController ballA, BallController ballB)
+    {
+        ballSwitchCount++;
+
+        ui.SetBallSwapTriesText(currentLevel.AmountOfSwitches - ballSwitchCount);
+
+        if(ballSwitchCount >= currentLevel.AmountOfSwitches)
+        {
+            LevelManager.SetCanTouch(false);
+            StartCoroutine(WaitForFinalScore(endGameWaitTime)); //succeeded maximum amount of ball swaps
+        }
+    }
+
+    IEnumerator WaitForFinalScore(float time)
+    {
+        yield return new WaitForSeconds(time);
+        GameOver();
     }
 
     /// <summary>

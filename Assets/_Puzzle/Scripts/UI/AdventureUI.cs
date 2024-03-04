@@ -10,27 +10,33 @@ public class AdventureUI : MonoBehaviour
 
     [Header("In-Game UI References")]
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text ballSwapsText;
 
     [Header("UI Panel References")]
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Button pauseButton;
 
+    [SerializeField] private TMP_Text scoreTitleText;
     [SerializeField] private TMP_Text finalScoreText;
-    [SerializeField] private TMP_Text highScoreText;
 
     public void SetScoreText(int score, int scoreToBeat)
     {
         scoreText.SetText($"{score.ToString()} / {scoreToBeat.ToString()}");
     }
 
-    public void OpenGameOverMenu(int score, int highscore) // Game end menu
+    public void SetBallSwapTriesText(int tries)
+    {
+        ballSwapsText.SetText($"{tries.ToString()} Moves");
+    }
+
+    public void OpenGameOverMenu(int score, int scoreToBeat) // Game end menu
     {
         gameOverPanel.SetActive(true);
         pauseButton.gameObject.SetActive(false);
 
-        finalScoreText.SetText($"Your Score:\r\n<b>{score}</b>");
-        highScoreText.SetText($"Your Highscore:\r\n<b>{highscore}</b>");
+        finalScoreText.SetText($"Score:\r\n<b>{score} out of {scoreToBeat}</b>");
+        scoreTitleText.SetText(score >= scoreToBeat ? "YOU WIN!" : "FAILED");
     }
 
     public void CloseGameOverMenu() // Game end menu

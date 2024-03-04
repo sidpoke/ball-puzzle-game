@@ -73,7 +73,6 @@ public class GameMode_Zen : GameManager
         }
     }
 
-
     /// <summary>
     /// Used to trigger special events like bombs, freeze, etc.
     /// </summary>

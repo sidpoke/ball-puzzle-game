@@ -10,10 +10,8 @@ public enum LevelBalls //align with levelmanager objects for best experience
     Ball_Any = 4,
     Ball_Block = 5,
     Ball_NoWsitch = 6,
-    Ball_Slow = 7,
-    Ball_Freeze = 8,
-    Ball_Bomb = 9,
-    Ball_Laser = 10
+    Ball_Bomb = 7,
+    Ball_Laser = 8
 }
 
 [CreateAssetMenu]

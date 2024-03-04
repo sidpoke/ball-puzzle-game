@@ -26,6 +26,7 @@ public class LevelManager : MonoBehaviour
     /// Event is fired in case the loader pipe is full. This could be a game over call for example.
     /// </summary>
     public event Action LoaderPipeFull;
+    public event Action<BallController, BallController> LevelBallSwitched;
 
     private LevelTouchProvider levelTouchProvider;
 
@@ -187,6 +188,8 @@ public class LevelManager : MonoBehaviour
         pipeA.PipeStorage.Balls.RemoveAt(oldIndexA);
         pipeA.PipeStorage.Balls.Insert(oldIndexA, ballB);
         ballB.MovementController.Move(pipeA.WaypointProvider.Waypoints[oldIndexA]);
+
+        LevelBallSwitched?.Invoke(ballA, ballB);
     }
 
     /// <summary>
