@@ -12,6 +12,9 @@ public struct GameAudio
     public AudioClip Clip;
 }
 
+/// <summary>
+/// Audio Manager class plays sounds & music globally
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
@@ -19,16 +22,21 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Setup")]
     [SerializeField] private List<GameAudio> audioClips;
 
-    private void Awake()
+    private void Awake() //Get components
     {
         audioSource = GetComponent<AudioSource>();
     }
 
+    /// <summary>
+    /// Plays an audio from the list one shot globally
+    /// </summary>
     public void PlaySound(string name)
     {
-        if(audioSource)
+        AudioClip clip = audioClips?.Find(clip => clip.Name == name).Clip;
+
+        if (audioSource && !string.IsNullOrEmpty(name) && clip != null)
         {
-            audioSource.PlayOneShot(audioClips.Find(clip => clip.Name == name).Clip);
+            audioSource.PlayOneShot(clip);
         }
     }
 }

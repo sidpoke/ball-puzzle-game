@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// Collection of helper methods for the PipeController
+/// </summary>
 public static class PipeControllerHelpers
 {
     /// <summary>

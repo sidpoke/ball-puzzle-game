@@ -28,6 +28,10 @@ public enum BallSpecialEvent
     Bomb,
     Laser
 }
+
+/// <summary>
+/// BallController couples all sub-components of the ball into a controller class with callable and overridable methods.
+/// </summary>
 public class BallController : MonoBehaviour
 {
     protected IBallEventHandler eventHandler;
@@ -83,6 +87,9 @@ public class BallController : MonoBehaviour
         _movementController.FinishedMoving -= OnBallMovementFinished;
     }
 
+    /// <summary>
+    /// Sets the pipe this ball controller is inside of
+    /// </summary>
     public void SetPipe(PipeController pipe)
     {
         if(_pipe != null || pipe is LoaderPipe) { canPlayDropSound = true; }
@@ -90,6 +97,10 @@ public class BallController : MonoBehaviour
         OnBallPipeChanged();
     }
 
+    /// <summary>
+    /// Sets the pipe index ("at which position this ball is inside of a pipe")
+    /// "move" simply sets wheter or not the ball should also move to the new position once set
+    /// </summary>
     public void SetPipeIndex(int index, bool move)
     {
         _pipeIndex = index;
@@ -97,38 +108,57 @@ public class BallController : MonoBehaviour
         {
             _movementController.Move(_pipe.WaypointProvider.Waypoints[_pipeIndex]);
         }
-        if(index == 0)
+        if(index == 0) //for resetting the drop sound (avoid spamming)
         {
             canPlayDropSound = true;
         }
     }
+
+    /// <summary>
+    /// Sets whether or not the ball should explode when destroyed
+    /// </summary>
     public void SetExplode(bool state)
     {
         _explode = state;
     }
 
+    /// <summary>
+    /// Sets whether or not the ball should spawn a score vfx when destroyed
+    /// </summary>
     public void SetShowScore(bool state)
     {
         showScore = state;
     }
 
-    public void TriggerSpecialEvent()
+    /// <summary>
+    /// Triggers a special event (eg. freeze, slow, bomb, laser)
+    /// </summary>
+    protected void TriggerSpecialEvent() //triggers a special event globally
     {
         GameService.Instance.eventManager.Event_BallSpecialEvent(this, specialEvent);
     }
 
-    public void DestroyBall() //gives time to spare before destruction
+    /// <summary>
+    /// Destroys the ball but gives time to spare before destruction, calls OnBallDestroyed
+    /// </summary>
+    public void DestroyBall()
     {
         OnBallDestroyed();
         Destroy(gameObject, ballDespawnTime);
     }
 
-    public void ExplodeBall() //immediately destroys ball
+    /// <summary>
+    /// Destroys the ball immediately, calls OnBallExploded
+    /// </summary>
+    public void ExplodeBall()
     {
         OnBallExploded();
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Checks whether or not this ball matches with the pipes color
+    /// </summary>
     protected bool ColorMatchingPipe()
     {
         if (Pipe is SwitcherPipe pipe && PipeIndex == 0)
@@ -139,9 +169,9 @@ public class BallController : MonoBehaviour
     }
 
     //Override methods for child class
-    protected virtual void OnBallPipeChanged(){}
+    protected virtual void OnBallPipeChanged(){} //called from SetPipe method
 
-    protected virtual void OnBallDestroyed()
+    protected virtual void OnBallDestroyed() //called from public DestroyBall method
     {
         eventHandler.BallScoreAdded(clearPoints);
         _movementController.FreeFall();
@@ -151,7 +181,7 @@ public class BallController : MonoBehaviour
         }
     }
 
-    protected virtual void OnBallExploded()
+    protected virtual void OnBallExploded() //called from public ExplodeBall method
     {
         eventHandler.BallScoreAdded(clearPoints);
         if (showScore)
@@ -161,7 +191,7 @@ public class BallController : MonoBehaviour
         effectsController.SpawnExplosion((Vector2)transform.position);
     }
 
-    protected virtual void OnBallTouched()
+    protected virtual void OnBallTouched() //called by touch provider class
     {
         if(Pipe is SwitcherPipe)
         {
@@ -170,14 +200,14 @@ public class BallController : MonoBehaviour
         }
     }
 
-    protected virtual void OnBallSelected(BallController ball) 
+    protected virtual void OnBallSelected(BallController ball) //called by global event manager
     { 
         if(_pipe is LoaderPipe) { return; }
 
         effectsController.SetHighlight((ball != null && ball == this), (ball != null && ball.PipeIndex == _pipeIndex));
     }
 
-    protected virtual void OnBallMovementFinished() 
+    protected virtual void OnBallMovementFinished() //called by movement controller
     {
         if(ColorMatchingPipe())
         {

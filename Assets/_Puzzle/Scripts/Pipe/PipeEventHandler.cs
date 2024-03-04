@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This shoots out events whenever something changes within a pipe and it does not send back any info
+/// Called by PipeController to send events globally
 /// </summary>
-
 public class PipeEventHandler : MonoBehaviour, IPipeEventHandler
 {
     public void PipeBallAdded(PipeController pipe, BallController ball)

@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// A struct to define an arcade mode difficulty. 
+/// ScoreTrigger is the value needed to reach this difficulty stage.
+/// </summary>
 [System.Serializable]
 public struct ArcadeDifficulty
 {
@@ -10,9 +14,12 @@ public struct ArcadeDifficulty
     public float DifficultyBallTimer;
 }
 
+/// <summary>
+/// ARCADE GAME MODE - The LoaderPipe will get new balls every x seconds, if it's full then the game is over
+/// </summary>
 public class GameMode_Arcade : GameManager
 {
-    private ITimerProvider timer;
+    private ITimerProvider timer; //timer needed for spawning balls
     private IScoreManager scoreManager;
     private ArcadeUI ui;
 
@@ -26,133 +33,108 @@ public class GameMode_Arcade : GameManager
     [SerializeField] private float freezeTime = 3.0f;
 
     [Header("Debug")]
-    [SerializeField] private bool gameOver = false;
     [SerializeField] private int currentDifficulty = 0;
 
-    private IEnumerator freezeTimer;
-    private IEnumerator slowTimer;
+    private IEnumerator freezeTimer; //Coroutine for freeze ball
+    private IEnumerator slowTimer; //Coroutine for slow ball
 
-    protected override void Awake()
+    protected override void Awake() //Get components
     {
         base.Awake();
-        LevelManager.SetShowScores(true);
         timer = GetComponent<ITimerProvider>();
         scoreManager = GetComponent<IScoreManager>();
         ui = GetComponent<ArcadeUI>();
     }
 
-    protected override void OnEnable()
+    protected override void OnEnable() //subscribe to events
     {
         base.OnEnable();
-        //subscribe to events
         scoreManager.ScoreChanged += OnScoreChanged;
         timer.Timeout += OnTimerTimeout;
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
-        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
     }
 
-    protected override void OnDisable()
+    protected override void OnDisable() //unsubscribe events
     {
         base.OnDisable();
-        //unsubscribe events
         scoreManager.ScoreChanged -= OnScoreChanged;
         timer.Timeout -= OnTimerTimeout;
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
-        GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
     }
 
-    protected override void Start()
+    //private void Update()
+    //{
+    //    //Cheats
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        LevelManager.AddBallToPipe(LevelManager.LoaderPipe, true);
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        LevelManager.LoaderPipe.PipeStorage.Release();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.D))
+    //    {
+    //        int random = Random.Range(0, LevelManager.LoaderPipe.PipeStorage.Balls.Count);
+    //        LevelManager.LoaderPipe.PipeStorage.RemoveAt(random);
+    //    }
+    //}
+
+    private void SetDifficulty(int difficulty) //change timer to a new timeout
     {
-        base.Start();
-        StartGame();
+        currentDifficulty = difficulty;
+        ui.SetDifficultyText(difficulties[currentDifficulty].DifficultyName);
+        timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
     }
 
-    private void Update()
+    protected override void OnStartGame()
     {
-        //Cheats
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            LevelManager.AddBallToPipe(LevelManager.LoaderPipe, true);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            LevelManager.LoaderPipe.PipeStorage.Release();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            int random = Random.Range(0, LevelManager.LoaderPipe.PipeStorage.Balls.Count);
-            LevelManager.LoaderPipe.PipeStorage.RemoveAt(random);
-        }
-    }
+        base.OnStartGame();
 
-    private void StartGame()
-    {
-        LevelManager.SetCanTouch(true);
+        LevelManager.SetShowScores(true);
         LevelManager.FillAllPipes();
+        ui.SetScoreText(0);
         timer.TimerStart();
         SetDifficulty(startDifficulty);
     }
 
-    private void GameOver()
+    protected override void OnGameOver()
     {
-        gameOver = true;
+        base.OnGameOver();
 
-        //stop game
-        Time.timeScale = 0;
-        timer.TimerStop();
-        LevelManager.SetCanTouch(false);
-        
         //highscores
         int highScore = GameService.Instance.saveManager.LoadInt("HighScore");
         GameService.Instance.saveManager.SaveInt("LastScore", scoreManager.Score);
         if (scoreManager.Score > highScore) { GameService.Instance.saveManager.SaveInt("HighScore", scoreManager.Score); }
 
-        //open panel
+        //open game over panel
         ui.OpenGameOverMenu(scoreManager.Score, scoreManager.Score > highScore ? scoreManager.Score : highScore);
     }
 
-    private void SetDifficulty(int difficulty)
+    protected override void OnPauseGame(bool pause) //called from UI
     {
-        currentDifficulty = difficulty;
-
-        ui.SetDifficultyText(difficulties[currentDifficulty].DifficultyName);
-        timer.SetTimerTime(difficulties[currentDifficulty].DifficultyBallTimer);
-    }
-
-    private void OnSwitchScene(string scene) //reset too
-    {
-        Time.timeScale = 1;
-        LevelManager.SetCanTouch(true);
-        GameService.Instance?.scenes.LoadScene(scene);
-    }
-
-    private void OnPauseGame(bool pause) //called from UI
-    {
+        base.OnPauseGame(pause);
         if (pause)
         {
             timer.TimerStop();
-            LevelManager.SetCanTouch(false);
-            Time.timeScale = 0;
             ui.OpenPauseMenu();
         }
         else
         {
             ui.ClosePauseMenu();
             timer.TimerStart();
-            LevelManager.SetCanTouch(true);
-            Time.timeScale = 1;
         }
     }
 
-    protected override void OnLoaderPipeFull()
+    protected override void OnLoaderPipeFull() //called from LevelManager
     {
         base.OnLoaderPipeFull();
-        GameOver();
+        OnGameOver();
     }
 
-    private void OnScoreChanged(int score)
+    private void OnScoreChanged(int score) //Updating difficulty & adjusting score text
     {
         if (difficulties != null && difficulties.Count > (currentDifficulty + 1))
         {
@@ -165,7 +147,7 @@ public class GameMode_Arcade : GameManager
         ui.SetScoreText(score);
     }
 
-    private void OnTimerTimeout()
+    private void OnTimerTimeout() //Add a ball when the timer reaches its end
     {
         LevelManager.AddBallToPipe(LevelManager.LoaderPipe, true);
     }
@@ -173,8 +155,8 @@ public class GameMode_Arcade : GameManager
     /// <summary>
     /// Used to trigger special events like bombs, freeze, etc.
     /// </summary>
-    /// <param name="ball">The ball that invoked the request (might be null!!)</param>
-    public void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
+    /// <param name="ball">The ball that invoked the request (possibly null!!)</param>
+    protected override void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
     {
         switch (specialEvent)
         {
@@ -202,6 +184,10 @@ public class GameMode_Arcade : GameManager
         }
     }
 
+    /// <summary>
+    /// Slow Timer Coroutine used for a slow ball. 
+    /// Changes timer speed to current difficulty speed * amount for x seconds.
+    /// </summary>
     private IEnumerator StartSlowTimer(float time, float amount)
     {
         if (amount == 0) { slowTimer = null; yield break; }
@@ -211,6 +197,10 @@ public class GameMode_Arcade : GameManager
         slowTimer = null;
     }
 
+    /// <summary>
+    /// Freeze Timer Coroutine used for a freeze ball. 
+    /// Stops and resets timer for x seconds.
+    /// </summary>
     private IEnumerator StartFreezeTimer(float time)
     {
         if (gameOver) { freezeTimer = null; yield break; } // don't trigger when game just ended

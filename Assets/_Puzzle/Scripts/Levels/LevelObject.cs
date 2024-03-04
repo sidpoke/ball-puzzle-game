@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Basic set of Balls used in a level in Adventure Mode
+/// Can be extended if more ball types are needed
+/// </summary>
 public enum LevelBalls //align with levelmanager objects for best experience
 {
     Ball_Red = 0,
@@ -9,11 +13,14 @@ public enum LevelBalls //align with levelmanager objects for best experience
     Ball_Yellow = 3,
     Ball_Any = 4,
     Ball_Block = 5,
-    Ball_NoWsitch = 6,
+    Ball_NoSwitch = 6,
     Ball_Bomb = 7,
     Ball_Laser = 8
 }
 
+/// <summary>
+/// Level Object used by Adventure Mode, contains simple instructions on how the level is set up
+/// </summary>
 [CreateAssetMenu]
 public class LevelObject : ScriptableObject
 {

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 
+/// <summary>
+/// Movement controller moves the ball object to a specific position or a list of positions
+/// Also can free fall when asked to.
+/// </summary>
 public class BallMovementController : MonoBehaviour, IBallMovementController
 {
     public event Action FinishedMoving;
@@ -23,21 +25,33 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
 
     public bool IsMoving { get { return _moving || isFreeFalling; } }
 
-    public void Move(Vector2 position) //Adds a single position to the movement queue
+    /// <summary>
+    /// Adds a single position to the movement queue
+    /// </summary>
+    public void Move(Vector2 position)
     {
         positions.Add(position);
     }
 
-    public void Move(Vector2[] path) //Overload: Adds an array of positions to the movement queue 
+    /// <summary>
+    /// Adds a list of positions to the movement queue
+    /// </summary>
+    public void Move(Vector2[] path)
     {
         positions.AddRange(path);
     }
 
-    public void FreeFall() //typically called when the ball is destroyed
+    /// <summary>
+    /// Sets the ball to free fall mode, typically called when ball about to be destroyed
+    /// </summary>
+    public void FreeFall()
     {
         isFreeFalling = true;
     }
 
+    /// <summary>
+    /// Sets the spawn position of this ball (teleports once)
+    /// </summary>
     public void SpawnPosition(Vector2 position)
     {
         if (!isSpawned) // teleport object to the spawn location
@@ -51,6 +65,9 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
         }
     }
 
+    /// <summary>
+    /// Stops movement queue
+    /// </summary>
     public void Stop()
     {
         positions.Clear();
@@ -101,7 +118,7 @@ public class BallMovementController : MonoBehaviour, IBallMovementController
                 positions.RemoveAt(0);
             }
         }
-        else if (_moving)
+        else if (_moving) // if done moving send out an event that others can subscribe to
         {
             FinishedMoving?.Invoke();
             _moving = false;

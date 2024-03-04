@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Generates Waypoints of a PipeController for balls to move along to
+/// </summary>
 public interface IPipeWaypointProvider
 {
     public Vector2 SpawnPoint { get; }

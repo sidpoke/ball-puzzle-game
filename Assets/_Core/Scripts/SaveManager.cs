@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Stores and saves information of the game progress.
+/// Stores and saves information of the game progress. Implementation with Player Prefs.
 /// </summary>
 public class SaveManager : MonoBehaviour, ISaveManager
 {

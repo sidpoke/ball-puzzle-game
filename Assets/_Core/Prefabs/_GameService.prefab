@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &206608239541296304
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4084508311442906525}
-  m_Layer: 0
-  m_Name: PhotonService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4084508311442906525
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 206608239541296304}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1464379826098081116}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2343406353112357171
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,6 +108,8 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: b7779c7b55e4dd642b0d20525136f0fb, type: 3}
   - Name: ComboIncredible
     Clip: {fileID: 8300000, guid: 78b3c7dc7349e02408f5bcafd8824ce4, type: 3}
+  - Name: UIButton
+    Clip: {fileID: 8300000, guid: ed7899aa069a5384d9b3a035f739a17a, type: 3}
 --- !u!82 &5381594605117166780
 AudioSource:
   m_ObjectHideFlags: 0
@@ -315,7 +286,6 @@ Transform:
   - {fileID: 1618532132757256306}
   - {fileID: 7252193848486066830}
   - {fileID: 3781488417304955912}
-  - {fileID: 4084508311442906525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4331618749164824901
@@ -428,6 +398,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3340622efbdc7d84dbcff0a8441620e0, type: 2}
   - {fileID: 11400000, guid: f33bec039318c3c4ca2a47de66fb08ab, type: 2}
   - {fileID: 11400000, guid: 0f23abbc3f943bb48b3465f5b576bd22, type: 2}
+  - {fileID: 11400000, guid: ea6b56db3e8b4ea40a239dab35bd5b30, type: 2}
+  - {fileID: 11400000, guid: 8077fd95b9a74be4994b117561bef766, type: 2}
+  - {fileID: 11400000, guid: 02bd8c94bafe78340bc27a8c5f086d46, type: 2}
   currentLevel: 0
 --- !u!1 &7970058751208857431
 GameObject:

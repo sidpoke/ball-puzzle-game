@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// A VFX text that spawns after a combo executed
+/// </summary>
 public class ComboTextVFX : MonoBehaviour
 {
     [Header("Combo Text Setup")]

@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of a waypoint provider. Generates waypoints out of a list that a PipeController can access.
+/// </summary>
 public class PipeWaypointProvider : MonoBehaviour, IPipeWaypointProvider
 {
     [SerializeField] private List<Transform> predeterminedWaypoints;

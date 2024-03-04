@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Slow Ball works like a regular AnyBall but triggers an event before destroying.
+/// Laser ball has a timer and once it enters a SwitcherPipe it will tick.
+/// If the timer runs out it this class will call the LevelManager to explode using its Pipe & PipeIndex.
 /// </summary>
 public class LaserBall : BallController 
 {
@@ -22,9 +21,13 @@ public class LaserBall : BallController
         base.Awake();
         timer = GetComponent<ITimerProvider>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.material.SetFloat("_BombTickSpeed", 0);
         timer.TimerReset();
         timer.SetTimerTime(laserTriggerTime);
+    }
+
+    private void Start()
+    {
+        effectsController.SetBombTick(0, 0); //reset shader
     }
 
     protected override void OnEnable()
@@ -41,11 +44,10 @@ public class LaserBall : BallController
 
     public void Update()
     {
-        if (timer.IsRunning)
+        if (timer.IsRunning) //setting material properties for the bomb-tick-shader
         {
             laserTickPhase += Time.deltaTime;
-            spriteRenderer.material.SetFloat("_BombTickPhase", laserTickPhase);
-            spriteRenderer.material.SetFloat("_BombTickSpeed", (timer.CurrentTime / laserTriggerTime) * finalLaserTickSpeed);
+            effectsController.SetBombTick(laserTickPhase, timer.CurrentTime / laserTriggerTime * finalLaserTickSpeed);
         }
     }
 
@@ -59,7 +61,7 @@ public class LaserBall : BallController
         }
     }
 
-    public void OnTimerTimeout()
+    public void OnTimerTimeout() //zap
     {
         TriggerSpecialEvent();
         audioController.PlayAudio("BallExplode");

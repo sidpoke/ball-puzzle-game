@@ -7,8 +7,7 @@ using UnityEngine;
 /// </summary>
 public class FreezeBall : BallController 
 {
-    //Overrides the OnBallDestroyed method to trigger a special event when released.
-    protected override void OnBallDestroyed()
+    protected override void OnBallDestroyed() //Overrides the OnBallDestroyed method to trigger a special event when released.
     {
         base.OnBallDestroyed();
         TriggerSpecialEvent();

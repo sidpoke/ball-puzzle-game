@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// Color Pipes only eject when color matches
+/// Pipe Color to indicate which Ball Color can be released
 /// </summary>
 public enum PipeColor
 {
@@ -12,6 +12,10 @@ public enum PipeColor
     Yellow = 3
 }
 
+/// <summary>
+/// Switcher pipe contains balls that can be switched around.
+/// Calls OnBallRemoved to destroy the ball when its released.
+/// </summary>
 public class SwitcherPipe : PipeController
 {
     [Header("Color Pipe Setup")]

@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Identifier is for the code to recognize the scene
-/// Scene is the actual scene to load
+/// Name is an identifier for the code to recognize the scene. Scene is the actual scene to load.
+/// This is useful because scene names can change without the code needing adjustment.
 /// </summary>
 [System.Serializable]
 public struct GameScene
@@ -21,6 +21,9 @@ public class SceneController : MonoBehaviour
 {
     [SerializeField] private List<GameScene> levels = new List<GameScene>();
 
+    /// <summary>
+    /// Loads a scene using its with the "Name" identifier
+    /// </summary>
     public void LoadScene(string sceneIdentifier)
     {
         if (levels.Find(level => level.Name == sceneIdentifier) is GameScene scene)

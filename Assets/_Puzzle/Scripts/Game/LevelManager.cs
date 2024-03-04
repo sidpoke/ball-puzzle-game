@@ -6,7 +6,7 @@ using System.ComponentModel;
 using Unity.Collections;
 
 /// <summary>
-/// A Ball Prefab combined with a weight
+/// A Ball Prefab combined with a weight for weighted random calculation
 /// </summary>
 [System.Serializable]
 public struct BallObject
@@ -16,16 +16,13 @@ public struct BallObject
 }
 
 /// <summary>
-/// The LevelManager is responsible for handling changes within the game scene (Pipes and Balls).
-/// It spawns Balls, fills pipes and swaps balls on call.
-/// Purpose: The GameManager can call the levelmanager to change the game state.
+/// The LevelManager is responsible for handling changes within the game scene (pipes and balls).
+/// It spawns balls, fills pipes and swaps balls on call.
+/// Purpose: The GameManager can call the LevelManager to change the game state.
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
-    /// <summary>
-    /// Event is fired in case the loader pipe is full. This could be a game over call for example.
-    /// </summary>
-    public event Action LoaderPipeFull;
+    public event Action LoaderPipeFull; //Could be a game over call for example.
     public event Action<BallController, BallController> LevelBallSwitched;
 
     private LevelTouchProvider levelTouchProvider;
@@ -51,19 +48,17 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         levelTouchProvider = GetComponent<LevelTouchProvider>();
-        ballWeights = ballObjects.Select(ball => ball.Weight).ToArray(); // extract ball weights, needed for random calculation
+        ballWeights = ballObjects.Select(ball => ball.Weight).ToArray(); // ball weights needed for random calculation
     }
 
-    private void OnEnable()
+    private void OnEnable() //subscribe to events
     {
-        //subscribe to events
         GameService.Instance.eventManager.PipeBallRemoved += OnPipeReleased;
         levelTouchProvider.SwapBalls += OnBallSwap;
     }
 
-    private void OnDisable()
+    private void OnDisable() //unsubscribe events
     {
-        //unsubscribe events
         GameService.Instance.eventManager.PipeBallRemoved -= OnPipeReleased;
         levelTouchProvider.SwapBalls -= OnBallSwap;
     }
@@ -86,7 +81,7 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys balls in a 9-block, used for bombs.
+    /// Destroys balls in a 9-block, used by bombs.
     /// </summary>
     public void DestroyBallsNineBlock(BallController triggerBall)
     {
@@ -103,7 +98,7 @@ public class LevelManager : MonoBehaviour
                     {
                         if(y >= 0 && y < pipes[x].PipeStorage.Balls.Count && !pipes[x].PipeStorage.Balls[y].MovementController.IsMoving) //check if in bounds y & not moving
                         {
-                            pipes[x].PipeStorage.Balls[y].SetExplode(true);
+                            pipes[x].PipeStorage.Balls[y].SetExplode(true); //kaboom
                             pipes[x].PipeStorage.RemoveAt(y);
                         }
                     }
@@ -113,7 +108,7 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys balls in a line, used for lasers.
+    /// Destroys balls in a line, used by lasers.
     /// </summary>
     public void DestroyBallsLine(BallController triggerBall)
     {
@@ -123,7 +118,7 @@ public class LevelManager : MonoBehaviour
             {
                 if(pipe.PipeStorage.Balls.Count > triggerBall.PipeIndex && !pipe.PipeStorage.Balls[triggerBall.PipeIndex].MovementController.IsMoving) //if inside of bounds & not moving
                 {
-                    pipe.PipeStorage.Balls[triggerBall.PipeIndex].SetExplode(true);
+                    pipe.PipeStorage.Balls[triggerBall.PipeIndex].SetExplode(true); //kaboom
                     pipe.PipeStorage.RemoveAt(triggerBall.PipeIndex);
                 }
             });

@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// A VFX text that spawns after a ball was destroyed to show the score achieved
+/// </summary>
 public class ScoreTextVFX : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;

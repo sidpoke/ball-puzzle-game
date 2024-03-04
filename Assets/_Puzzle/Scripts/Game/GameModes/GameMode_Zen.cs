@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// ZEN GAME MODE - No timer, no scores. This infinite game mode is supposed to keep you busy and is used for practice.
+/// </summary>
 public class GameMode_Zen : GameManager
 {
     private ZenUI ui;
@@ -11,73 +14,46 @@ public class GameMode_Zen : GameManager
         ui = GetComponent<ZenUI>();
     }
 
-    protected override void OnEnable()
+    protected override void OnEnable() //subscribe to events
     {
         base.OnEnable();
-        //subscribe to events
-        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
     }
 
-    protected override void OnDisable()
+    protected override void OnDisable() //unsubscribe events
     {
-        base.OnDisable();
-        //unsubscribe events
+        base.OnDisable(); 
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
-        GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        StartGame();
     }
 
     public void Update()
     {
-        if (!LevelManager.LoaderPipe.PipeStorage.IsFull)
+        if (!LevelManager.LoaderPipe.PipeStorage.IsFull) //simply fill the loader pipe as long as it's not full
         {
             LevelManager.AddBallToPipe(LevelManager.LoaderPipe, false);
         }
     }
 
-    private void StartGame()
+    protected override void OnStartGame()
     {
-        LevelManager.SetCanTouch(true);
+        base.OnStartGame();
         LevelManager.FillAllPipes();
-        LevelManager.FillPipe(LevelManager.LoaderPipe);
     }
 
-    private void OnSwitchScene(string scene) //reset too
+    protected override void OnPauseGame(bool pause) //called over UI
     {
-        Time.timeScale = 1;
-        LevelManager.SetCanTouch(true);
-        GameService.Instance?.scenes.LoadScene(scene);
-    }
-
-    private void OnPauseGame(bool pause) //called from UI
-    {
-        if (pause)
-        {
-            LevelManager.SetCanTouch(false);
-            Time.timeScale = 0;
-            ui.OpenPauseMenu();
-        }
-        else
-        {
-            ui.ClosePauseMenu();
-            LevelManager.SetCanTouch(true);
-            Time.timeScale = 1;
-        }
+        base.OnPauseGame(pause);
+        if (pause) { ui.OpenPauseMenu(); }
+        else { ui.ClosePauseMenu(); }
     }
 
     /// <summary>
     /// Used to trigger special events like bombs, freeze, etc.
     /// </summary>
-    /// <param name="ball">The ball that invoked the request (might be null!!)</param>
-    public void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
+    /// <param name="ball">The ball that invoked the request (possibly null!!)</param>
+    protected override void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
     {
         switch (specialEvent)
         {

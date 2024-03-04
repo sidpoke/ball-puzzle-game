@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles UI Requests for the Adventure Mode
+/// </summary>
 public class AdventureUI : MonoBehaviour
 {
     public event Action<bool> PauseGame;
@@ -20,17 +23,17 @@ public class AdventureUI : MonoBehaviour
     [SerializeField] private TMP_Text scoreTitleText;
     [SerializeField] private TMP_Text finalScoreText;
 
-    public void SetScoreText(int score, int scoreToBeat)
+    public void SetScoreText(int score, int scoreToBeat) // Called by game manager
     {
         scoreText.SetText($"{score.ToString()} / {scoreToBeat.ToString()}");
     }
 
-    public void SetBallSwapTriesText(int tries)
+    public void SetBallSwapTriesText(int tries) // Called by game manager
     {
         ballSwapsText.SetText($"{tries.ToString()} Moves");
     }
 
-    public void OpenGameOverMenu(int score, int scoreToBeat) // Game end menu
+    public void OpenGameOverMenu(int score, int scoreToBeat) // Called by game manager
     {
         gameOverPanel.SetActive(true);
         pauseButton.gameObject.SetActive(false);
@@ -39,30 +42,30 @@ public class AdventureUI : MonoBehaviour
         scoreTitleText.SetText(score >= scoreToBeat ? "YOU WIN!" : "FAILED");
     }
 
-    public void CloseGameOverMenu() // Game end menu
+    public void CloseGameOverMenu() // Called by game manager
     {
         gameOverPanel.SetActive(false);
         pauseButton.gameObject.SetActive(true);
     }
 
-    public void OpenPauseMenu() // Pause button
+    public void OpenPauseMenu() // Called by game manager
     {
         pausePanel.SetActive(true);
         pauseButton.gameObject.SetActive(false);
     }
 
-    public void ClosePauseMenu() // Continue game button
+    public void ClosePauseMenu() // Called by game manager
     {
         pausePanel.SetActive(false);
         pauseButton.gameObject.SetActive(true);
     }
 
-    public void CallPauseGame(bool state)
+    public void CallPauseGame(bool state) // Called by UI, pause/unpause game
     {
         PauseGame?.Invoke(state);
     }
 
-    public void CallSwitchToScene(string sceneName) // Return to menu
+    public void CallSwitchToScene(string sceneName) // Called by UI, Return to menu / Reset
     {
         SwitchScene?.Invoke(sceneName);
     }

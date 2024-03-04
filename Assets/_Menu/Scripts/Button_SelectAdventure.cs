@@ -1,8 +1,9 @@
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Simple button class used to set an adventure mode level and load it
+/// </summary>
 public class Button_SelectAdventure : MonoBehaviour
 {
     [Header("Button Setup")]
@@ -12,7 +13,7 @@ public class Button_SelectAdventure : MonoBehaviour
     [SerializeField] private int _level;
 
     /// <summary>
-    /// Called when the button is spawned, calls a level
+    /// Called when the button is spawned, sets its text & level index to the provided values
     /// </summary>
     public void SetLevel(int level, string levelName)
     {
@@ -21,7 +22,7 @@ public class Button_SelectAdventure : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the current adventure level and loads the adventure mode scene
+    /// Sets the current adventure manager level and loads the adventure mode scene
     /// </summary>
     public void LoadAdventure(string adventureSceneName)
     {

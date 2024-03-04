@@ -7,8 +7,7 @@ using UnityEngine;
 /// </summary>
 public class SlowBall : BallController 
 {
-    //NoSwitch does not send input events, instead it overrides the touch method and plays an animation
-    protected override void OnBallDestroyed()
+    protected override void OnBallDestroyed() //Overrides the OnBallDestroyed method to trigger a special event when released.
     {
         base.OnBallDestroyed();
         TriggerSpecialEvent();

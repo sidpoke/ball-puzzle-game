@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-//Service Locator Pattern, Singleton
+/// <summary>
+/// Game Service acts as a service locator, singleton class
+/// Any global classes are stored and referenced here
+/// </summary>
 public class GameService : Singleton<GameService>
 {
     public EventManager eventManager;

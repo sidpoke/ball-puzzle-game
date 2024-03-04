@@ -1,14 +1,19 @@
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// Menu Page Identifier and Page Object
+/// </summary>
 [System.Serializable]
 public struct MenuPageItem {
     public string MenuPageName;
     public GameObject MenuPageObject;
 }
 
+/// <summary>
+/// Switches between "Pages" of the Menu, simply disabling and enabling game objects in a scene
+/// </summary>
 public class MainMenu : MonoBehaviour
 {
     [Header("References")]
@@ -20,16 +25,15 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        SetMenu(startMenu);
+        SetMenu(startMenu); //set start menu
     }
 
-    //Called by buttons
-    public void SetMenu(string name)
+    public void SetMenu(string name) //Called by buttons
     {
         menuObjects.ForEach(menu => { menu.MenuPageObject.SetActive(menu.MenuPageName == name); });
     }
 
-    public void LoadScene(string name)
+    public void LoadScene(string name) //Called by buttons
     {
         GameService.Instance.scenes.LoadScene(name);
     }

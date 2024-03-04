@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level 3
   m_EditorClassIdentifier: 
   LevelName: Narrow Minded
-  ScoreToBeat: 10000
+  ScoreToBeat: 14000
   AmountOfSwitches: 50
   BallsRedPipe: 05000000050000000500000000000000000000000000000000000000
   BallsBluePipe: 01000000020000000100000002000000010000000200000001000000

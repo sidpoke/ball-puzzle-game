@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// Slow Ball works like a regular Block-Ball but triggers an event when entered a pipe.
+/// Bomb ball has a timer and once it enters a SwitcherPipe it will tick.
+/// If the timer runs out it this class will call the LevelManager to explode using its Pipe & PipeIndex.
 /// </summary>
 public class BombBall : BallController 
 {
@@ -23,31 +21,34 @@ public class BombBall : BallController
         base.Awake();
         timer = GetComponent<ITimerProvider>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.material.SetFloat("_BombTickSpeed", 0);
         timer.TimerReset();
         timer.SetTimerTime(bombTriggerTime);
     }
 
-    public void Update()
+    private void Start()
     {
-        if (timer.IsRunning)
-        {
-            bombTickPhase += Time.deltaTime;
-            spriteRenderer.material.SetFloat("_BombTickPhase", bombTickPhase);
-            spriteRenderer.material.SetFloat("_BombTickSpeed", timer.CurrentTime / bombTriggerTime * finalBombTickSpeed);
-        }
+        effectsController.SetBombTick(0, 0); //reset shader
     }
 
-    protected override void OnEnable()
+    protected override void OnEnable() //subscribe to events
     {
         base.OnEnable();
         timer.Timeout += OnTimerTimeout;
     }
 
-    protected override void OnDisable()
+    protected override void OnDisable() //unsubscribe events
     {
         base.OnDisable();
         timer.Timeout -= OnTimerTimeout;
+    }
+
+    public void Update()
+    {
+        if (timer.IsRunning) //setting material properties for the bomb-tick-shader
+        {
+            bombTickPhase += Time.deltaTime; //phase to make the bomb tick effect work
+            effectsController.SetBombTick(bombTickPhase, timer.CurrentTime / bombTriggerTime * finalBombTickSpeed);
+        }
     }
 
     //BombBall detects a pipe change, as soon as drops inside a switcher pipe it will tick.
@@ -59,7 +60,8 @@ public class BombBall : BallController
             timer.TimerStart(); //wait for a timer to run out before trigger
         }
     }
-    public void OnTimerTimeout()
+
+    public void OnTimerTimeout() //boom
     {
         TriggerSpecialEvent();
         audioController.PlayAudio("BallExplode");

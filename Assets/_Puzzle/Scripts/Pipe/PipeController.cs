@@ -1,21 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using TMPro.EditorUtilities;
-using Unity.Collections;
 using UnityEngine;
 
 /// <summary>
-/// A pipe is an object that contains a list of balls
-/// It also contains a list of waypoints to align balls with
-/// 
-/// IPipeStorageProvider takes care of all the storage functions
-/// IPipeWaypointProvider gives the pipe waypoints
+/// A PipeController is an component that combines pipe-related subcomponents within a controller class.
+/// Contains override methods for child classes.
 /// </summary>
 public class PipeController : MonoBehaviour
 {
-    protected IPipeEventHandler eventHandler;
-    protected IPipeWaypointProvider _waypointProvider;
-    protected IPipeStorageProvider _pipeStorage;
+    protected IPipeEventHandler eventHandler; //sends out events globally
+    protected IPipeWaypointProvider _waypointProvider; //generates waypoints for balls to move along to
+    protected IPipeStorageProvider _pipeStorage; //provides a ball storage method for pipes
 
     public IPipeWaypointProvider WaypointProvider { get { return _waypointProvider; } }
     public IPipeStorageProvider PipeStorage { get { return _pipeStorage; } }

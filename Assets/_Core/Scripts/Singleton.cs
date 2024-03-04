@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A Singleton base class that transforms a Monobehaviour into a globally accessible static class.
+/// </summary>
+/// <typeparam name="T">A Monobehaviour that needs to be referenced globally as a singleton.</typeparam>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance;

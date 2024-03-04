@@ -1,6 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// ADVENTURE GAME MODE - Loads a predefined level, you need to beat a score x within n moves to win
+/// Should n moves <= 0 the player has lost
+/// </summary>
 public class GameMode_Adventure : GameManager
 {
     private IScoreManager scoreManager;
@@ -10,136 +14,98 @@ public class GameMode_Adventure : GameManager
     [SerializeField] private float endGameWaitTime = 2.0f;
     [SerializeField] private LevelObject currentLevel;
     [SerializeField] private int ballSwitchCount = 0;
-    [SerializeField] private bool gameOver = false;
 
     protected override void Awake()
     {
         base.Awake();
-        LevelManager.SetShowScores(true);
         scoreManager = GetComponent<IScoreManager>();
         ui = GetComponent<AdventureUI>();
     }
 
-    protected override void OnEnable()
+    protected override void OnEnable() //subscribe to events
     {
         base.OnEnable();
-        //subscribe to events
         scoreManager.ScoreChanged += OnScoreChanged;
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
-        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
-        LevelManager.LevelBallSwitched += OnBallSwitched;
     }
 
-    protected override void OnDisable()
+    protected override void OnDisable() //unsubscribe events
     {
         base.OnDisable();
-        //unsubscribe events
         scoreManager.ScoreChanged -= OnScoreChanged;
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
-        GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
-        LevelManager.LevelBallSwitched -= OnBallSwitched;
     }
 
-    protected override void Start()
+    private void Update()
     {
-        base.Start();
-        currentLevel = GameService.Instance.adventure.CurrentLevel;
-        ui.SetBallSwapTriesText(currentLevel.AmountOfSwitches - ballSwitchCount);
-        StartGame();
-    }
-
-    public void Update()
-    {
-        if (!LevelManager.LoaderPipe.PipeStorage.IsFull)
+        if (!LevelManager.LoaderPipe.PipeStorage.IsFull) //simply fill the loader pipe as long as it's not full
         {
             LevelManager.AddBallToPipe(LevelManager.LoaderPipe, false);
         }
     }
 
-    private void StartGame()
+    protected override void OnStartGame()
     {
-        LevelManager.SetCanTouch(true);
+        base.OnStartGame();
+
+        LevelManager.SetShowScores(true);
+        currentLevel = GameService.Instance.adventure.CurrentLevel; //fetch level
+        ui.SetBallSwapTriesText(currentLevel.AmountOfSwitches - ballSwitchCount);
         LevelManager.FillAllPipes(currentLevel);
-        OnScoreChanged(scoreManager.Score);
+        OnScoreChanged(scoreManager.Score); //set score in the beginning
     }
 
-    private void GameOver()
+    protected override void OnGameOver()
     {
-        gameOver = true;
-
-        //stop game
-        Time.timeScale = 0;
-        LevelManager.SetCanTouch(false);
+        base.OnGameOver();
 
         //open panel
         ui.OpenGameOverMenu(scoreManager.Score, currentLevel.ScoreToBeat);
     }
 
-    private void OnSwitchScene(string scene) //reset too
+    protected override void OnPauseGame(bool pause) //called from UI
     {
-        Time.timeScale = 1;
-        LevelManager.SetCanTouch(true);
-        GameService.Instance?.scenes.LoadScene(scene);
-    }
-
-    private void OnPauseGame(bool pause) //called from UI
-    {
-        if (pause)
-        {
-            LevelManager.SetCanTouch(false);
-            Time.timeScale = 0;
-            ui.OpenPauseMenu();
-        }
-        else
-        {
-            ui.ClosePauseMenu();
-            LevelManager.SetCanTouch(true);
-            Time.timeScale = 1;
-        }
-    }
-
-    protected override void OnLoaderPipeFull()
-    {
-        base.OnLoaderPipeFull();
-        GameOver();
+        base.OnPauseGame(pause);
+        if (pause){ ui.OpenPauseMenu(); }
+        else { ui.ClosePauseMenu(); }
     }
 
     private void OnScoreChanged(int score)
     {
         ui.SetScoreText(score, currentLevel.ScoreToBeat);
 
-        if(scoreManager.Score >= currentLevel.ScoreToBeat)
+        if(scoreManager.Score >= currentLevel.ScoreToBeat) //end game if score limit is reached
         {
-            GameOver();
+            OnGameOver();
         }
     }
 
-    public void OnBallSwitched(BallController ballA, BallController ballB)
+    protected override void OnBallSwitched(BallController ballA, BallController ballB)
     {
         ballSwitchCount++;
 
         ui.SetBallSwapTriesText(currentLevel.AmountOfSwitches - ballSwitchCount);
 
-        if(ballSwitchCount >= currentLevel.AmountOfSwitches)
+        if(ballSwitchCount >= currentLevel.AmountOfSwitches) //end game if reached maximum amount of ball swaps
         {
             LevelManager.SetCanTouch(false);
-            StartCoroutine(WaitForFinalScore(endGameWaitTime)); //succeeded maximum amount of ball swaps
+            StartCoroutine(WaitForFinalScore(endGameWaitTime)); //wait for the last ball to finish moving
         }
     }
 
     IEnumerator WaitForFinalScore(float time)
     {
         yield return new WaitForSeconds(time);
-        GameOver();
+        OnGameOver();
     }
 
     /// <summary>
     /// Used to trigger special events like bombs, freeze, etc.
     /// </summary>
-    /// <param name="ball">The ball that invoked the request (might be null!!)</param>
-    public void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
+    /// <param name="ball">The ball that invoked the request (possibly null!!)</param>
+    protected override void OnBallSpecialEvent(BallController ball, BallSpecialEvent specialEvent)
     {
         switch (specialEvent)
         {

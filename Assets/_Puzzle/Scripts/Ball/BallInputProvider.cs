@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Listens to the global event for touch responses and triggers when the ball is inside of the radius provided
+/// </summary>
 public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
 {
     public event Action BallTouched;
@@ -11,25 +14,19 @@ public class BallInputProvider : MonoBehaviour, IBallTouchInputProvider
 
     public float TouchRadius { get { return _touchRadius; } }
 
-    private void Start()
+    private void OnEnable() //subscribe to events
     {
-        if (GameService.Instance != null)
-        {
-            GameService.Instance.touchInput.TouchDown += OnTouch;
-        }
+        GameService.Instance.touchInput.TouchDown += OnTouch;
     }
 
-    private void OnDestroy()
+    private void OnDisable() //unsubscribe events
     {
-        if (GameService.Instance != null)
-        {
-            GameService.Instance.touchInput.TouchDown -= OnTouch;
-        }
+        GameService.Instance.touchInput.TouchDown -= OnTouch;
     }
 
-    private void OnTouch(Vector2 position)
+    private void OnTouch(Vector2 position) //When touch event triggers
     {
-        if (Mathf.Abs(Vector2.Distance(transform.position, position)) < TouchRadius)
+        if (Mathf.Abs(Vector2.Distance(transform.position, position)) < TouchRadius) //if touch inside radius
         {
             BallTouched?.Invoke();
         }

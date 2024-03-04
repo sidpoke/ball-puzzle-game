@@ -4,6 +4,9 @@ using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of a pipe storage class using Lists
+/// </summary>
 public class PipeStorageProvider : MonoBehaviour, IPipeStorageProvider
 {
     //Events to broadcast upwards to the PipeController.

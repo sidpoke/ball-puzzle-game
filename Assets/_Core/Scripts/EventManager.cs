@@ -1,15 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-//EventBus Pattern
+/// <summary>
+/// EventBus / Global event manager class that has events that other scripts can subscribe to from anywhere
+/// </summary>
 public class EventManager : MonoBehaviour
 {
-    /// <summary>
-    /// This class serves for "globally called" events.
-    /// Should any object want to know what other objects do, they can simply subscribe to the event.
-    /// I want to separate actions and responses to make them dependent on its GameService logic.
-    /// This only works because the actions within the game are known. The scripts themselves are mostly decoupled.
-    /// </summary>
+    // This class serves for "globally called" events.
+    // Should any object want to know what other objects do, they can simply subscribe to and fire events here.
+    // This only works because the actions within the game are known. The components themselves are supposed to be decoupled.
+    // Could also have been solved using Scriptable Objects instead of Actions, but C# actions seemed more convenient.
+    // It's important that these actions need to be unsubscribed because Unity doesn't automagically disconnect them.
+    // By unsubscribing we ensure that the game stays bug-free and don't cause a memory leak.
 
     //Level events
     public event Action<BallController> LevelBallSelected;
