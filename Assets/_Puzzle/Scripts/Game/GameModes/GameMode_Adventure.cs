@@ -1,29 +1,40 @@
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
-public class GameMode_Zen : GameManager
+
+public class GameMode_Adventure : GameManager
 {
-    private ZenUI ui;
+    private IScoreManager scoreManager;
+    private AdventureUI ui;
+
+    [Header("Debug")]
+    [SerializeField] private LevelObject currentLevel;
+    [SerializeField] private bool gameOver = false;
 
     protected override void Awake()
     {
         base.Awake();
-        LevelManager.SetShowScores(false);
-        ui = GetComponent<ZenUI>();
+        LevelManager.SetShowScores(true);
+        scoreManager = GetComponent<IScoreManager>();
+        ui = GetComponent<AdventureUI>();
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         //subscribe to events
-        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
+        scoreManager.ScoreChanged += OnScoreChanged;
         ui.PauseGame += OnPauseGame;
         ui.SwitchScene += OnSwitchScene;
+        GameService.Instance.eventManager.BallSpecialTriggered += OnBallSpecialEvent;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         //unsubscribe events
+        scoreManager.ScoreChanged -= OnScoreChanged;
         ui.PauseGame -= OnPauseGame;
         ui.SwitchScene -= OnSwitchScene;
         GameService.Instance.eventManager.BallSpecialTriggered -= OnBallSpecialEvent;
@@ -32,6 +43,7 @@ public class GameMode_Zen : GameManager
     protected override void Start()
     {
         base.Start();
+        currentLevel = GameService.Instance.adventure.CurrentLevel;
         StartGame();
     }
 
@@ -46,8 +58,19 @@ public class GameMode_Zen : GameManager
     private void StartGame()
     {
         LevelManager.SetCanTouch(true);
-        LevelManager.FillAllPipes();
-        LevelManager.FillPipe(LevelManager.LoaderPipe);
+        LevelManager.FillAllPipes(currentLevel);
+    }
+
+    private void GameOver()
+    {
+        gameOver = true;
+
+        //stop game
+        Time.timeScale = 0;
+        LevelManager.SetCanTouch(false);
+
+        //open panel
+        ui.OpenGameOverMenu(scoreManager.Score, currentLevel.ScoreToBeat);
     }
 
     private void OnSwitchScene(string scene) //reset too
@@ -73,6 +96,16 @@ public class GameMode_Zen : GameManager
         }
     }
 
+    protected override void OnLoaderPipeFull()
+    {
+        base.OnLoaderPipeFull();
+        GameOver();
+    }
+
+    private void OnScoreChanged(int score)
+    {
+        ui.SetScoreText(score, currentLevel.ScoreToBeat);
+    }
 
     /// <summary>
     /// Used to trigger special events like bombs, freeze, etc.

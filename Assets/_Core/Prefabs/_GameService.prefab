@@ -312,6 +312,7 @@ Transform:
   - {fileID: 1178903325381096624}
   - {fileID: 6054923035400887727}
   - {fileID: 7089997138939469352}
+  - {fileID: 1618532132757256306}
   - {fileID: 7252193848486066830}
   - {fileID: 3781488417304955912}
   - {fileID: 4084508311442906525}
@@ -332,6 +333,7 @@ MonoBehaviour:
   eventManager: {fileID: 0}
   touchInput: {fileID: 0}
   scenes: {fileID: 0}
+  adventure: {fileID: 0}
   saveManager: {fileID: 0}
   audioManager: {fileID: 0}
 --- !u!1 &4692978991013942364
@@ -378,6 +380,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8992502fbab7f0a499f226eada69c2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6497685705956500305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1618532132757256306}
+  - component: {fileID: 5486574337343497538}
+  m_Layer: 0
+  m_Name: AdventureManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1618532132757256306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497685705956500305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1464379826098081116}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5486574337343497538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497685705956500305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24da3eae9fa455641a17644147d546ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levels:
+  - {fileID: 11400000, guid: 3340622efbdc7d84dbcff0a8441620e0, type: 2}
+  - {fileID: 11400000, guid: f33bec039318c3c4ca2a47de66fb08ab, type: 2}
+  - {fileID: 11400000, guid: 0f23abbc3f943bb48b3465f5b576bd22, type: 2}
+  currentLevel: 0
 --- !u!1 &7970058751208857431
 GameObject:
   m_ObjectHideFlags: 0

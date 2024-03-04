@@ -3,14 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ArcadeUI : MonoBehaviour
+public class AdventureUI : MonoBehaviour
 {
     public event Action<bool> PauseGame;
     public event Action<string> SwitchScene;
 
     [Header("In-Game UI References")]
     [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private TMP_Text difficultyText;
 
     [Header("UI Panel References")]
     [SerializeField] private GameObject pausePanel;
@@ -20,14 +19,9 @@ public class ArcadeUI : MonoBehaviour
     [SerializeField] private TMP_Text finalScoreText;
     [SerializeField] private TMP_Text highScoreText;
 
-    public void SetScoreText(int score)
+    public void SetScoreText(int score, int scoreToBeat)
     {
-        scoreText.SetText(score.ToString());
-    }
-
-    public void SetDifficultyText(string difficulty)
-    {
-        difficultyText.SetText(difficulty);
+        scoreText.SetText($"{score.ToString()} / {scoreToBeat.ToString()}");
     }
 
     public void OpenGameOverMenu(int score, int highscore) // Game end menu

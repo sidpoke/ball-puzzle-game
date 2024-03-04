@@ -67,11 +67,18 @@ public class LevelManager : MonoBehaviour
         levelTouchProvider.SwapBalls -= OnBallSwap;
     }
 
+
+    /// <summary>
+    /// Sets whether or not a ball can be touched (used for pause menu)
+    /// </summary>
     public void SetCanTouch(bool active)
     {
         levelTouchProvider.SetCanTouch(active);
     }
 
+    /// <summary>
+    /// Sets whether or not the balls should show scores
+    /// </summary>
     public void SetShowScores(bool state)
     {
         showScores = state;
@@ -127,8 +134,6 @@ public class LevelManager : MonoBehaviour
     /// When LoaderPipe releases the ball, transfer to least filled SwitcherPipe
     /// When SwitcherPipe releases a ball, ask LoaderPipe to release a new ball
     /// </summary>
-    /// <param name="pipe"></param>
-    /// <param name="ball"></param>
     public void OnPipeReleased(PipeController originPipe, BallController ball)
     {
         if (originPipe is SwitcherPipe) //ignore if this pipe released the ball
@@ -160,8 +165,6 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// Switches a pair of balls between two pipes.
     /// </summary>
-    /// <param name="ballA">First Ball</param>
-    /// <param name="ballB">Second Ball</param>
     public void OnBallSwap(BallController ballA, BallController ballB)
     {
         //switch elements between two pipes
@@ -195,9 +198,34 @@ public class LevelManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Fills all Switcher Pipes with random balls. Overload with LevelObject Scriptable object.
+    /// </summary>
+    public void FillAllPipes(LevelObject level)
+    {
+        pipes.ForEach(pipe => {
+            if (pipe is SwitcherPipe)
+            {
+                switch (pipe.PipeColor)
+                {
+                    case PipeColor.Red:
+                        FillPipe(pipe, level.BallsRedPipe);
+                        break;
+                    case PipeColor.Blue:
+                        FillPipe(pipe, level.BallsBluePipe);
+                        break;
+                    case PipeColor.Green:
+                        FillPipe(pipe, level.BallsGreenPipe);
+                        break;
+                    case PipeColor.Yellow:
+                        FillPipe(pipe, level.BallsYellowPipe);
+                        break;
+                }
+            } 
+        });
+    }
+
+    /// <summary>
     /// Fills an entire pipe at the start with random balls. 
-    /// 
-    /// TODO: Scriptable objects overload for pretedermined level patterns
     /// </summary>
     /// <param name="pipe">The pipe to fill</param>
     public void FillPipe(PipeController pipe)
@@ -205,6 +233,20 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < pipe.PipeStorage.MaxFillAmount; i++)
         {
             AddBallToPipe(pipe, showScores);
+        }
+    }
+
+    /// <summary>
+    /// Fills an entire pipe with a predetermined list of balls
+    /// </summary>
+    public void FillPipe(PipeController pipe, List<LevelBalls> balls)
+    {
+        for (int i = 0; i < pipe.PipeStorage.MaxFillAmount; i++)
+        {
+            BallController ball = Instantiate(ballObjects[(int)balls[i]].Prefab, transform.position, Quaternion.identity, _ballPool.transform).GetComponent<BallController>();
+            ball.SetShowScore(true);
+            ball.SetPipe(pipe);
+            pipe.PipeStorage.Add(ball);
         }
     }
 
